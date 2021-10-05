@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "964541374776",
+    "project_id": "office-supply-mobile",
+    "storage_bucket": "office-supply-mobile.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:964541374776:android:2381d4fdaa29a65b2021cd",
+        "android_client_info": {
+          "package_name": "com.example.office_supply_mobile_master"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "964541374776-8qu3lqntjm20dj8gclspj73rh70cc5a6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6ejWZ5PhNOc49sM-2m9iod6qUpz75DgU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "964541374776-8qu3lqntjm20dj8gclspj73rh70cc5a6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
