@@ -28,7 +28,7 @@ class CategogyCard extends StatelessWidget {
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
                       Text(
-                        'View all',
+                        'Xem tất cả',
                         style: h5.copyWith(
                           color: primaryColor,
                         ),
@@ -93,6 +93,40 @@ class CategogyCard extends StatelessWidget {
                   ),
                 ],
               ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Sản phẩm nổi bật',
+                  style: h5.copyWith(
+                    color: const Color.fromRGBO(0, 0, 0, 0.54),
+                  ),
+                ),
+                InkWell(
+                  child: Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      Text(
+                        'Xem tất cả',
+                        style: h5.copyWith(
+                          color: primaryColor,
+                        ),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 5),
+                        child: Icon(
+                          Icons.arrow_forward,
+                          color: primaryColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
         ],

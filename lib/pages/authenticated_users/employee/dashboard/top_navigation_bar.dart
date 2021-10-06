@@ -29,16 +29,7 @@ class TopNavigationBar extends StatelessWidget {
         Container(
           height: 92,
           decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                Color(0xEFFAF4FF),
-                Color(0xFFFCF3FF),
-                Color(0xFFF9ECFD),
-                Color(0xEFF9F1FF),
-              ],
-            ),
+            color: primaryColor,
           ),
         ),
         Center(
@@ -104,7 +95,7 @@ class TopNavigationBar extends StatelessWidget {
                     ),
                     child: CircleAvatar(
                       radius: 28,
-                      backgroundColor: primaryColor,
+                      backgroundColor: primaryLightColor,
                       child: CircleAvatar(
                         radius: 26,
                         backgroundImage:
@@ -125,14 +116,14 @@ class TopNavigationBar extends StatelessWidget {
                         children: [
                           Text(
                             _googleSignInAccount.displayName!,
-                            style:
-                                h6.copyWith(color: primaryColor, fontSize: 15),
+                            style: h6.copyWith(
+                                color: primaryLightColor, fontSize: 14),
                             textAlign: TextAlign.start,
                           ),
                           Text(
                             '(Nhân viên)',
                             style: h6.copyWith(
-                              color: primaryColor,
+                              color: primaryLightColor,
                               fontWeight: FontWeight.w200,
                               fontSize: 13,
                             ),
@@ -141,13 +132,16 @@ class TopNavigationBar extends StatelessWidget {
                           Row(
                             children: [
                               Text(
-                                '1,642,000 vnđ ',
+                                '1,642,000₫',
                                 style: h6.copyWith(
-                                  color: primaryColor,
+                                  color: primaryLightColor,
                                   fontWeight: FontWeight.w300,
                                   fontSize: 14,
                                 ),
                                 textAlign: TextAlign.start,
+                              ),
+                              const SizedBox(
+                                width: 5,
                               ),
                               Icon(
                                 Icons.remove_red_eye,
@@ -170,7 +164,7 @@ class TopNavigationBar extends StatelessWidget {
                           onTap: () {},
                           child: const Icon(
                             Icons.notifications_active_outlined,
-                            color: primaryColor,
+                            color: primaryLightColor,
                             size: 15,
                           ),
                         ),
@@ -189,7 +183,7 @@ class TopNavigationBar extends StatelessWidget {
                           },
                           child: const Icon(
                             Icons.logout_outlined,
-                            color: primaryColor,
+                            color: primaryLightColor,
                             size: 15,
                           ),
                         ),
