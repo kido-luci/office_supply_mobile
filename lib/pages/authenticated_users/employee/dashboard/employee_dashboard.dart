@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:office_supply_mobile_master/data/fake.dart';
-import 'package:office_supply_mobile_master/pages/authenticated_users/employee/dashboard/bottom_navigation_bar.dart';
-import 'package:office_supply_mobile_master/pages/authenticated_users/employee/dashboard/category.dart';
-import 'package:office_supply_mobile_master/pages/authenticated_users/employee/dashboard/furniture_grid_item.dart';
-import 'package:office_supply_mobile_master/pages/authenticated_users/employee/dashboard/top_navigation_bar.dart';
+import 'package:office_supply_mobile_master/pages/authenticated_users/employee/widgets/bottom_navigation_bar.dart';
+import 'package:office_supply_mobile_master/pages/authenticated_users/employee/widgets/category.dart';
+import 'package:office_supply_mobile_master/pages/authenticated_users/employee/widgets/stationery_grid_item.dart';
+import 'package:office_supply_mobile_master/pages/authenticated_users/employee/widgets/top_navigation_bar.dart';
 
 class EmployeeDashBoard extends StatelessWidget {
   const EmployeeDashBoard({Key? key}) : super(key: key);
@@ -42,7 +42,7 @@ class EmployeeDashBoard extends StatelessWidget {
                                     .asMap()
                                     .entries
                                     .map(
-                                      (e) => FurnitureGridItem(
+                                      (e) => StationeryGridItem(
                                         item: e.value,
                                         margin: EdgeInsets.only(
                                           left: e.key.isEven ? 16 : 0,
@@ -67,18 +67,6 @@ class EmployeeDashBoard extends StatelessWidget {
           ],
         ),
       ),
-      // bottomNavigationBar: CurvedNavigationBar(
-      //   height: 50,
-      //   index: 2,
-      //   color: Colors.transparent,
-      //   items: const [
-      //     Icon(Icons.home_repair_service_sharp),
-      //     Icon(Icons.account_box_outlined),
-      //     Icon(Icons.home),
-      //     Icon(Icons.history),
-      //     Icon(Icons.settings),
-      //   ],
-      // ),
     );
   }
 }

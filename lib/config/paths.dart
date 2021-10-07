@@ -7,6 +7,13 @@ const graffitiPenPNG = 'graffiti_pen.png';
 const metalliePenPNG = 'metallie_pen.png';
 const luciPencilPNG = 'luci_pencil.png';
 const homePNG = 'home.png';
+const settingPNG = 'setting.png';
+const recentPNG = 'recent.png';
+const profilePNG = 'profile.png';
+const blueAndPinkPNG = 'blue_and_pink.png';
+const infomationPNG = 'information.png';
+const blueAndPinkBackgroundPNG = 'blue_and_pink_background.png';
+const sweetHomePNG = 'sweet_home.png';
 
 //icons
 const iconPath = 'assets/icons/';

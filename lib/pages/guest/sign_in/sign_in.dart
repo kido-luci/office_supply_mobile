@@ -6,7 +6,7 @@ import 'package:office_supply_mobile_master/config/paths.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
 import 'package:office_supply_mobile_master/controllers/google_sign_in_controller.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/dashboard/employee_dashboard.dart';
-import 'package:office_supply_mobile_master/pages/guest/sign_in/background.dart';
+import 'package:office_supply_mobile_master/pages/guest/sign_in/widgets/background.dart';
 import 'package:office_supply_mobile_master/widgets/rounded_input_field.dart';
 import 'package:office_supply_mobile_master/widgets/rounded_password_field.dart';
 import 'package:provider/provider.dart';
@@ -155,57 +155,4 @@ class _SignInPageState extends State<SignInPage> {
       print('error: ${e.toString()}');
     }
   }
-
-  // signIn() {
-  //   return Consumer<GoogleSignInController>(builder: (context, model, child) {
-  //     if (model.googleSignInAccount != null) {
-  //       return Center(
-  //         child: singedInUI(model),
-  //       );
-  //       //return EmployeeDashBoard(model: model);
-  //     } else {
-  //       return signInControls(context);
-  //     }
-  //   });
-  // }
-
-  // singedInUI(GoogleSignInController model) {
-  //   return Column(
-  //     mainAxisAlignment: MainAxisAlignment.center,
-  //     crossAxisAlignment: CrossAxisAlignment.center,
-  //     children: [
-  //       CircleAvatar(
-  //         backgroundImage:
-  //             Image.network(model.googleSignInAccount!.photoUrl!).image,
-  //         radius: 50,
-  //       ),
-  //       Text(model.googleSignInAccount!.displayName!),
-  //       Text(model.googleSignInAccount!.email),
-  //       ActionChip(
-  //         avatar: const Icon(Icons.logout),
-  //         label: const Text('Sign out'),
-  //         onPressed: () {
-  //           Provider.of<GoogleSignInController>(context, listen: false)
-  //               .signOut();
-  //         },
-  //       )
-  //     ],
-  //   );
-  // }
-
-  // signInControls(BuildContext context) {
-  //   return Center(
-  //     child: Column(
-  //       mainAxisAlignment: MainAxisAlignment.center,
-  //       crossAxisAlignment: CrossAxisAlignment.center,
-  //       children: [
-  //         SignInButton(Buttons.Google, onPressed: () {
-  //           Provider.of<GoogleSignInController>(context, listen: false)
-  //               .signIn();
-  //         }),
-  //         SignInButton(Buttons.Facebook, onPressed: () {}),
-  //       ],
-  //     ),
-  //   );
-  // }
 }

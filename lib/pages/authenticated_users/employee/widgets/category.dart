@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:office_supply_mobile_master/config/paths.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
+import 'package:office_supply_mobile_master/data/fake.dart';
+import 'package:office_supply_mobile_master/models/category.dart';
 
-class CategogyCard extends StatelessWidget {
+class CategogyCard extends StatefulWidget {
   const CategogyCard({Key? key}) : super(key: key);
+
+  @override
+  State<CategogyCard> createState() => _CategogyCardState();
+}
+
+class _CategogyCardState extends State<CategogyCard> {
+  var selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +28,8 @@ class CategogyCard extends StatelessWidget {
                 Text(
                   'Loại văn phòng phẩm',
                   style: h5.copyWith(
-                    color: const Color.fromRGBO(0, 0, 0, 0.54),
+                    color: lightGrey,
+                    fontSize: 14,
                   ),
                 ),
                 InkWell(
@@ -31,14 +40,13 @@ class CategogyCard extends StatelessWidget {
                         'Xem tất cả',
                         style: h5.copyWith(
                           color: primaryColor,
+                          fontSize: 14,
                         ),
                       ),
                       const Padding(
                         padding: EdgeInsets.only(left: 5),
-                        child: Icon(
-                          Icons.arrow_forward,
-                          color: primaryColor,
-                        ),
+                        child: Icon(Icons.arrow_forward,
+                            color: primaryColor, size: 14),
                       ),
                     ],
                   ),
@@ -60,38 +68,18 @@ class CategogyCard extends StatelessWidget {
               padding: const EdgeInsets.all(15),
               child: Wrap(
                 spacing: 28,
-                children: const [
-                  CategoryItem(
-                    categoryName: 'Bút',
-                    iconPath: iconPath + pencilBoxSvg,
-                    isSelected: true,
-                  ),
-                  CategoryItem(
-                    categoryName: 'Sổ sách',
-                    iconPath: iconPath + notebookSvg,
-                    isSelected: false,
-                  ),
-                  CategoryItem(
-                    categoryName: 'Giấy',
-                    iconPath: iconPath + paperSvg,
-                    isSelected: false,
-                  ),
-                  CategoryItem(
-                    categoryName: 'Giấy',
-                    iconPath: iconPath + paperSvg,
-                    isSelected: false,
-                  ),
-                  CategoryItem(
-                    categoryName: 'Giấy',
-                    iconPath: iconPath + paperSvg,
-                    isSelected: false,
-                  ),
-                  CategoryItem(
-                    categoryName: 'Giấy',
-                    iconPath: iconPath + paperSvg,
-                    isSelected: false,
-                  ),
-                ],
+                children: Fake.productCategories
+                    .asMap()
+                    .entries
+                    .map((e) => CategoryItem(
+                          productCategory: e.value,
+                          index: e.key,
+                          isSelected: e.key == selectedIndex,
+                          onTap: () => setState(() {
+                            selectedIndex = e.key;
+                          }),
+                        ))
+                    .toList(),
               ),
             ),
           ),
@@ -103,7 +91,8 @@ class CategogyCard extends StatelessWidget {
                 Text(
                   'Sản phẩm nổi bật',
                   style: h5.copyWith(
-                    color: const Color.fromRGBO(0, 0, 0, 0.54),
+                    color: lightGrey,
+                    fontSize: 14,
                   ),
                 ),
                 InkWell(
@@ -114,6 +103,7 @@ class CategogyCard extends StatelessWidget {
                         'Xem tất cả',
                         style: h5.copyWith(
                           color: primaryColor,
+                          fontSize: 14,
                         ),
                       ),
                       const Padding(
@@ -121,6 +111,7 @@ class CategogyCard extends StatelessWidget {
                         child: Icon(
                           Icons.arrow_forward,
                           color: primaryColor,
+                          size: 14,
                         ),
                       ),
                     ],
@@ -136,20 +127,23 @@ class CategogyCard extends StatelessWidget {
 }
 
 class CategoryItem extends StatelessWidget {
-  const CategoryItem(
-      {Key? key,
-      required this.categoryName,
-      required this.iconPath,
-      required this.isSelected})
-      : super(key: key);
-  final String categoryName;
-  final String iconPath;
+  const CategoryItem({
+    Key? key,
+    required this.productCategory,
+    required this.index,
+    required this.isSelected,
+    required this.onTap,
+  }) : super(key: key);
+
+  final Category productCategory;
   final bool isSelected;
+  final int index;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: onTap,
       child: Container(
         height: 60,
         width: 80,
@@ -174,12 +168,12 @@ class CategoryItem extends StatelessWidget {
                 height: 30,
                 width: 30,
                 child: SvgPicture.asset(
-                  iconPath,
+                  productCategory.iconPath,
                   color: isSelected ? primaryLightColor : primaryColor,
                 ),
               ),
               Text(
-                categoryName,
+                productCategory.title,
                 style: h5.copyWith(
                   color: isSelected ? primaryLightColor : primaryColor,
                   fontSize: 15,

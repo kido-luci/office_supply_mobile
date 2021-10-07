@@ -1,6 +1,6 @@
 class Category {
-  String iconPath;
   String title;
+  String iconPath;
 
-  Category(this.iconPath, this.title);
+  Category({required this.title, required this.iconPath});
 }

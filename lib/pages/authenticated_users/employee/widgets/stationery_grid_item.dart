@@ -3,11 +3,11 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
 import 'package:office_supply_mobile_master/models/item.dart';
 
-class FurnitureGridItem extends StatelessWidget {
+class StationeryGridItem extends StatelessWidget {
   final Item item;
   final EdgeInsets margin;
 
-  const FurnitureGridItem({
+  const StationeryGridItem({
     Key? key,
     required this.item,
     this.margin = EdgeInsets.zero,
@@ -57,17 +57,18 @@ class FurnitureGridItem extends StatelessWidget {
                     top: 16,
                     right: 16,
                     child: Container(
-                      width: 40,
-                      height: 40,
+                      width: 30,
+                      height: 30,
                       alignment: Alignment.center,
                       decoration: const BoxDecoration(
-                        color: primaryColor,
+                        color: primaryLightColorTransparent,
                         shape: BoxShape.circle,
                       ),
                       child: Text(
                         '-${item.discountPercent}%',
                         textAlign: TextAlign.center,
-                        style: const TextStyle(color: Colors.white),
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 12),
                       ),
                     ),
                   ),

@@ -1,20 +1,9 @@
 import 'package:office_supply_mobile_master/config/paths.dart';
+import 'package:office_supply_mobile_master/models/category.dart';
 import 'package:office_supply_mobile_master/models/item.dart';
 
 class Fake {
   static int numberOfItemsInCart = 1;
-
-  static List<String> trending = [
-    'assets/images/furniture/jacalyn-beales-435629-unsplash.png',
-    'assets/images/furniture/sven-brandsma-1379481-unsplash.png',
-  ];
-
-  static List<String> featured = [
-    'assets/images/furniture/pexels-eric-montanah-1350789.jpg',
-    'assets/images/furniture/pexels-patryk-kamenczak-775219.jpg',
-    'assets/images/furniture/pexels-pixabay-276534.jpg',
-    'assets/images/furniture/pexels-steve-johnson-923192.jpg'
-  ];
 
   static List<Item> furniture = [
     Item(
@@ -65,6 +54,37 @@ class Fake {
       originalPrice: 18000,
       rating: 4.5,
       discountPercent: 30,
+    ),
+  ];
+
+  static List<Category> productCategories = [
+    Category(
+      title: 'Bút',
+      iconPath: iconPath + pencilBoxSvg,
+    ),
+    Category(
+      title: 'Sổ sách',
+      iconPath: iconPath + notebookSvg,
+    ),
+    Category(
+      title: 'Giấy',
+      iconPath: iconPath + paperSvg,
+    ),
+    Category(
+      title: 'Bút',
+      iconPath: iconPath + pencilBoxSvg,
+    ),
+    Category(
+      title: 'Bút',
+      iconPath: iconPath + pencilBoxSvg,
+    ),
+    Category(
+      title: 'Bút',
+      iconPath: iconPath + pencilBoxSvg,
+    ),
+    Category(
+      title: 'Bút',
+      iconPath: iconPath + pencilBoxSvg,
     ),
   ];
 }
