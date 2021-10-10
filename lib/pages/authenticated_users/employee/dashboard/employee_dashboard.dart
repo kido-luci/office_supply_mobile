@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:office_supply_mobile_master/data/fake.dart';
-import 'package:office_supply_mobile_master/pages/authenticated_users/employee/widgets/bottom_navigation_bar.dart';
-import 'package:office_supply_mobile_master/pages/authenticated_users/employee/widgets/category.dart';
-import 'package:office_supply_mobile_master/pages/authenticated_users/employee/widgets/stationery_grid_item.dart';
-import 'package:office_supply_mobile_master/pages/authenticated_users/employee/widgets/top_navigation_bar.dart';
+import 'package:office_supply_mobile_master/pages/authenticated_users/employee/dashboard/widgets/bottom_navigation_bar.dart';
+import 'package:office_supply_mobile_master/pages/authenticated_users/employee/dashboard/widgets/category.dart';
+import 'package:office_supply_mobile_master/pages/authenticated_users/employee/dashboard/widgets/stationery_grid_item.dart';
+import 'package:office_supply_mobile_master/pages/authenticated_users/employee/dashboard/widgets/top_navigation_bar.dart';
+import 'package:office_supply_mobile_master/pages/authenticated_users/employee/product_detail/product_detail.dart';
 
 class EmployeeDashBoard extends StatelessWidget {
   const EmployeeDashBoard({Key? key}) : super(key: key);
@@ -38,11 +39,20 @@ class EmployeeDashBoard extends StatelessWidget {
                                 childAspectRatio: 0.65,
                                 mainAxisSpacing: 16,
                                 crossAxisSpacing: 16,
-                                children: Fake.furniture
+                                children: Fake.stationery
                                     .asMap()
                                     .entries
                                     .map(
                                       (e) => StationeryGridItem(
+                                        onTap: () {
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ProductDetail(
+                                                        item: Fake
+                                                            .stationery[e.key],
+                                                      )));
+                                        },
                                         item: e.value,
                                         margin: EdgeInsets.only(
                                           left: e.key.isEven ? 16 : 0,

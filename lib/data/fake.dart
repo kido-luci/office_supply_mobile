@@ -5,7 +5,7 @@ import 'package:office_supply_mobile_master/models/item.dart';
 class Fake {
   static int numberOfItemsInCart = 1;
 
-  static List<Item> furniture = [
+  static List<Item> stationery = [
     Item(
       name: 'Bút chì kim Luci',
       imagePath: imagePath + luciPencilPNG,
