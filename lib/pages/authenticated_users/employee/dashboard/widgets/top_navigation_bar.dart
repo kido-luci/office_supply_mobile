@@ -164,7 +164,7 @@ class TopNavigationBar extends StatelessWidget {
             Radius.circular(25),
           ),
           child: TextField(
-            obscureText: true,
+            obscureText: false,
             autofocus: false,
             decoration: InputDecoration(
               isCollapsed: true,

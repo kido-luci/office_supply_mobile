@@ -6,12 +6,14 @@ class Item {
   int discountPercent;
   double originalPrice;
   double rating;
+  int quantity;
 
   Item({
     required this.name,
-    required this.imagePath,
+    required this.quantity,
     required this.originalPrice,
-    required this.rating,
+    this.imagePath = '',
+    this.rating = 5,
     this.discountPercent = 0,
   });
 

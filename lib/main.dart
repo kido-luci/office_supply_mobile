@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:office_supply_mobile_master/controllers/cart_controller.dart';
 import 'package:office_supply_mobile_master/controllers/google_sign_in_controller.dart';
 import 'package:office_supply_mobile_master/pages/guest/sign_in/sign_in.dart';
 import 'package:provider/provider.dart';
@@ -23,6 +24,9 @@ class MainApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => GoogleSignInController(),
           child: const SignInPage(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => CartController(),
         ),
       ],
       child: MaterialApp(

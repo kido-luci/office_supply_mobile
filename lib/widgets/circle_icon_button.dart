@@ -6,18 +6,20 @@ class CircleIconButton extends StatelessWidget {
       {Key? key,
       required this.onTap,
       required this.margin,
-      required this.iconData})
+      required this.iconData,
+      required this.size})
       : super(key: key);
   final VoidCallback onTap;
   final EdgeInsets margin;
   final IconData iconData;
+  final double size;
 
   @override
   Widget build(BuildContext context) => InkWell(
         onTap: onTap,
         child: Container(
-          width: 30,
-          height: 30,
+          width: size,
+          height: size,
           margin: margin,
           alignment: Alignment.center,
           decoration: const BoxDecoration(

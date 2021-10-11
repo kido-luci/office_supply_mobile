@@ -5,16 +5,24 @@ import 'package:office_supply_mobile_master/pages/authenticated_users/employee/d
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/dashboard/widgets/stationery_grid_item.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/dashboard/widgets/top_navigation_bar.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/product_detail/product_detail.dart';
+import 'package:office_supply_mobile_master/widgets/cart_button.dart';
 
-class EmployeeDashBoard extends StatelessWidget {
+class EmployeeDashBoard extends StatefulWidget {
   const EmployeeDashBoard({Key? key}) : super(key: key);
 
+  @override
+  State<EmployeeDashBoard> createState() => _EmployeeDashBoardState();
+}
+
+class _EmployeeDashBoardState extends State<EmployeeDashBoard> {
   @override
   Widget build(BuildContext context) {
     final _size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
       extendBody: true,
+      floatingActionButton: CartButton(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       body: SafeArea(
         child: Column(
           children: [
@@ -46,12 +54,16 @@ class EmployeeDashBoard extends StatelessWidget {
                                       (e) => StationeryGridItem(
                                         onTap: () {
                                           Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ProductDetail(
-                                                        item: Fake
-                                                            .stationery[e.key],
-                                                      )));
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ProductDetail(
+                                                item: Fake.stationery[e.key],
+                                                onTapBack: () {
+                                                  setState(() {});
+                                                },
+                                              ),
+                                            ),
+                                          );
                                         },
                                         item: e.value,
                                         margin: EdgeInsets.only(
@@ -69,8 +81,9 @@ class EmployeeDashBoard extends StatelessWidget {
                     ],
                   ),
                   const Align(
-                      alignment: Alignment.bottomCenter,
-                      child: BottomNavigation()),
+                    alignment: Alignment.bottomCenter,
+                    child: BottomNavigation(),
+                  ),
                 ],
               ),
             )

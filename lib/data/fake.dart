@@ -12,6 +12,7 @@ class Fake {
       originalPrice: 32500,
       rating: 5.0,
       discountPercent: 40,
+      quantity: 100,
     ),
     Item(
       name: 'Bút dạ Graffiti',
@@ -19,6 +20,7 @@ class Fake {
       originalPrice: 25400,
       rating: 4.5,
       discountPercent: 15,
+      quantity: 100,
     ),
     Item(
       name: 'Bút lông Metallie',
@@ -26,6 +28,7 @@ class Fake {
       originalPrice: 16400,
       rating: 4.5,
       discountPercent: 22,
+      quantity: 100,
     ),
     Item(
       name: 'Bút Bi Sakura 2mm',
@@ -33,6 +36,7 @@ class Fake {
       originalPrice: 18000,
       rating: 4.5,
       discountPercent: 30,
+      quantity: 100,
     ),
     Item(
       name: 'Bút Bi Sakura 2mm',
@@ -40,6 +44,7 @@ class Fake {
       originalPrice: 18000,
       rating: 4.5,
       discountPercent: 30,
+      quantity: 100,
     ),
     Item(
       name: 'Bút Bi Sakura 2mm',
@@ -47,6 +52,7 @@ class Fake {
       originalPrice: 18000,
       rating: 4.5,
       discountPercent: 30,
+      quantity: 100,
     ),
     Item(
       name: 'Bút Bi Sakura 2mm',
@@ -54,6 +60,7 @@ class Fake {
       originalPrice: 18000,
       rating: 4.5,
       discountPercent: 30,
+      quantity: 100,
     ),
   ];
 
