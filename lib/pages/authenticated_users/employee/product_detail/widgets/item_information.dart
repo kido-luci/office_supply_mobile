@@ -68,7 +68,7 @@ class _ItemInformationState extends State<ItemInformation> {
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               Text(
-                Item.format(widget.item.price),
+                Item.format(price: widget.item.price),
                 style: const TextStyle(
                   fontSize: 20,
                   color: primaryColor,
@@ -77,7 +77,7 @@ class _ItemInformationState extends State<ItemInformation> {
               ),
               if (widget.item.discountPercent != 0)
                 Text(
-                  Item.format(widget.item.originalPrice),
+                  Item.format(price: widget.item.originalPrice),
                   style: const TextStyle(
                     fontSize: 16,
                     height: 1.5,
@@ -164,14 +164,10 @@ class _ItemInformationState extends State<ItemInformation> {
 
   itemAddToCart() => InkWell(
         onTap: () => setState(() {
-          Provider.of<CartController>(context, listen: false).addToCart(
-            Item(
-              name: widget.item.name,
-              quantity: _itemQuantity,
-              originalPrice: widget.item.originalPrice,
-              discountPercent: widget.item.discountPercent,
-            ),
-          );
+          widget.item.setQuantity(quantity: _itemQuantity);
+          Provider.of<CartController>(context, listen: false)
+              .cart
+              .addItemToCart(item: widget.item);
           widget.reloadProductDetail.call();
         }),
         child: Container(
@@ -233,6 +229,8 @@ class ItemQuantity extends StatelessWidget {
               margin: EdgeInsets.zero,
               iconData: Icons.remove,
               size: 20,
+              iconColor: Colors.white,
+              backgroundColor: primaryLightColorTransparent,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -251,6 +249,8 @@ class ItemQuantity extends StatelessWidget {
               margin: EdgeInsets.zero,
               iconData: Icons.add,
               size: 20,
+              iconColor: Colors.white,
+              backgroundColor: primaryLightColorTransparent,
             ),
           ],
         ),
@@ -269,7 +269,7 @@ class ItemQuantity extends StatelessWidget {
               ),
             ),
             Text(
-              Item.format(itemPrice * itemQuantity),
+              Item.format(price: itemPrice * itemQuantity),
               style: h4,
             ),
           ],

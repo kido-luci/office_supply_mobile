@@ -16,7 +16,6 @@ class TopNavigationBar extends StatelessWidget {
         CircleIconButton(
           onTap: () {
             Navigator.of(context).pop();
-            onTapBack.call();
           },
           margin: const EdgeInsets.only(top: 10, left: 10),
           iconData: Icons.arrow_back_ios,
@@ -26,7 +25,7 @@ class TopNavigationBar extends StatelessWidget {
         ),
         Center(
           child: Text(
-            'Thông tin sản phẩm',
+            'Thông tin đơn hàng',
             style: h5.copyWith(color: Colors.white),
           ),
         ),

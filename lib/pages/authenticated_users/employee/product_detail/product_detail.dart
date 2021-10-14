@@ -42,7 +42,7 @@ class _ProductDetailState extends State<ProductDetail> {
           children: [
             SizedBox(
               height: 50,
-              child: TopNavigationBar(size: _size, onTapBack: widget.onTapBack),
+              child: TopNavigationBar(onTapBack: widget.onTapBack),
             ),
             Expanded(
               flex: 1,

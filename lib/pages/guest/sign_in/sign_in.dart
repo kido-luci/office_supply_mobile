@@ -144,8 +144,7 @@ class _SignInPageState extends State<SignInPage> {
       if (Provider.of<GoogleSignInController>(context, listen: false)
               .googleSignInAccount !=
           null) {
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const EmployeeDashBoard()));
+        Navigator.of(context).pushReplacementNamed('/employee_dashboard');
       }
     } on PlatformException catch (e) {
       // ignore: avoid_print

@@ -97,7 +97,7 @@ class StationeryGridItem extends StatelessWidget {
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
                       Text(
-                        Item.format(item.price),
+                        Item.format(price: item.price),
                         style: const TextStyle(
                           fontSize: 18,
                           color: primaryColor,
@@ -106,7 +106,7 @@ class StationeryGridItem extends StatelessWidget {
                       ),
                       if (item.discountPercent != 0)
                         Text(
-                          Item.format(item.originalPrice),
+                          Item.format(price: item.originalPrice),
                           style: const TextStyle(
                             fontSize: 12,
                             height: 1.5,

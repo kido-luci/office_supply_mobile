@@ -23,7 +23,14 @@ class Item {
         : originalPrice;
   }
 
-  static String format(double price) =>
+  static String format({required double price}) =>
       NumberFormat.currency(locale: 'vi', symbol: '₫', decimalDigits: 0)
           .format(price);
+
+  setQuantity({required int quantity}) => this.quantity = quantity;
+
+  addQuantity({required int quantity}) {
+    this.quantity += quantity;
+    return this;
+  }
 }

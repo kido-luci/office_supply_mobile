@@ -26,7 +26,7 @@ class TopNavigationBar extends StatelessWidget {
         ),
         Center(
           child: Text(
-            'Thông tin sản phẩm',
+            'Giỏ hàng',
             style: h5.copyWith(color: Colors.white),
           ),
         ),

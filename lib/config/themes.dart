@@ -5,6 +5,7 @@ const primaryColor = Color(0xFF6F35A5);
 const primaryLightColor = Color(0xFFF1E6FF);
 const primaryLightColorTransparent = Color(0x956F35A5);
 const lightGrey = Color.fromRGBO(0, 0, 0, 0.54);
+const lightGreyBackground = Color(0xFFF6F6F6);
 
 //font
 
@@ -34,6 +35,6 @@ const h5 = TextStyle(
 );
 
 const h6 = TextStyle(
-  fontSize: 9.89,
+  fontSize: 13,
   color: primaryColor,
 );
