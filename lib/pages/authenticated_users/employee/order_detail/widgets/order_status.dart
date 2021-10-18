@@ -51,7 +51,7 @@ class OrderStatus extends StatelessWidget {
         children: [
           Text(
             'Bước ${statusStep.toString()}',
-            style: h5.copyWith(
+            style: h6.copyWith(
               color: statusValue ? Colors.black : lightGrey,
             ),
           ),
@@ -62,10 +62,10 @@ class OrderStatus extends StatelessWidget {
                 CircleAvatar(
                   backgroundColor:
                       statusValue ? primaryColor : primaryLightColor,
-                  radius: 8,
+                  radius: 6,
                 ),
                 Container(
-                  height: isLastStatus ? 0 : 50,
+                  height: isLastStatus ? 0 : 25,
                   width: 2,
                   color: statusValue ? primaryColor : primaryLightColor,
                 )
@@ -75,7 +75,7 @@ class OrderStatus extends StatelessWidget {
           Flexible(
             child: Text(
               statusTitle,
-              style: h5.copyWith(
+              style: h6.copyWith(
                 color:
                     statusValue ? primaryColor : primaryLightColorTransparent,
               ),

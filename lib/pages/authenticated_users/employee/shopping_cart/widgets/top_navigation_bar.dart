@@ -11,7 +11,7 @@ class TopNavigationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        backgroundImage(imagePath + sweetHomePNG),
+        backgroundImage(photoUrl: imagePath + sweetHomePNG),
         backgroundColor(primaryLightColorTransparent),
         CircleIconButton(
           onTap: () {
@@ -43,7 +43,7 @@ class TopNavigationBar extends StatelessWidget {
         ),
       );
 
-  backgroundImage(String photoUrl) => Container(
+  backgroundImage({required String photoUrl}) => Container(
         height: 50,
         decoration: BoxDecoration(
           image: DecorationImage(

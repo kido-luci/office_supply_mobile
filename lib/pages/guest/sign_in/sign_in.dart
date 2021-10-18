@@ -5,8 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:office_supply_mobile_master/config/paths.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
 import 'package:office_supply_mobile_master/controllers/google_sign_in_controller.dart';
-import 'package:office_supply_mobile_master/pages/authenticated_users/employee/dashboard/employee_dashboard.dart';
-import 'package:office_supply_mobile_master/pages/guest/sign_in/widgets/background.dart';
+import 'package:office_supply_mobile_master/pages/guest/widgets/background.dart';
 import 'package:office_supply_mobile_master/widgets/rounded_input_field.dart';
 import 'package:office_supply_mobile_master/widgets/rounded_password_field.dart';
 import 'package:provider/provider.dart';
@@ -61,6 +60,32 @@ class _SignInPageState extends State<SignInPage> {
                     backgroundColor: primaryColor,
                     onPressed: () {},
                     text: 'Sign in with Account',
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: const [
+                      Text(
+                        'Forgot your password?',
+                        style: TextStyle(
+                          fontSize: 12,
+                          letterSpacing: 1,
+                          color: Color.fromRGBO(0, 0, 0, 0.54),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 7,
+                      ),
+                      Text(
+                        'Reset',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1,
+                          color: primaryColor,
+                        ),
+                      ),
+                    ],
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 10),

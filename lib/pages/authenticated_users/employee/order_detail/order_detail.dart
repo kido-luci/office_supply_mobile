@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
 import 'package:office_supply_mobile_master/controllers/cart_controller.dart';
 import 'package:office_supply_mobile_master/models/item.dart';
@@ -29,7 +30,7 @@ class _OrderDetailState extends State<OrderDetail> {
                 }),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 10, bottom: 10, left: 15),
+                padding: const EdgeInsets.only(top: 10, bottom: 0, left: 15),
                 child: Text(
                   'Chi tiết đơn hàng',
                   style: h5.copyWith(fontWeight: FontWeight.bold),
@@ -41,29 +42,76 @@ class _OrderDetailState extends State<OrderDetail> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(
-                      'Công ty: TNHH một thành viên ABC',
-                      style: h6.copyWith(color: Colors.black, height: 1.5),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Công ty: ',
+                          style: h6.copyWith(
+                            color: Colors.black,
+                            height: 1.5,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          'TNHH một thành viên ABC',
+                          style: h6.copyWith(
+                            color: Colors.black,
+                            height: 1.5,
+                          ),
+                        ),
+                      ],
                     ),
-                    Text(
-                      'Người đặt hàng: Tiêu Trung Lập',
-                      style: h6.copyWith(color: Colors.black, height: 1.5),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Người đặt hàng: ',
+                          style: h6.copyWith(
+                            color: Colors.black,
+                            height: 1.5,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          'Tiêu Trung Lập',
+                          style: h6.copyWith(
+                            color: Colors.black,
+                            height: 1.5,
+                          ),
+                        ),
+                        Text(
+                          ' (nhân viên)',
+                          style: h6.copyWith(
+                            color: lightGrey,
+                            height: 1.5,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ],
                     ),
-                    Text(
-                      'Chức vụ: Nhân viên',
-                      style: h6.copyWith(color: Colors.black, height: 1.5),
-                    ),
-                    Text(
-                      'Số tiền thanh toán: ${Item.format(price: 165000)}',
-                      style: h6.copyWith(color: Colors.black, height: 1.5),
-                    ),
-                    Text(
-                      'Thời gian đặt hàng: 15:17 14/10/2021',
-                      style: h6.copyWith(color: Colors.black, height: 1.5),
-                    ),
-                    Text(
-                      'Mã đơn hàng: ABC123xyz',
-                      style: h6.copyWith(color: Colors.black, height: 1.5),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Mã đơn hàng: ',
+                          style: h6.copyWith(
+                            color: Colors.black,
+                            height: 1.5,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          'Axbc1QQE',
+                          style: h6.copyWith(
+                            color: Colors.black,
+                            height: 1.5,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -98,6 +146,58 @@ class _OrderDetailState extends State<OrderDetail> {
                       .toList(),
                 ),
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'Thời gian đặt hàng: ',
+                    style: h6.copyWith(
+                      color: Colors.black,
+                      height: 1.5,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    DateFormat('kk:mm - dd/MM/yyyy').format(DateTime.now()),
+                    style: h6.copyWith(
+                      color: Colors.black,
+                      height: 1.5,
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'Số tiền thanh toán:',
+                    style: h6.copyWith(
+                      color: Colors.black,
+                      height: 1.5,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    Item.format(
+                        price:
+                            Provider.of<CartController>(context, listen: false)
+                                .cart
+                                .totalPrice),
+                    style: h4.copyWith(
+                      height: 1.2,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 15,
+              )
             ],
           ),
         ),
