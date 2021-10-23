@@ -123,7 +123,7 @@ class _OrderDetailState extends State<OrderDetail> {
                   style: h5.copyWith(fontWeight: FontWeight.bold),
                 ),
               ),
-              const OrderStatus(),
+              const Expanded(flex: 1, child: OrderStatus()),
               Padding(
                 padding: const EdgeInsets.only(top: 10, left: 15),
                 child: Text(
