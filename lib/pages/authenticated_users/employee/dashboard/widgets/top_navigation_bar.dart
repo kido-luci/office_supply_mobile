@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:office_supply_mobile_master/config/paths.dart';
+import 'package:office_supply_mobile_master/models/auth/auth.dart';
 import 'package:office_supply_mobile_master/pages/guest/sign_in/sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
@@ -12,9 +12,8 @@ class TopNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _googleSignInAccount =
-        Provider.of<GoogleSignInController>(context, listen: false)
-            .googleSignInAccount!;
+    final auth =
+        Provider.of<GoogleSignInController>(context, listen: false).auth;
 
     return Stack(
       children: [
@@ -34,13 +33,13 @@ class TopNavigationBar extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  accountAvatar(_googleSignInAccount.photoUrl!),
+                  accountAvatar(photoUrl: auth.avatarUrl),
                   const SizedBox(
                     width: 10,
                   ),
                   Expanded(
                     flex: 4,
-                    child: accountInfo(_googleSignInAccount),
+                    child: accountInfo(auth: auth),
                   ),
                   Expanded(
                     flex: 1,
@@ -75,7 +74,7 @@ class TopNavigationBar extends StatelessWidget {
     );
   }
 
-  accountAvatar(String photoUrl) => Material(
+  accountAvatar({required String photoUrl}) => Material(
         elevation: 5,
         shadowColor: primaryColor,
         borderRadius: const BorderRadius.all(
@@ -91,14 +90,14 @@ class TopNavigationBar extends StatelessWidget {
         ),
       );
 
-  accountInfo(GoogleSignInAccount googleSignInAccount) => Align(
+  accountInfo({required Auth auth}) => Align(
         alignment: Alignment.centerLeft,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
-              googleSignInAccount.displayName!,
+              auth.firstname + ' ' + auth.lastname,
               style: h6.copyWith(color: primaryLightColor, fontSize: 14),
               textAlign: TextAlign.start,
             ),

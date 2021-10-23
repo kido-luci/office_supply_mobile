@@ -1,10 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:office_supply_mobile_master/models/auth.dart';
+import 'package:office_supply_mobile_master/models/auth/auth.dart';
 
 class AuthAPI {
-  //static const url = 'https://172.16.1.220/api/v1/auth/token';
   static const url = 'https://officesupplier.software/api/v1/auth/token';
 
   static Auth parseAuth(String responseBody) {
@@ -13,10 +12,8 @@ class AuthAPI {
     return auth;
   }
 
-  static Future<Auth> fetchAuth({
-    //required http.Client client,
-    required String idToken,
-  }) async {
+  static Future<Auth> fetchAuth(
+      {required String idToken, required VoidCallback signOut}) async {
     final response = await http.post(
       Uri.parse(url),
       headers: <String, String>{
@@ -24,17 +21,11 @@ class AuthAPI {
       },
       body: jsonEncode(<String, String>{'idToken': idToken}),
     );
-    // ignore: avoid_print
-    print(response.statusCode);
     switch (response.statusCode) {
       case 200:
         return compute(parseAuth, response.body);
-      //return parsePost(response.body);
-      // case 404:
-      //   throw Exception('Not Found');
-      // case 400:
-      //   throw Exception('Invalid Id token');
       default:
+        signOut.call();
         throw Exception('Cannot get auth');
     }
   }

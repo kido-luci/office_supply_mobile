@@ -18,6 +18,7 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
+  var isLogined = false;
   @override
   Widget build(BuildContext context) {
     final _size = MediaQuery.of(context).size;
@@ -155,7 +156,26 @@ class _SignInPageState extends State<SignInPage> {
                   ),
                 ],
               ),
-            )
+            ),
+            Visibility(
+              visible: isLogined,
+              child: Container(
+                height: _size.height,
+                width: _size.width,
+                alignment: Alignment.center,
+                color: Colors.black26,
+                child: const SizedBox(
+                  height: 60,
+                  width: 60,
+                  child: CircularProgressIndicator(
+                    color: primaryColor,
+                    backgroundColor: primaryLightColor,
+                    strokeWidth: 6,
+                    valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -164,19 +184,17 @@ class _SignInPageState extends State<SignInPage> {
 
   signIn() async {
     try {
+      setState(() {
+        isLogined = true;
+      });
       await Provider.of<GoogleSignInController>(context, listen: false)
           .signIn();
-      if (Provider.of<GoogleSignInController>(context, listen: false)
-              .googleSignInAccount !=
-          null) {
-        Navigator.of(context).pushReplacementNamed('/employee_dashboard');
-      }
-    } on PlatformException catch (e) {
-      // ignore: avoid_print
-      print('error: ${e.toString()}');
+      Navigator.of(context).pushReplacementNamed('/employee_dashboard');
     } catch (e) {
-      // ignore: avoid_print
-      print('error: ${e.toString()}');
+      setState(() {
+        isLogined = false;
+      });
+      throw (e.toString);
     }
   }
 }
