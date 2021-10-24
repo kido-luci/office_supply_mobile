@@ -3,15 +3,15 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:office_supply_mobile_master/config/paths.dart';
-import 'package:office_supply_mobile_master/models/department/department.dart';
+import 'package:office_supply_mobile_master/models/company/company.dart';
 
-class DepartmentAPI {
-  static const url = '/api/v1/departments';
+class CompanyAPI {
+  static const url = '/api/v1/companies';
 
-  static Department parseDepartment(Map<String, dynamic> jsonData) =>
-      Department.fromJson(jsonData);
+  static Company parseCompany(Map<String, dynamic> jsonData) =>
+      Company.fromJson(jsonData);
 
-  static Future<Department> fetchDepartment({
+  static Future<Company> fetchCompany({
     required int id,
     required String jwtToken,
   }) async {
@@ -25,10 +25,10 @@ class DepartmentAPI {
     switch (response.statusCode) {
       case 200:
         Map<String, dynamic> jsonDecode = json.decode(response.body);
-        return compute(parseDepartment,
-            jsonDecode['responseData'] as Map<String, dynamic>);
+        return compute(
+            parseCompany, jsonDecode['responseData'] as Map<String, dynamic>);
       default:
-        throw Exception('Error ${response.statusCode}, cannot get department');
+        throw Exception('Error ${response.statusCode}, cannot get company');
     }
   }
 }

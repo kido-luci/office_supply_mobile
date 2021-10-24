@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:office_supply_mobile_master/config/paths.dart';
+import 'package:office_supply_mobile_master/models/company/company.dart';
 import 'package:office_supply_mobile_master/models/department/department.dart';
 import 'package:office_supply_mobile_master/models/role/role.dart';
 import 'package:office_supply_mobile_master/models/user/user.dart';
@@ -20,6 +21,8 @@ class TopNavigationBar extends StatelessWidget {
         Provider.of<GoogleSignInController>(context, listen: false).userRole;
     final department =
         Provider.of<GoogleSignInController>(context, listen: false).department;
+    final company =
+        Provider.of<GoogleSignInController>(context, listen: false).company;
 
     return Stack(
       children: [
@@ -49,7 +52,8 @@ class TopNavigationBar extends StatelessWidget {
                         ? accountInfoInCompany(
                             user: user,
                             userRole: userRole,
-                            department: department,
+                            department: department!,
+                            company: company!,
                           )
                         : accountInfo(
                             user: user,
@@ -175,10 +179,12 @@ class TopNavigationBar extends StatelessWidget {
     );
   }
 
-  accountInfoInCompany(
-      {required User user,
-      required Role userRole,
-      required Department? department}) {
+  accountInfoInCompany({
+    required User user,
+    required Role userRole,
+    required Department department,
+    required Company company,
+  }) {
     String roleNameVietnamese;
     switch (userRole.name) {
       case 'Admin':
@@ -226,7 +232,7 @@ class TopNavigationBar extends StatelessWidget {
           Row(
             children: [
               Text(
-                'Phòng ban: ${department!.name} - ',
+                'Phòng ban: ${department.name} - ',
                 style: h6.copyWith(
                   color: primaryLightColor,
                   fontWeight: FontWeight.w300,
@@ -254,7 +260,7 @@ class TopNavigationBar extends StatelessWidget {
             ],
           ),
           Text(
-            'Công ty TNHH ABC',
+            'Công ty: ${company.name}',
             style: h6.copyWith(
               color: primaryLightColor,
               fontWeight: FontWeight.w300,
