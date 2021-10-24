@@ -2,18 +2,21 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:office_supply_mobile_master/models/auth/auth.dart';
+import 'package:office_supply_mobile_master/models/department/department.dart';
 import 'package:office_supply_mobile_master/models/role/role.dart';
 import 'package:office_supply_mobile_master/models/user/user.dart' as app_user;
 import 'package:office_supply_mobile_master/services/auth.dart';
+import 'package:office_supply_mobile_master/services/department.dart';
 import 'package:office_supply_mobile_master/services/role.dart';
 import 'package:office_supply_mobile_master/services/user.dart';
 
 class GoogleSignInController with ChangeNotifier {
   late GoogleSignInAccount? googleSignInAccount;
   late GoogleSignInAuthentication? googleSignInAuthentication;
-  late Auth? auth;
+  Auth? auth;
   late app_user.User user;
   late Role userRole;
+  Department? department;
 
   Future<bool> isSignedIn() async => await GoogleSignIn().isSignedIn();
 
@@ -43,6 +46,12 @@ class GoogleSignInController with ChangeNotifier {
         id: user.roleID,
         jwtToken: auth!.jwtToken,
       ).then((e) => userRole = e);
+
+      if (user.departmentID != null) {
+        await DepartmentAPI.fetchDepartment(
+                id: user.departmentID!, jwtToken: auth!.jwtToken)
+            .then((e) => department = e);
+      }
     }
     notifyListeners();
   }

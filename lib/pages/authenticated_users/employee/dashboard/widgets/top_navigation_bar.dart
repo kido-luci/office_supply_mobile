@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:office_supply_mobile_master/config/paths.dart';
+import 'package:office_supply_mobile_master/models/department/department.dart';
 import 'package:office_supply_mobile_master/models/role/role.dart';
 import 'package:office_supply_mobile_master/models/user/user.dart';
 import 'package:office_supply_mobile_master/pages/guest/sign_in/sign_in.dart';
@@ -17,6 +18,8 @@ class TopNavigationBar extends StatelessWidget {
         Provider.of<GoogleSignInController>(context, listen: false).user;
     final userRole =
         Provider.of<GoogleSignInController>(context, listen: false).userRole;
+    final department =
+        Provider.of<GoogleSignInController>(context, listen: false).department;
 
     return Stack(
       children: [
@@ -41,8 +44,17 @@ class TopNavigationBar extends StatelessWidget {
                     width: 10,
                   ),
                   Expanded(
-                    flex: 4,
-                    child: accountInfo(user: user, userRole: userRole),
+                    flex: 6,
+                    child: user.companyID != null
+                        ? accountInfoInCompany(
+                            user: user,
+                            userRole: userRole,
+                            department: department,
+                          )
+                        : accountInfo(
+                            user: user,
+                            userRole: userRole,
+                          ),
                   ),
                   Expanded(
                     flex: 1,
@@ -93,7 +105,10 @@ class TopNavigationBar extends StatelessWidget {
         ),
       );
 
-  accountInfo({required User user, required Role userRole}) {
+  accountInfo({
+    required User user,
+    required Role userRole,
+  }) {
     String roleNameVietnamese;
     switch (userRole.name) {
       case 'Admin':
@@ -154,6 +169,98 @@ class TopNavigationBar extends StatelessWidget {
                 size: 14,
               )
             ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  accountInfoInCompany(
+      {required User user,
+      required Role userRole,
+      required Department? department}) {
+    String roleNameVietnamese;
+    switch (userRole.name) {
+      case 'Admin':
+        roleNameVietnamese = 'Quản trị viên';
+        break;
+      case 'Manager':
+        roleNameVietnamese = 'Người quản lý';
+        break;
+      case 'Leader':
+        roleNameVietnamese = 'Trưởng phòng';
+        break;
+      case 'Employee':
+        roleNameVietnamese = 'Nhân viên';
+        break;
+      default:
+        roleNameVietnamese = 'Khách';
+    }
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          //!user name && role
+          RichText(
+            text: TextSpan(
+              text: user.firstname + ' ' + user.lastname,
+              style: h6.copyWith(
+                color: primaryLightColor,
+                fontSize: 14,
+              ),
+              children: [
+                TextSpan(
+                  text: ' ($roleNameVietnamese)',
+                  style: h6.copyWith(
+                    color: primaryLightColor,
+                    fontWeight: FontWeight.w300,
+                    fontSize: 13,
+                  ),
+                )
+              ],
+            ),
+          ),
+          //!deparment wallet
+          Row(
+            children: [
+              Text(
+                'Phòng ban: ${department!.name} - ',
+                style: h6.copyWith(
+                  color: primaryLightColor,
+                  fontWeight: FontWeight.w300,
+                  fontSize: 14,
+                ),
+                textAlign: TextAlign.start,
+              ),
+              Text(
+                '1,642,000₫',
+                style: h6.copyWith(
+                  color: primaryLightColor,
+                  fontWeight: FontWeight.w300,
+                  fontSize: 14,
+                ),
+                textAlign: TextAlign.start,
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              Icon(
+                Icons.remove_red_eye,
+                color: Colors.yellow.shade800,
+                size: 14,
+              )
+            ],
+          ),
+          Text(
+            'Công ty TNHH ABC',
+            style: h6.copyWith(
+              color: primaryLightColor,
+              fontWeight: FontWeight.w300,
+              fontSize: 14,
+            ),
+            textAlign: TextAlign.start,
           ),
         ],
       ),
