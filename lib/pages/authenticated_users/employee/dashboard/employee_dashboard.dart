@@ -21,7 +21,7 @@ class _EmployeeDashBoardState extends State<EmployeeDashBoard> {
     return Scaffold(
       backgroundColor: Colors.white,
       extendBody: true,
-      floatingActionButton: CartButton(),
+      floatingActionButton: const CartButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       body: SafeArea(
         child: Column(

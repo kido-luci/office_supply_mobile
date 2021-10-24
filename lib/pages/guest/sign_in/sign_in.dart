@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:office_supply_mobile_master/config/paths.dart';
@@ -194,7 +193,6 @@ class _SignInPageState extends State<SignInPage> {
       setState(() {
         isLogined = false;
       });
-      throw (e.toString);
     }
   }
 }

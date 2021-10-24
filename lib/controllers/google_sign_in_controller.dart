@@ -1,22 +1,29 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:office_supply_mobile_master/api/auth.dart';
 import 'package:office_supply_mobile_master/models/auth/auth.dart';
+import 'package:office_supply_mobile_master/models/role/role.dart';
+import 'package:office_supply_mobile_master/models/user/user.dart' as app_user;
+import 'package:office_supply_mobile_master/services/auth.dart';
+import 'package:office_supply_mobile_master/services/role.dart';
+import 'package:office_supply_mobile_master/services/user.dart';
 
 class GoogleSignInController with ChangeNotifier {
   late GoogleSignInAccount? googleSignInAccount;
-  late GoogleSignInAuthentication? googleAuth;
-  late Auth auth;
+  late GoogleSignInAuthentication? googleSignInAuthentication;
+  late Auth? auth;
+  late app_user.User user;
+  late Role userRole;
 
   signIn() async {
-    googleSignInAccount = await GoogleSignIn().signIn();
-    googleAuth = await googleSignInAccount!.authentication;
+    await GoogleSignIn().signIn().then((e) => googleSignInAccount = e);
+    await googleSignInAccount!.authentication
+        .then((e) => googleSignInAuthentication = e);
 
     await FirebaseAuth.instance.signInWithCredential(
       GoogleAuthProvider.credential(
-        accessToken: googleAuth!.accessToken,
-        idToken: googleAuth!.idToken,
+        accessToken: googleSignInAuthentication!.accessToken,
+        idToken: googleSignInAuthentication!.idToken,
       ),
     );
 
@@ -24,11 +31,24 @@ class GoogleSignInController with ChangeNotifier {
       idToken: await FirebaseAuth.instance.currentUser!.getIdToken(),
       signOut: signOut,
     ).then((e) => auth = e);
+
+    if (auth != null) {
+      await UserAPI.fetchUser(
+        id: auth!.id,
+        jwtToken: auth!.jwtToken,
+      ).then((e) => user = e);
+      await RoleAPI.fetchRole(
+        id: user.roleID,
+        jwtToken: auth!.jwtToken,
+      ).then((e) => userRole = e);
+    }
     notifyListeners();
   }
 
   signOut() async {
-    googleSignInAccount = await GoogleSignIn().signOut();
+    googleSignInAuthentication = null;
+    auth = null;
+    await GoogleSignIn().signOut().then((e) => googleSignInAccount = e);
     await FirebaseAuth.instance.signOut();
     notifyListeners();
   }

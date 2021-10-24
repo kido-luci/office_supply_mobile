@@ -1,3 +1,6 @@
+//api
+const apiPath = 'https://officesupplier.software';
+
 //images
 const imagePath = 'assets/images/';
 const loginBottomPNG = 'login_bottom.png';

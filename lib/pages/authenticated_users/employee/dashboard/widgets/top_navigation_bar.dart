@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:office_supply_mobile_master/config/paths.dart';
-import 'package:office_supply_mobile_master/models/auth/auth.dart';
+import 'package:office_supply_mobile_master/models/role/role.dart';
+import 'package:office_supply_mobile_master/models/user/user.dart';
 import 'package:office_supply_mobile_master/pages/guest/sign_in/sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
@@ -12,8 +13,10 @@ class TopNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final auth =
-        Provider.of<GoogleSignInController>(context, listen: false).auth;
+    final user =
+        Provider.of<GoogleSignInController>(context, listen: false).user;
+    final userRole =
+        Provider.of<GoogleSignInController>(context, listen: false).userRole;
 
     return Stack(
       children: [
@@ -33,13 +36,13 @@ class TopNavigationBar extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  accountAvatar(photoUrl: auth.avatarUrl),
+                  accountAvatar(photoUrl: user.avatarUrl),
                   const SizedBox(
                     width: 10,
                   ),
                   Expanded(
                     flex: 4,
-                    child: accountInfo(auth: auth),
+                    child: accountInfo(user: user, userRole: userRole),
                   ),
                   Expanded(
                     flex: 1,
@@ -90,50 +93,72 @@ class TopNavigationBar extends StatelessWidget {
         ),
       );
 
-  accountInfo({required Auth auth}) => Align(
-        alignment: Alignment.centerLeft,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Text(
-              auth.firstname + ' ' + auth.lastname,
-              style: h6.copyWith(color: primaryLightColor, fontSize: 14),
-              textAlign: TextAlign.start,
+  accountInfo({required User user, required Role userRole}) {
+    String roleNameVietnamese;
+    switch (userRole.name) {
+      case 'Admin':
+        roleNameVietnamese = 'Quản trị viên';
+        break;
+      case 'Manager':
+        roleNameVietnamese = 'Người quản lý';
+        break;
+      case 'Leader':
+        roleNameVietnamese = 'Trưởng phòng';
+        break;
+      case 'Employee':
+        roleNameVietnamese = 'Nhân viên';
+        break;
+      default:
+        roleNameVietnamese = 'Khách';
+    }
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          //!user name
+          Text(
+            user.firstname + ' ' + user.lastname,
+            style: h6.copyWith(color: primaryLightColor, fontSize: 14),
+            textAlign: TextAlign.start,
+          ),
+          //!user role
+          Text(
+            '($roleNameVietnamese)',
+            style: h6.copyWith(
+              color: primaryLightColor,
+              fontWeight: FontWeight.w200,
+              fontSize: 13,
             ),
-            Text(
-              '(Nhân viên)',
-              style: h6.copyWith(
-                color: primaryLightColor,
-                fontWeight: FontWeight.w200,
-                fontSize: 13,
+            textAlign: TextAlign.start,
+          ),
+          //!deparment wallet
+          Row(
+            children: [
+              Text(
+                '1,642,000₫',
+                style: h6.copyWith(
+                  color: primaryLightColor,
+                  fontWeight: FontWeight.w300,
+                  fontSize: 14,
+                ),
+                textAlign: TextAlign.start,
               ),
-              textAlign: TextAlign.start,
-            ),
-            Row(
-              children: [
-                Text(
-                  '1,642,000₫',
-                  style: h6.copyWith(
-                    color: primaryLightColor,
-                    fontWeight: FontWeight.w300,
-                    fontSize: 14,
-                  ),
-                  textAlign: TextAlign.start,
-                ),
-                const SizedBox(
-                  width: 5,
-                ),
-                Icon(
-                  Icons.remove_red_eye,
-                  color: Colors.yellow.shade800,
-                  size: 14,
-                )
-              ],
-            ),
-          ],
-        ),
-      );
+              const SizedBox(
+                width: 5,
+              ),
+              Icon(
+                Icons.remove_red_eye,
+                color: Colors.yellow.shade800,
+                size: 14,
+              )
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 
   notificationButton(VoidCallback onTap) => InkWell(
         onTap: onTap,
