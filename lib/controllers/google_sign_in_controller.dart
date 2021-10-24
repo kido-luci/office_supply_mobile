@@ -15,6 +15,8 @@ class GoogleSignInController with ChangeNotifier {
   late app_user.User user;
   late Role userRole;
 
+  Future<bool> isSignedIn() async => await GoogleSignIn().isSignedIn();
+
   signIn() async {
     await GoogleSignIn().signIn().then((e) => googleSignInAccount = e);
     await googleSignInAccount!.authentication

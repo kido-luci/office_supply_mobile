@@ -17,7 +17,14 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-  var isLogined = false;
+  var isAwaitingSignedIn = false;
+
+  @override
+  void initState() {
+    isSignedIn();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final _size = MediaQuery.of(context).size;
@@ -157,7 +164,7 @@ class _SignInPageState extends State<SignInPage> {
               ),
             ),
             Visibility(
-              visible: isLogined,
+              visible: isAwaitingSignedIn,
               child: Container(
                 height: _size.height,
                 width: _size.width,
@@ -181,17 +188,23 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
+  isSignedIn() async =>
+      await Provider.of<GoogleSignInController>(context, listen: false)
+              .isSignedIn()
+          ? signIn.call()
+          : () {};
+
   signIn() async {
     try {
       setState(() {
-        isLogined = true;
+        isAwaitingSignedIn = true;
       });
       await Provider.of<GoogleSignInController>(context, listen: false)
           .signIn();
       Navigator.of(context).pushReplacementNamed('/employee_dashboard');
     } catch (e) {
       setState(() {
-        isLogined = false;
+        isAwaitingSignedIn = false;
       });
     }
   }
