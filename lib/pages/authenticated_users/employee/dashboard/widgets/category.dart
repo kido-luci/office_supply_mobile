@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:office_supply_mobile_master/config/paths.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
-import 'package:office_supply_mobile_master/data/fake.dart';
-import 'package:office_supply_mobile_master/models/category.dart';
+import 'package:office_supply_mobile_master/models/category/category.dart';
 
 class CategogyCard extends StatefulWidget {
-  const CategogyCard({Key? key}) : super(key: key);
-
+  const CategogyCard({Key? key, required this.categories}) : super(key: key);
+  final Map<int, Category> categories;
   @override
   State<CategogyCard> createState() => _CategogyCardState();
 }
@@ -54,25 +54,15 @@ class _CategogyCardState extends State<CategogyCard> {
               ],
             ),
           ),
-          // const Padding(
-          //   padding: EdgeInsets.only(left: 15, right: 15, top: 0),
-          //   child: Divider(
-          //     height: 1,
-          //     thickness: 1,
-          //     color: primaryColor,
-          //   ),
-          // ),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Padding(
               padding: const EdgeInsets.all(15),
               child: Wrap(
                 spacing: 28,
-                children: Fake.productCategories
-                    .asMap()
-                    .entries
+                children: widget.categories.entries
                     .map((e) => CategoryItem(
-                          productCategory: e.value,
+                          category: e.value,
                           index: e.key,
                           isSelected: e.key == selectedIndex,
                           onTap: () => setState(() {
@@ -129,19 +119,33 @@ class _CategogyCardState extends State<CategogyCard> {
 class CategoryItem extends StatelessWidget {
   const CategoryItem({
     Key? key,
-    required this.productCategory,
+    required this.category,
     required this.index,
     required this.isSelected,
     required this.onTap,
   }) : super(key: key);
 
-  final Category productCategory;
+  final Category category;
   final bool isSelected;
   final int index;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
+    String icon;
+    switch (category.name) {
+      case 'Bút':
+        icon = iconPath + pencilBoxSvg;
+        break;
+      case 'Sổ sách':
+        icon = iconPath + notebookSvg;
+        break;
+      case 'Giấy':
+        icon = iconPath + paperSvg;
+        break;
+      default:
+        icon = iconPath + pencilBoxSvg;
+    }
     return InkWell(
       onTap: onTap,
       child: Container(
@@ -168,12 +172,12 @@ class CategoryItem extends StatelessWidget {
                 height: 30,
                 width: 30,
                 child: SvgPicture.asset(
-                  productCategory.iconPath,
+                  icon,
                   color: isSelected ? primaryLightColor : primaryColor,
                 ),
               ),
               Text(
-                productCategory.title,
+                category.name,
                 style: h5.copyWith(
                   color: isSelected ? primaryLightColor : primaryColor,
                   fontSize: 15,

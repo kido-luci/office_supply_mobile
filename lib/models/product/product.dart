@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'product.g.dart';
 
@@ -28,4 +29,14 @@ class Product {
   factory Product.fromJson(Map<String, dynamic> json) =>
       _$ProductFromJson(json);
   Map<String, dynamic> toJson() => _$ProductToJson(this);
+
+  static String format({required double price}) =>
+      NumberFormat.currency(locale: 'vi', symbol: '₫', decimalDigits: 0)
+          .format(price);
+
+  // setQuantity({required int quantity}) => this.quantity = quantity;
+
+  // addQuantity({required int quantity}) {
+  //   this.quantity += quantity;
+  //   return this;
 }

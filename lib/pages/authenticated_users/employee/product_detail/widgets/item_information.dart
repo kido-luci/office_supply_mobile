@@ -4,16 +4,17 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
 import 'package:office_supply_mobile_master/controllers/cart_controller.dart';
 import 'package:office_supply_mobile_master/models/item.dart';
+import 'package:office_supply_mobile_master/models/product_in_menu/product_in_menu.dart';
 import 'package:office_supply_mobile_master/widgets/circle_icon_button.dart';
 import 'package:provider/provider.dart';
 
 class ItemInformation extends StatefulWidget {
   const ItemInformation({
     Key? key,
-    required this.item,
+    required this.productInMenu,
     required this.reloadProductDetail,
   }) : super(key: key);
-  final Item item;
+  final ProductInMenu productInMenu;
   final VoidCallback reloadProductDetail;
 
   @override
@@ -50,7 +51,7 @@ class _ItemInformationState extends State<ItemInformation> {
   itemName() => Padding(
         padding: const EdgeInsets.only(left: 15, top: 15),
         child: Text(
-          widget.item.name,
+          widget.productInMenu.productObject!.name,
           style: h4.copyWith(
             color: Colors.black87,
             fontSize: 35,
@@ -68,23 +69,22 @@ class _ItemInformationState extends State<ItemInformation> {
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               Text(
-                Item.format(price: widget.item.price),
+                Item.format(price: widget.productInMenu.price),
                 style: const TextStyle(
                   fontSize: 20,
                   color: primaryColor,
                   height: 1.5,
                 ),
               ),
-              if (widget.item.discountPercent != 0)
-                Text(
-                  Item.format(price: widget.item.originalPrice),
-                  style: const TextStyle(
-                    fontSize: 16,
-                    height: 1.5,
-                    decoration: TextDecoration.lineThrough,
-                    color: Colors.black38,
-                  ),
+              Text(
+                Item.format(price: widget.productInMenu.price),
+                style: const TextStyle(
+                  fontSize: 16,
+                  height: 1.5,
+                  decoration: TextDecoration.lineThrough,
+                  color: Colors.black38,
                 ),
+              ),
             ],
           ),
         ),
@@ -97,7 +97,7 @@ class _ItemInformationState extends State<ItemInformation> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             RatingBar.builder(
-              initialRating: widget.item.rating,
+              initialRating: 4.5,
               minRating: 1,
               itemSize: 12,
               ignoreGestures: true,
@@ -113,7 +113,7 @@ class _ItemInformationState extends State<ItemInformation> {
             ),
             const SizedBox(width: 5),
             Text(
-              '${widget.item.rating}',
+              '4.5',
               style: h6.copyWith(
                 color: lightGrey,
                 fontSize: 12,
@@ -153,7 +153,7 @@ class _ItemInformationState extends State<ItemInformation> {
           left: 15,
         ),
         child: ItemQuantity(
-          itemPrice: widget.item.price,
+          itemPrice: widget.productInMenu.price,
           itemQuantity: _itemQuantity,
           onTapMinus: () => setState(
               () => _itemQuantity > 1 ? _itemQuantity-- : _itemQuantity),
@@ -164,10 +164,11 @@ class _ItemInformationState extends State<ItemInformation> {
 
   itemAddToCart() => InkWell(
         onTap: () => setState(() {
-          widget.item.setQuantity(quantity: _itemQuantity);
-          Provider.of<CartController>(context, listen: false)
-              .cart
-              .addItemToCart(item: widget.item);
+          widget.productInMenu.setQuantity(quantity: _itemQuantity);
+          //!
+          // Provider.of<CartController>(context, listen: false)
+          //     .cart
+          //     .addItemToCart(item: );
           widget.reloadProductDetail.call();
         }),
         child: Container(

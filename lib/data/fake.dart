@@ -1,5 +1,4 @@
 import 'package:office_supply_mobile_master/config/paths.dart';
-import 'package:office_supply_mobile_master/models/category.dart';
 import 'package:office_supply_mobile_master/models/item.dart';
 
 class Fake {
@@ -64,34 +63,34 @@ class Fake {
     ),
   ];
 
-  static List<Category> productCategories = [
-    Category(
-      title: 'Bút',
-      iconPath: iconPath + pencilBoxSvg,
-    ),
-    Category(
-      title: 'Sổ sách',
-      iconPath: iconPath + notebookSvg,
-    ),
-    Category(
-      title: 'Giấy',
-      iconPath: iconPath + paperSvg,
-    ),
-    Category(
-      title: 'Bút',
-      iconPath: iconPath + pencilBoxSvg,
-    ),
-    Category(
-      title: 'Bút',
-      iconPath: iconPath + pencilBoxSvg,
-    ),
-    Category(
-      title: 'Bút',
-      iconPath: iconPath + pencilBoxSvg,
-    ),
-    Category(
-      title: 'Bút',
-      iconPath: iconPath + pencilBoxSvg,
-    ),
-  ];
+  // static List<Category> productCategories = [
+  //   Category(
+  //     title: 'Bút',
+  //     iconPath: iconPath + pencilBoxSvg,
+  //   ),
+  //   Category(
+  //     title: 'Sổ sách',
+  //     iconPath: iconPath + notebookSvg,
+  //   ),
+  //   Category(
+  //     title: 'Giấy',
+  //     iconPath: iconPath + paperSvg,
+  //   ),
+  //   Category(
+  //     title: 'Bút',
+  //     iconPath: iconPath + pencilBoxSvg,
+  //   ),
+  //   Category(
+  //     title: 'Bút',
+  //     iconPath: iconPath + pencilBoxSvg,
+  //   ),
+  //   Category(
+  //     title: 'Bút',
+  //     iconPath: iconPath + pencilBoxSvg,
+  //   ),
+  //   Category(
+  //     title: 'Bút',
+  //     iconPath: iconPath + pencilBoxSvg,
+  //   ),
+  // ];
 }

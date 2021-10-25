@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:office_supply_mobile_master/config/themes.dart';
 import 'package:office_supply_mobile_master/controllers/google_sign_in_controller.dart';
-import 'package:office_supply_mobile_master/data/fake.dart';
 import 'package:office_supply_mobile_master/models/auth/auth.dart';
+import 'package:office_supply_mobile_master/models/category/category.dart';
 import 'package:office_supply_mobile_master/models/items_page/items_page.dart';
 import 'package:office_supply_mobile_master/models/product_in_menu/product_in_menu.dart';
 import 'package:office_supply_mobile_master/models/user/user.dart';
@@ -10,6 +11,7 @@ import 'package:office_supply_mobile_master/pages/authenticated_users/employee/d
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/dashboard/widgets/stationery_grid_item.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/dashboard/widgets/top_navigation_bar.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/product_detail/product_detail.dart';
+import 'package:office_supply_mobile_master/services/category.dart';
 import 'package:office_supply_mobile_master/services/product.dart';
 import 'package:office_supply_mobile_master/widgets/cart_button.dart';
 import 'package:provider/provider.dart';
@@ -25,20 +27,20 @@ class _EmployeeDashBoardState extends State<EmployeeDashBoard> {
   late User user;
   late Auth auth;
   late ItemsPage itemsPage;
+  late Map<int, List<ProductInMenu>> categoryItems;
+  late Size _size;
+  late int selectedCategoryId;
 
   @override
   void initState() {
-    super.initState();
     auth = Provider.of<GoogleSignInController>(context, listen: false).auth!;
     user = Provider.of<GoogleSignInController>(context, listen: false).user;
-    if (user.companyID != null) {
-      getItemsPage(id: user.id, jwtToken: auth.jwtToken);
-    }
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final _size = MediaQuery.of(context).size;
+    _size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
       extendBody: true,
@@ -55,51 +57,80 @@ class _EmployeeDashBoardState extends State<EmployeeDashBoard> {
               flex: 1,
               child: Stack(
                 children: [
-                  Column(
-                    children: [
-                      const CategogyCard(),
-                      Expanded(
-                        flex: 1,
-                        child: Center(
-                          child: CustomScrollView(
-                            slivers: [
-                              SliverGrid.count(
-                                crossAxisCount: 2,
-                                childAspectRatio: 0.65,
-                                mainAxisSpacing: 16,
-                                crossAxisSpacing: 16,
-                                children: Fake.stationery
-                                    .asMap()
-                                    .entries
-                                    .map(
-                                      (e) => StationeryGridItem(
-                                        onTap: () {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ProductDetail(
-                                                item: Fake.stationery[e.key],
-                                                onTapBack: () {
-                                                  setState(() {});
+                  FutureBuilder<Map<int, Category>>(
+                    future:
+                        getItemsPage(userID: user.id, jwtToken: auth.jwtToken),
+                    builder: (context, snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.done:
+                          return Column(
+                            children: [
+                              //!categories
+                              CategogyCard(
+                                categories: snapshot.data!,
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Center(
+                                  child: CustomScrollView(
+                                    slivers: [
+                                      SliverGrid.count(
+                                        crossAxisCount: 2,
+                                        childAspectRatio: 0.65,
+                                        mainAxisSpacing: 16,
+                                        crossAxisSpacing: 16,
+                                        children: categoryItems[
+                                                selectedCategoryId]!
+                                            .asMap()
+                                            .entries
+                                            .map(
+                                              (e) => StationeryGridItem(
+                                                onTap: () {
+                                                  Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ProductDetail(
+                                                        productInMenu: e.value,
+                                                        onTapBack: () {
+                                                          setState(() {});
+                                                        },
+                                                      ),
+                                                    ),
+                                                  );
                                                 },
+                                                productInMenu: e.value,
+                                                margin: EdgeInsets.only(
+                                                  left: e.key.isEven ? 16 : 0,
+                                                  right: e.key.isOdd ? 16 : 0,
+                                                ),
                                               ),
-                                            ),
-                                          );
-                                        },
-                                        item: e.value,
-                                        margin: EdgeInsets.only(
-                                          left: e.key.isEven ? 16 : 0,
-                                          right: e.key.isOdd ? 16 : 0,
-                                        ),
+                                            )
+                                            .toList(),
                                       ),
-                                    )
-                                    .toList(),
+                                    ],
+                                  ),
+                                ),
                               ),
                             ],
-                          ),
-                        ),
-                      ),
-                    ],
+                          );
+                        default:
+                          return Container(
+                            alignment: Alignment.center,
+                            color: Colors.white,
+                            child: const SizedBox(
+                              height: 60,
+                              width: 60,
+                              child: CircularProgressIndicator(
+                                color: primaryColor,
+                                backgroundColor: primaryLightColor,
+                                strokeWidth: 6,
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(primaryColor),
+                              ),
+                            ),
+                          );
+                      }
+                    },
                   ),
                   const Align(
                     alignment: Alignment.bottomCenter,
@@ -114,11 +145,12 @@ class _EmployeeDashBoardState extends State<EmployeeDashBoard> {
     );
   }
 
-  getItemsPage({required int id, required String jwtToken}) async {
-    await ProductAPI.fetchItemsPage(id: id, jwtToken: jwtToken).then((e) {
+  Future<Map<int, Category>> getItemsPage(
+      {required int userID, required String jwtToken}) async {
+    await ProductAPI.fetchItemsPage(id: userID, jwtToken: jwtToken).then((e) {
       itemsPage = e;
     });
-    Map<int, List<ProductInMenu>> categoryItems = <int, List<ProductInMenu>>{};
+    categoryItems = <int, List<ProductInMenu>>{};
     if (itemsPage.itemsObject != null) {
       for (var e in itemsPage.itemsObject!) {
         categoryItems.update(
@@ -136,5 +168,18 @@ class _EmployeeDashBoardState extends State<EmployeeDashBoard> {
         );
       }
     }
+
+    Map<int, Category> categories = <int, Category>{};
+
+    await Future.forEach(categoryItems.keys, (key) async {
+      await CategoryAPI.fetchCategory(
+        id: key as int,
+        jwtToken: jwtToken,
+      ).then((e) => categories[key] = e);
+    });
+
+    selectedCategoryId = categories.keys.elementAt(0);
+
+    return categories;
   }
 }

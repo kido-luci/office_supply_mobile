@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:office_supply_mobile_master/models/product/product.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'product_in_menu.g.dart';
@@ -6,7 +7,7 @@ part 'product_in_menu.g.dart';
 class ProductInMenu {
   final int menuID;
   final int productID;
-  final int quantity;
+  int quantity;
   final double price;
   final Map<String, dynamic>? product;
   @JsonKey(ignore: true)
@@ -27,4 +28,15 @@ class ProductInMenu {
   factory ProductInMenu.fromJson(Map<String, dynamic> json) =>
       _$ProductInMenuFromJson(json);
   Map<String, dynamic> toJson() => _$ProductInMenuToJson(this);
+
+  static String format({required double price}) =>
+      NumberFormat.currency(locale: 'vi', symbol: '₫', decimalDigits: 0)
+          .format(price);
+
+  setQuantity({required int quantity}) => this.quantity = quantity;
+
+  addQuantity({required int quantity}) {
+    this.quantity += quantity;
+    return this;
+  }
 }

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
-import 'package:office_supply_mobile_master/models/item.dart';
+import 'package:office_supply_mobile_master/models/product_in_menu/product_in_menu.dart';
 
 class StationeryGridItem extends StatelessWidget {
-  final Item item;
+  final ProductInMenu productInMenu;
   final EdgeInsets margin;
   final VoidCallback onTap;
 
   const StationeryGridItem({
     Key? key,
-    required this.item,
+    required this.productInMenu,
     required this.onTap,
     this.margin = EdgeInsets.zero,
   }) : super(key: key);
@@ -50,7 +50,8 @@ class StationeryGridItem extends StatelessWidget {
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           alignment: Alignment.topCenter,
-                          image: AssetImage(item.imagePath),
+                          image: NetworkImage(
+                              productInMenu.productObject!.imageUrl),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -68,11 +69,10 @@ class StationeryGridItem extends StatelessWidget {
                           color: primaryLightColorTransparent,
                           shape: BoxShape.circle,
                         ),
-                        child: Text(
-                          '-${item.discountPercent}%',
+                        child: const Text(
+                          '-0%',
                           textAlign: TextAlign.center,
-                          style: const TextStyle(
-                              color: Colors.white, fontSize: 12),
+                          style: TextStyle(color: Colors.white, fontSize: 12),
                         ),
                       ),
                     ),
@@ -85,7 +85,7 @@ class StationeryGridItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    item.name,
+                    productInMenu.productObject!.name,
                     style: const TextStyle(
                       color: Colors.black,
                       fontSize: 13,
@@ -97,23 +97,32 @@ class StationeryGridItem extends StatelessWidget {
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
                       Text(
-                        Item.format(price: item.price),
+                        ProductInMenu.format(price: productInMenu.price),
                         style: const TextStyle(
                           fontSize: 18,
                           color: primaryColor,
                           height: 1.5,
                         ),
                       ),
-                      if (item.discountPercent != 0)
-                        Text(
-                          Item.format(price: item.originalPrice),
-                          style: const TextStyle(
-                            fontSize: 12,
-                            height: 1.5,
-                            decoration: TextDecoration.lineThrough,
-                            color: Colors.black38,
-                          ),
-                        )
+                      // if (item.discountPercent != 0)
+                      //   Text(
+                      //     Item.format(price: item.originalPrice),
+                      //     style: const TextStyle(
+                      //       fontSize: 12,
+                      //       height: 1.5,
+                      //       decoration: TextDecoration.lineThrough,
+                      //       color: Colors.black38,
+                      //     ),
+                      //   ),
+                      Text(
+                        ProductInMenu.format(price: productInMenu.price),
+                        style: const TextStyle(
+                          fontSize: 12,
+                          height: 1.5,
+                          decoration: TextDecoration.lineThrough,
+                          color: Colors.black38,
+                        ),
+                      )
                     ],
                   ),
                   Container(
@@ -121,7 +130,7 @@ class StationeryGridItem extends StatelessWidget {
                     child: Row(
                       children: [
                         RatingBar.builder(
-                          initialRating: item.rating,
+                          initialRating: 4.5,
                           minRating: 1,
                           itemSize: 12,
                           ignoreGestures: true,
@@ -136,9 +145,9 @@ class StationeryGridItem extends StatelessWidget {
                           onRatingUpdate: (rating) => {},
                         ),
                         const SizedBox(width: 5),
-                        Text(
-                          '${item.rating}',
-                          style: const TextStyle(fontSize: 10),
+                        const Text(
+                          '4.5',
+                          style: TextStyle(fontSize: 10),
                         ),
                       ],
                     ),

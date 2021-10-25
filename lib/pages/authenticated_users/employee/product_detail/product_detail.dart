@@ -2,15 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
 import 'package:office_supply_mobile_master/models/item.dart';
+import 'package:office_supply_mobile_master/models/product_in_menu/product_in_menu.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/product_detail/widgets/item_information.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/product_detail/widgets/top_navigation_bar.dart';
 import 'package:office_supply_mobile_master/widgets/cart_button.dart';
 import 'package:palette_generator/palette_generator.dart';
 
 class ProductDetail extends StatefulWidget {
-  const ProductDetail({Key? key, required this.item, required this.onTapBack})
+  const ProductDetail(
+      {Key? key, required this.productInMenu, required this.onTapBack})
       : super(key: key);
-  final Item item;
+  final ProductInMenu productInMenu;
   final VoidCallback onTapBack;
 
   @override
@@ -23,7 +25,8 @@ class _ProductDetailState extends State<ProductDetail> {
   @override
   void initState() {
     super.initState();
-    getImagePalette(AssetImage(widget.item.imagePath)).then((value) {
+    getImagePalette(NetworkImage(widget.productInMenu.productObject!.imageUrl))
+        .then((value) {
       imageMainColor = value;
       setState(() {});
     });
@@ -58,7 +61,7 @@ class _ProductDetailState extends State<ProductDetail> {
                       Expanded(
                         flex: 2,
                         child: ItemInformation(
-                          item: widget.item,
+                          productInMenu: widget.productInMenu,
                           reloadProductDetail: () => setState(() {}),
                         ),
                       ),
@@ -76,8 +79,8 @@ class _ProductDetailState extends State<ProductDetail> {
   itemImage(Size size) => Column(
         children: [
           Expanded(
-            child: Image.asset(
-              widget.item.imagePath,
+            child: Image.network(
+              widget.productInMenu.productObject!.imageUrl,
               fit: BoxFit.cover,
               width: size.width,
             ),
@@ -100,10 +103,10 @@ class _ProductDetailState extends State<ProductDetail> {
             color: primaryLightColorTransparent,
             shape: BoxShape.circle,
           ),
-          child: Text(
-            '-${widget.item.discountPercent}%',
+          child: const Text(
+            '-0%',
             textAlign: TextAlign.center,
-            style: const TextStyle(color: Colors.white, fontSize: 12),
+            style: TextStyle(color: Colors.white, fontSize: 12),
           ),
         ),
       );
