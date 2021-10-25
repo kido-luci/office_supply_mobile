@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
 import 'package:office_supply_mobile_master/controllers/cart_controller.dart';
-import 'package:office_supply_mobile_master/models/item.dart';
 import 'package:office_supply_mobile_master/models/product_in_menu/product_in_menu.dart';
 import 'package:office_supply_mobile_master/widgets/circle_icon_button.dart';
 import 'package:provider/provider.dart';
@@ -73,7 +72,7 @@ class _CartItemState extends State<CartItem> {
                   ),
                 ),
                 Text(
-                  Item.format(
+                  ProductInMenu.format(
                       price: widget.productInMenu.productObject!.price *
                           widget.productInMenu.productObject!.quantity),
                   style: h5.copyWith(

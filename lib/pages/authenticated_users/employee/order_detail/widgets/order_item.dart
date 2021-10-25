@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
-import 'package:office_supply_mobile_master/models/item.dart';
 import 'package:office_supply_mobile_master/models/product_in_menu/product_in_menu.dart';
 
 class OrderItem extends StatelessWidget {
@@ -75,7 +74,7 @@ class OrderItem extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    Item.format(
+                    ProductInMenu.format(
                         price: productInMenu.price * productInMenu.quantity),
                     style: h6.copyWith(
                       fontWeight: FontWeight.bold,

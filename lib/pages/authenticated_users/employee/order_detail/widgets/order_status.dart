@@ -101,7 +101,14 @@ class OrderStatus extends StatelessWidget {
                   CircleAvatar(
                     backgroundColor:
                         statusValue ? primaryColor : primaryLightColor,
-                    radius: 6,
+                    radius: 9,
+                    child: Icon(
+                      statusValue
+                          ? Icons.check_circle_outline_rounded
+                          : Icons.remove_circle_outline,
+                      size: 18,
+                      color: Colors.white,
+                    ),
                   ),
                   Expanded(
                     flex: 1,
@@ -117,7 +124,7 @@ class OrderStatus extends StatelessWidget {
               ),
             ),
             SizedBox(
-              width: 65,
+              width: 67,
               child: Flexible(
                 child: Text(
                   statusTitle,
@@ -125,17 +132,11 @@ class OrderStatus extends StatelessWidget {
                     color: statusValue
                         ? primaryColor
                         : primaryLightColorTransparent,
-                    fontSize: 12,
+                    fontSize: 13,
                   ),
                 ),
               ),
             ),
-            // Text(
-            //   'Bước ${statusStep.toString()}',
-            //   style: h6.copyWith(
-            //     color: statusValue ? Colors.black : lightGrey,
-            //   ),
-            //),
           ],
         ),
       );
