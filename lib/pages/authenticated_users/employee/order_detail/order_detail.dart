@@ -132,7 +132,7 @@ class _OrderDetailState extends State<OrderDetail> {
                 ),
               ),
               Expanded(
-                flex: 1,
+                flex: 3,
                 child: ListView(
                   children: Provider.of<CartController>(context, listen: false)
                       .cart
@@ -140,7 +140,7 @@ class _OrderDetailState extends State<OrderDetail> {
                       .entries
                       .map(
                         (e) => OrderItem(
-                          item: e.value,
+                          productInMenu: e.value,
                         ),
                       )
                       .toList(),

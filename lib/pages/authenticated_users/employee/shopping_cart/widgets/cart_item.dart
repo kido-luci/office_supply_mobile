@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
 import 'package:office_supply_mobile_master/controllers/cart_controller.dart';
 import 'package:office_supply_mobile_master/models/item.dart';
+import 'package:office_supply_mobile_master/models/product_in_menu/product_in_menu.dart';
 import 'package:office_supply_mobile_master/widgets/circle_icon_button.dart';
 import 'package:provider/provider.dart';
 
 class CartItem extends StatefulWidget {
   const CartItem({
     Key? key,
-    required this.item,
+    required this.productInMenu,
     required this.reloadShoppingCart,
   }) : super(key: key);
 
-  final Item item;
+  final ProductInMenu productInMenu;
   final VoidCallback reloadShoppingCart;
 
   @override
@@ -41,8 +42,8 @@ class _CartItemState extends State<CartItem> {
           ClipRRect(
             borderRadius:
                 const BorderRadius.horizontal(left: Radius.circular(20)),
-            child: Image.asset(
-              widget.item.imagePath,
+            child: Image.network(
+              widget.productInMenu.productObject!.imageUrl,
               height: 90,
               width: 90,
               fit: BoxFit.cover,
@@ -58,7 +59,7 @@ class _CartItemState extends State<CartItem> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.item.name,
+                  widget.productInMenu.productObject!.name,
                   style: h5.copyWith(
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
@@ -72,7 +73,9 @@ class _CartItemState extends State<CartItem> {
                   ),
                 ),
                 Text(
-                  Item.format(price: widget.item.price * widget.item.quantity),
+                  Item.format(
+                      price: widget.productInMenu.productObject!.price *
+                          widget.productInMenu.productObject!.quantity),
                   style: h5.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -88,15 +91,16 @@ class _CartItemState extends State<CartItem> {
               children: [
                 CircleIconButton(
                   onTap: () {
-                    if (widget.item.quantity > 1) {
-                      widget.item.addQuantity(quantity: -1);
+                    if (widget.productInMenu.productObject!.quantity > 1) {
+                      widget.productInMenu.addQuantity(quantity: -1);
                       Provider.of<CartController>(context, listen: false)
                           .cart
-                          .addTotalPrice(price: -widget.item.price);
+                          .addTotalPrice(price: -widget.productInMenu.price);
                     } else {
                       Provider.of<CartController>(context, listen: false)
                           .cart
-                          .removeItemFromCart(key: widget.item.name);
+                          .removeItemFromCart(
+                              key: widget.productInMenu.productObject!.id);
                     }
                     widget.reloadShoppingCart.call();
                   },
@@ -109,9 +113,9 @@ class _CartItemState extends State<CartItem> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Text(
-                    widget.item.quantity < 10
-                        ? '0' + widget.item.quantity.toString()
-                        : widget.item.quantity.toString(),
+                    widget.productInMenu.quantity < 10
+                        ? '0' + widget.productInMenu.quantity.toString()
+                        : widget.productInMenu.quantity.toString(),
                     style: h5.copyWith(
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
@@ -120,10 +124,10 @@ class _CartItemState extends State<CartItem> {
                 ),
                 CircleIconButton(
                   onTap: () {
-                    widget.item.addQuantity(quantity: 1);
+                    widget.productInMenu.addQuantity(quantity: 1);
                     Provider.of<CartController>(context, listen: false)
                         .cart
-                        .addTotalPrice(price: widget.item.price);
+                        .addTotalPrice(price: widget.productInMenu.price);
                     widget.reloadShoppingCart.call();
                   },
                   margin: EdgeInsets.zero,
@@ -146,7 +150,8 @@ class _CartItemState extends State<CartItem> {
               onTap: () {
                 Provider.of<CartController>(context, listen: false)
                     .cart
-                    .removeItemFromCart(key: widget.item.name);
+                    .removeItemFromCart(
+                        key: widget.productInMenu.productObject!.id);
                 widget.reloadShoppingCart.call();
               },
               child: Container(

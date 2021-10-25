@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
-import 'package:office_supply_mobile_master/models/item.dart';
 import 'package:office_supply_mobile_master/models/product_in_menu/product_in_menu.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/product_detail/widgets/item_information.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/product_detail/widgets/top_navigation_bar.dart';

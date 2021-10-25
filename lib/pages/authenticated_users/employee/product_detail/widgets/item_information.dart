@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
 import 'package:office_supply_mobile_master/controllers/cart_controller.dart';
-import 'package:office_supply_mobile_master/models/item.dart';
 import 'package:office_supply_mobile_master/models/product_in_menu/product_in_menu.dart';
 import 'package:office_supply_mobile_master/widgets/circle_icon_button.dart';
 import 'package:provider/provider.dart';
@@ -69,7 +68,7 @@ class _ItemInformationState extends State<ItemInformation> {
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               Text(
-                Item.format(price: widget.productInMenu.price),
+                ProductInMenu.format(price: widget.productInMenu.price),
                 style: const TextStyle(
                   fontSize: 20,
                   color: primaryColor,
@@ -77,7 +76,7 @@ class _ItemInformationState extends State<ItemInformation> {
                 ),
               ),
               Text(
-                Item.format(price: widget.productInMenu.price),
+                ProductInMenu.format(price: widget.productInMenu.price),
                 style: const TextStyle(
                   fontSize: 16,
                   height: 1.5,
@@ -165,10 +164,9 @@ class _ItemInformationState extends State<ItemInformation> {
   itemAddToCart() => InkWell(
         onTap: () => setState(() {
           widget.productInMenu.setQuantity(quantity: _itemQuantity);
-          //!
-          // Provider.of<CartController>(context, listen: false)
-          //     .cart
-          //     .addItemToCart(item: );
+          Provider.of<CartController>(context, listen: false)
+              .cart
+              .addItemToCart(productInMenu: widget.productInMenu);
           widget.reloadProductDetail.call();
         }),
         child: Container(
@@ -179,7 +177,7 @@ class _ItemInformationState extends State<ItemInformation> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                'Add stationery to cart',
+                'Thêm sản phẩm vào giỏ hàng',
                 style: h5.copyWith(color: Colors.white),
               ),
               const SizedBox(
@@ -270,7 +268,7 @@ class ItemQuantity extends StatelessWidget {
               ),
             ),
             Text(
-              Item.format(price: itemPrice * itemQuantity),
+              ProductInMenu.format(price: itemPrice * itemQuantity),
               style: h4,
             ),
           ],

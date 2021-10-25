@@ -34,7 +34,7 @@ class _ShoppingCartState extends State<ShoppingCart> {
                       .cartItems
                       .entries
                       .map((e) => CartItem(
-                            item: e.value,
+                            productInMenu: e.value,
                             reloadShoppingCart: () => setState(() {}),
                           ))
                       .toList(),

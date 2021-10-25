@@ -9,8 +9,6 @@ class OrderStatus extends StatelessWidget {
     final _size = MediaQuery.of(context).size;
     return Container(
       color: Colors.white,
-      height: 300,
-      padding: const EdgeInsets.symmetric(vertical: 50),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -79,50 +77,56 @@ class OrderStatus extends StatelessWidget {
     required Size size,
   }) =>
       Container(
-        color: Colors.red,
+        color: Colors.white,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Expanded(
-              flex: 1,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        height: 2,
-                        // width: size.width / 4 - 12,
-                        color: statusValue ? primaryColor : primaryLightColor,
-                      ),
-                    ),
-                    CircleAvatar(
-                      backgroundColor:
-                          statusValue ? primaryColor : primaryLightColor,
-                      radius: 6,
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        height: 2,
-                        // width: size.width / 4 - 12,
-                        color: statusValue ? primaryColor : primaryLightColor,
-                      ),
-                    ),
-                  ],
-                ),
+            SizedBox(
+              height: 50,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: isFristStatus
+                        ? const SizedBox.shrink()
+                        : Container(
+                            height: 2,
+                            color:
+                                statusValue ? primaryColor : primaryLightColor,
+                          ),
+                  ),
+                  CircleAvatar(
+                    backgroundColor:
+                        statusValue ? primaryColor : primaryLightColor,
+                    radius: 6,
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: isLastStatus
+                        ? const SizedBox.shrink()
+                        : Container(
+                            height: 2,
+                            color:
+                                statusValue ? primaryColor : primaryLightColor,
+                          ),
+                  ),
+                ],
               ),
             ),
-            Flexible(
-              child: Text(
-                statusTitle,
-                style: h6.copyWith(
-                  color:
-                      statusValue ? primaryColor : primaryLightColorTransparent,
+            SizedBox(
+              width: 65,
+              child: Flexible(
+                child: Text(
+                  statusTitle,
+                  style: h6.copyWith(
+                    color: statusValue
+                        ? primaryColor
+                        : primaryLightColorTransparent,
+                    fontSize: 12,
+                  ),
                 ),
               ),
             ),

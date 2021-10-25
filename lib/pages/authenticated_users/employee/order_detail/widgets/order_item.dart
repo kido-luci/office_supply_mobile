@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
 import 'package:office_supply_mobile_master/models/item.dart';
+import 'package:office_supply_mobile_master/models/product_in_menu/product_in_menu.dart';
 
 class OrderItem extends StatelessWidget {
   const OrderItem({
     Key? key,
-    required this.item,
+    required this.productInMenu,
   }) : super(key: key);
-  final Item item;
+  final ProductInMenu productInMenu;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -29,8 +30,8 @@ class OrderItem extends StatelessWidget {
             ClipRRect(
               borderRadius:
                   const BorderRadius.horizontal(left: Radius.circular(20)),
-              child: Image.asset(
-                item.imagePath,
+              child: Image.network(
+                productInMenu.productObject!.imageUrl,
                 height: 70,
                 width: 70,
                 fit: BoxFit.cover,
@@ -46,7 +47,7 @@ class OrderItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    item.name,
+                    productInMenu.productObject!.name,
                     style: h6.copyWith(
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
@@ -67,14 +68,15 @@ class OrderItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'Số lượng: ${item.quantity < 10 ? '0' + item.quantity.toString() : item.quantity.toString()}',
+                    'Số lượng: ${productInMenu.quantity < 10 ? '0' + productInMenu.quantity.toString() : productInMenu.quantity.toString()}',
                     style: h6.copyWith(
                       color: Colors.black,
                       height: 1.5,
                     ),
                   ),
                   Text(
-                    Item.format(price: item.price * item.quantity),
+                    Item.format(
+                        price: productInMenu.price * productInMenu.quantity),
                     style: h6.copyWith(
                       fontWeight: FontWeight.bold,
                       height: 1.5,
