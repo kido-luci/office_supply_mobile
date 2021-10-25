@@ -29,7 +29,7 @@ class _EmployeeDashBoardState extends State<EmployeeDashBoard> {
   late ItemsPage itemsPage;
   late Map<int, List<ProductInMenu>> categoryItems;
   late Size _size;
-  late int selectedCategoryId;
+  int selectedCategoryId = 1;
 
   @override
   void initState() {
@@ -44,7 +44,8 @@ class _EmployeeDashBoardState extends State<EmployeeDashBoard> {
     return Scaffold(
       backgroundColor: Colors.white,
       extendBody: true,
-      floatingActionButton: const CartButton(),
+      // ignore: prefer_const_constructors
+      floatingActionButton: CartButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       body: SafeArea(
         child: Column(
@@ -68,46 +69,58 @@ class _EmployeeDashBoardState extends State<EmployeeDashBoard> {
                               //!categories
                               CategogyCard(
                                 categories: snapshot.data!,
+                                selectedCategoryId: selectedCategoryId,
+                                onTap: ({required int selectedCategoryId}) =>
+                                    setState(
+                                  () => this.selectedCategoryId =
+                                      selectedCategoryId,
+                                ),
                               ),
                               Expanded(
                                 flex: 1,
                                 child: Center(
-                                  child: CustomScrollView(
-                                    slivers: [
-                                      SliverGrid.count(
-                                        crossAxisCount: 2,
-                                        childAspectRatio: 0.65,
-                                        mainAxisSpacing: 16,
-                                        crossAxisSpacing: 16,
-                                        children: categoryItems[
-                                                selectedCategoryId]!
-                                            .asMap()
-                                            .entries
-                                            .map(
-                                              (e) => StationeryGridItem(
-                                                onTap: () {
-                                                  Navigator.of(context).push(
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          ProductDetail(
-                                                        productInMenu: e.value,
-                                                        onTapBack: () {
-                                                          setState(() {});
-                                                        },
-                                                      ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16),
+                                    child: CustomScrollView(
+                                      slivers: [
+                                        SliverGrid.count(
+                                          crossAxisCount: 2,
+                                          childAspectRatio: 0.65,
+                                          mainAxisSpacing: 5,
+                                          crossAxisSpacing: 5,
+                                          children: <Widget>[] +
+                                              (categoryItems[
+                                                      selectedCategoryId]!
+                                                  .asMap()
+                                                  .entries
+                                                  .map(
+                                                    (e) => StationeryGridItem(
+                                                      onTap: () {
+                                                        Navigator.of(context)
+                                                            .push(
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                ProductDetail(
+                                                              productInMenu:
+                                                                  e.value,
+                                                              onTapBack: () {
+                                                                setState(() {});
+                                                              },
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
+                                                      productInMenu: e.value,
                                                     ),
-                                                  );
-                                                },
-                                                productInMenu: e.value,
-                                                margin: EdgeInsets.only(
-                                                  left: e.key.isEven ? 16 : 0,
-                                                  right: e.key.isOdd ? 16 : 0,
-                                                ),
-                                              ),
-                                            )
-                                            .toList(),
-                                      ),
-                                    ],
+                                                  )
+                                                  .toList()) +
+                                              [
+                                                const SizedBox.shrink(),
+                                              ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
@@ -175,10 +188,15 @@ class _EmployeeDashBoardState extends State<EmployeeDashBoard> {
       await CategoryAPI.fetchCategory(
         id: key as int,
         jwtToken: jwtToken,
-      ).then((e) => categories[key] = e);
+      ).then((e) {
+        for (var tmpProduct in categoryItems[key]!) {
+          tmpProduct.productObject!.category = e.name;
+        }
+        categories[key] = e;
+      });
     });
 
-    selectedCategoryId = categories.keys.elementAt(0);
+    //selectedCategoryId = categories.keys.elementAt(0);
 
     return categories;
   }
