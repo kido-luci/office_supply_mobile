@@ -4,15 +4,17 @@ import 'package:office_supply_mobile_master/config/paths.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
 import 'package:office_supply_mobile_master/models/category/category.dart';
 
-class CategogyCard extends StatefulWidget {
-  const CategogyCard({Key? key, required this.categories}) : super(key: key);
-  final Map<int, Category> categories;
-  @override
-  State<CategogyCard> createState() => _CategogyCardState();
-}
+class CategogyCard extends StatelessWidget {
+  const CategogyCard({
+    Key? key,
+    required this.categories,
+    required this.selectedCategoryId,
+    required this.onTap,
+  }) : super(key: key);
 
-class _CategogyCardState extends State<CategogyCard> {
-  var selectedIndex = 0;
+  final Map<int, Category> categories;
+  final int selectedCategoryId;
+  final Function({required int selectedCategoryId}) onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -60,14 +62,12 @@ class _CategogyCardState extends State<CategogyCard> {
               padding: const EdgeInsets.all(15),
               child: Wrap(
                 spacing: 28,
-                children: widget.categories.entries
+                children: categories.entries
                     .map((e) => CategoryItem(
                           category: e.value,
                           index: e.key,
-                          isSelected: e.key == selectedIndex,
-                          onTap: () => setState(() {
-                            selectedIndex = e.key;
-                          }),
+                          isSelected: e.key == selectedCategoryId,
+                          onTap: () => onTap.call(selectedCategoryId: e.key),
                         ))
                     .toList(),
               ),

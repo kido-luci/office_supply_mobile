@@ -12,7 +12,7 @@ class StationeryGridItem extends StatelessWidget {
     Key? key,
     required this.productInMenu,
     required this.onTap,
-    this.margin = EdgeInsets.zero,
+    this.margin = const EdgeInsets.all(5.0),
   }) : super(key: key);
 
   @override
@@ -117,7 +117,7 @@ class StationeryGridItem extends StatelessWidget {
                       Text(
                         ProductInMenu.format(price: productInMenu.price),
                         style: const TextStyle(
-                          fontSize: 12,
+                          fontSize: 11,
                           height: 1.5,
                           decoration: TextDecoration.lineThrough,
                           color: Colors.black38,

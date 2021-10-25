@@ -11,7 +11,7 @@ class Product {
   final String imageUrl;
   final int categoryID;
   final int supplierID;
-  final String? category;
+  late String? category;
   final bool isDelete;
 
   Product({
@@ -33,10 +33,4 @@ class Product {
   static String format({required double price}) =>
       NumberFormat.currency(locale: 'vi', symbol: '₫', decimalDigits: 0)
           .format(price);
-
-  // setQuantity({required int quantity}) => this.quantity = quantity;
-
-  // addQuantity({required int quantity}) {
-  //   this.quantity += quantity;
-  //   return this;
 }

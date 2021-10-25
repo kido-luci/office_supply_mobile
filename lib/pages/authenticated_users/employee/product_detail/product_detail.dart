@@ -37,6 +37,7 @@ class _ProductDetailState extends State<ProductDetail> {
     return Scaffold(
       backgroundColor: imageMainColor,
       extendBody: true,
+      // ignore: prefer_const_constructors
       floatingActionButton: CartButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       body: SafeArea(

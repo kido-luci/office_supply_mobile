@@ -67,14 +67,14 @@ class _CartItemState extends State<CartItem> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 5),
                   child: Text(
-                    'Loại: bút',
+                    'Loại: ' + widget.productInMenu.productObject!.category!,
                     style: h5.copyWith(color: lightGrey),
                   ),
                 ),
                 Text(
                   ProductInMenu.format(
-                      price: widget.productInMenu.productObject!.price *
-                          widget.productInMenu.productObject!.quantity),
+                      price: widget.productInMenu.price *
+                          widget.productInMenu.quantity),
                   style: h5.copyWith(
                     fontWeight: FontWeight.bold,
                   ),

@@ -232,7 +232,7 @@ class TopNavigationBar extends StatelessWidget {
           Row(
             children: [
               Text(
-                'Phòng ban: ${department.name} - ',
+                'Phòng: ${department.name} - ',
                 style: h6.copyWith(
                   color: primaryLightColor,
                   fontWeight: FontWeight.w300,

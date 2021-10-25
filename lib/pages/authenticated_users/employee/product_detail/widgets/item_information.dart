@@ -129,17 +129,19 @@ class _ItemInformationState extends State<ItemInformation> {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: const [
-                Text('Loại: bút'),
-                SizedBox(
+              children: [
+                Text('Loại: ' + widget.productInMenu.productObject!.category!),
+                const SizedBox(
                   width: 20,
                 ),
-                Text('Số lượng còn trong kho: 100'),
+                Text('Số lượng còn trong kho: ' +
+                    widget.productInMenu.quantity.toString()),
               ],
             ),
             const SizedBox(
               height: 15,
             ),
+            //! add to api
             const Text(
                 'Bút dạ, bút đánh dấu, tiếng Anh: marker pen, felt-tip marker; texta (ở Úc), sketch pen (ở Ấn Độ) hoặc koki (ở Nam Phi), là một cây bút có nguồn mực riêng và một đầu làm bằng sợi xốp, ép như ống nỉ.[1] Một bút dạ bao gồm một hộp chứa (thủy tinh, nhôm hoặc nhựa) và lõi của mọt vật liệu thấm nước.'),
           ],
