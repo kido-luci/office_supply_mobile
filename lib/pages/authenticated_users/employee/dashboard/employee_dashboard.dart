@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:office_supply_mobile_master/controllers/google_sign_in_controller.dart';
 import 'package:office_supply_mobile_master/data/fake.dart';
+import 'package:office_supply_mobile_master/models/auth/auth.dart';
+import 'package:office_supply_mobile_master/models/items_page/items_page.dart';
+import 'package:office_supply_mobile_master/models/product_in_menu/product_in_menu.dart';
+import 'package:office_supply_mobile_master/models/user/user.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/dashboard/widgets/bottom_navigation_bar.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/dashboard/widgets/category.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/dashboard/widgets/stationery_grid_item.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/dashboard/widgets/top_navigation_bar.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/product_detail/product_detail.dart';
+import 'package:office_supply_mobile_master/services/product.dart';
 import 'package:office_supply_mobile_master/widgets/cart_button.dart';
+import 'package:provider/provider.dart';
 
 class EmployeeDashBoard extends StatefulWidget {
   const EmployeeDashBoard({Key? key}) : super(key: key);
@@ -15,6 +22,20 @@ class EmployeeDashBoard extends StatefulWidget {
 }
 
 class _EmployeeDashBoardState extends State<EmployeeDashBoard> {
+  late User user;
+  late Auth auth;
+  late ItemsPage itemsPage;
+
+  @override
+  void initState() {
+    super.initState();
+    auth = Provider.of<GoogleSignInController>(context, listen: false).auth!;
+    user = Provider.of<GoogleSignInController>(context, listen: false).user;
+    if (user.companyID != null) {
+      getItemsPage(id: user.id, jwtToken: auth.jwtToken);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final _size = MediaQuery.of(context).size;
@@ -91,5 +112,29 @@ class _EmployeeDashBoardState extends State<EmployeeDashBoard> {
         ),
       ),
     );
+  }
+
+  getItemsPage({required int id, required String jwtToken}) async {
+    await ProductAPI.fetchItemsPage(id: id, jwtToken: jwtToken).then((e) {
+      itemsPage = e;
+    });
+    Map<int, List<ProductInMenu>> categoryItems = <int, List<ProductInMenu>>{};
+    if (itemsPage.itemsObject != null) {
+      for (var e in itemsPage.itemsObject!) {
+        categoryItems.update(
+          e.productObject!.categoryID,
+          (value) {
+            List<ProductInMenu> tmpList = value;
+            tmpList.add(e);
+            return tmpList;
+          },
+          ifAbsent: () {
+            List<ProductInMenu> tmpList = List.empty(growable: true);
+            tmpList.add(e);
+            return tmpList;
+          },
+        );
+      }
+    }
   }
 }
