@@ -8,3 +8,7 @@ var employeeShoppingCartRouter = '/employee_product_detail';
 
 //guest
 var signInRouter = '/sign_in';
+
+// manager
+var listPeriodRouter = '/list_period';
+var periodForm = '/period_form';

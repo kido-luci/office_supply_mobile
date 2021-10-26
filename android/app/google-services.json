@@ -14,6 +14,30 @@
       },
       "oauth_client": [
         {
+          "client_id": "246356743472-0dhltrrth02kctoknbh00u3t09ee87rs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.office_supply_mobile_master",
+            "certificate_hash": "09db84b512149e37aad7af64d7a00d669a1bd5f3"
+          }
+        },
+        {
+          "client_id": "246356743472-bo25unqg7jfdpsh1el0r2o27aaop5vbv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.office_supply_mobile_master",
+            "certificate_hash": "3b8be772391d0ea529d95742b3249ee4df0342d0"
+          }
+        },
+        {
+          "client_id": "246356743472-ebr88kk0q950gkpve7t0s02r0o4cjnqr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.office_supply_mobile_master",
+            "certificate_hash": "ee4627ebb2b34dc316aadcb237f37552054338f0"
+          }
+        },
+        {
           "client_id": "246356743472-latnd50tlg529145ptjt3l9ppplg93ks.apps.googleusercontent.com",
           "client_type": 3
         }
