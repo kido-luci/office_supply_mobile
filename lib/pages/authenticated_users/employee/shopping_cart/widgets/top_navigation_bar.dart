@@ -18,16 +18,19 @@ class TopNavigationBar extends StatelessWidget {
             Navigator.of(context).pop();
             onTapBack.call();
           },
-          margin: const EdgeInsets.only(top: 10, left: 10),
+          margin: const EdgeInsets.only(top: 40, left: 10),
           iconData: Icons.arrow_back_ios,
           size: 30,
           iconColor: Colors.white,
           backgroundColor: primaryLightColorTransparent,
         ),
-        Center(
-          child: Text(
-            'Giỏ hàng',
-            style: h5.copyWith(color: Colors.white),
+        Padding(
+          padding: const EdgeInsets.only(top: 30),
+          child: Center(
+            child: Text(
+              'Giỏ hàng',
+              style: h5.copyWith(color: Colors.white),
+            ),
           ),
         ),
       ],
@@ -44,7 +47,6 @@ class TopNavigationBar extends StatelessWidget {
       );
 
   backgroundImage({required String photoUrl}) => Container(
-        height: 50,
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage(photoUrl),
@@ -54,7 +56,6 @@ class TopNavigationBar extends StatelessWidget {
       );
 
   backgroundColor(Color color) => Container(
-        height: 50,
         decoration: BoxDecoration(
           color: color,
         ),

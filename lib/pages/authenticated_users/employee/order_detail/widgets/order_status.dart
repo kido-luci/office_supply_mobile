@@ -125,15 +125,12 @@ class OrderStatus extends StatelessWidget {
             ),
             SizedBox(
               width: 67,
-              child: Flexible(
-                child: Text(
-                  statusTitle,
-                  style: h6.copyWith(
-                    color: statusValue
-                        ? primaryColor
-                        : primaryLightColorTransparent,
-                    fontSize: 13,
-                  ),
+              child: Text(
+                statusTitle,
+                style: h6.copyWith(
+                  color:
+                      statusValue ? primaryColor : primaryLightColorTransparent,
+                  fontSize: 13,
                 ),
               ),
             ),

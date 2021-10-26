@@ -15,36 +15,36 @@ class ShoppingCart extends StatefulWidget {
 class _ShoppingCartState extends State<ShoppingCart> {
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: 50,
-                child: TopNavigationBar(onTapBack: () {
-                  setState(() {});
-                }),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 80,
+              child: TopNavigationBar(onTapBack: () {
+                setState(() {});
+              }),
+            ),
+            Expanded(
+              flex: 1,
+              child: ListView(
+                children: Provider.of<CartController>(context, listen: false)
+                    .cart
+                    .cartItems
+                    .entries
+                    .map(
+                      (e) => CartItem(
+                        productInMenu: e.value,
+                        reloadShoppingCart: () => setState(() {}),
+                      ),
+                    )
+                    .toList(),
               ),
-              Expanded(
-                flex: 1,
-                child: ListView(
-                  children: Provider.of<CartController>(context, listen: false)
-                      .cart
-                      .cartItems
-                      .entries
-                      .map((e) => CartItem(
-                            productInMenu: e.value,
-                            reloadShoppingCart: () => setState(() {}),
-                          ))
-                      .toList(),
-                ),
-              ),
-              BottomNavigation(
-                cart: Provider.of<CartController>(context, listen: false).cart,
-              ),
-            ],
-          ),
+            ),
+            BottomNavigation(
+              cart: Provider.of<CartController>(context, listen: false).cart,
+            ),
+          ],
         ),
       );
 }

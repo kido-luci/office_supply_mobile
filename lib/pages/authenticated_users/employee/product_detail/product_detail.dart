@@ -40,38 +40,36 @@ class _ProductDetailState extends State<ProductDetail> {
       // ignore: prefer_const_constructors
       floatingActionButton: CartButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      body: SafeArea(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 50,
-              child: TopNavigationBar(onTapBack: widget.onTapBack),
+      body: Column(
+        children: [
+          SizedBox(
+            height: 80,
+            child: TopNavigationBar(onTapBack: widget.onTapBack),
+          ),
+          Expanded(
+            flex: 1,
+            child: Stack(
+              children: [
+                itemImage(_size),
+                itemSaleDiscount(),
+                Column(
+                  children: [
+                    const Spacer(
+                      flex: 1,
+                    ),
+                    Expanded(
+                      flex: 2,
+                      child: ItemInformation(
+                        productInMenu: widget.productInMenu,
+                        reloadProductDetail: () => setState(() {}),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-            Expanded(
-              flex: 1,
-              child: Stack(
-                children: [
-                  itemImage(_size),
-                  itemSaleDiscount(),
-                  Column(
-                    children: [
-                      const Spacer(
-                        flex: 1,
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: ItemInformation(
-                          productInMenu: widget.productInMenu,
-                          reloadProductDetail: () => setState(() {}),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }

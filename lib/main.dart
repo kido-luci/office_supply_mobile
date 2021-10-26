@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:office_supply_mobile_master/config/router.dart';
 import 'package:office_supply_mobile_master/controllers/cart_controller.dart';
 import 'package:office_supply_mobile_master/controllers/google_sign_in_controller.dart';
@@ -10,6 +11,15 @@ import 'package:firebase_core/firebase_core.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setEnabledSystemUIMode(
+    SystemUiMode.manual,
+    overlays: [
+      SystemUiOverlay.top,
+      SystemUiOverlay.bottom,
+    ],
+  );
 
   runApp(const MainApp());
 }
@@ -43,7 +53,6 @@ class MainApp extends StatelessWidget {
           scaffoldBackgroundColor: Colors.white,
         ),
         debugShowCheckedModeBanner: false,
-        //home: const SignInPage(),
       ),
     );
   }

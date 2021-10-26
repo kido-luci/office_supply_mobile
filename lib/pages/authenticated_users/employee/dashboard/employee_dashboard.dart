@@ -47,113 +47,110 @@ class _EmployeeDashBoardState extends State<EmployeeDashBoard> {
       // ignore: prefer_const_constructors
       floatingActionButton: CartButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      body: SafeArea(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 130,
-              child: TopNavigationBar(size: _size),
-            ),
-            Expanded(
-              flex: 1,
-              child: Stack(
-                children: [
-                  FutureBuilder<Map<int, Category>>(
-                    future:
-                        getItemsPage(userID: user.id, jwtToken: auth.jwtToken),
-                    builder: (context, snapshot) {
-                      switch (snapshot.connectionState) {
-                        case ConnectionState.done:
-                          return Column(
-                            children: [
-                              //!categories
-                              CategogyCard(
-                                categories: snapshot.data!,
-                                selectedCategoryId: selectedCategoryId,
-                                onTap: ({required int selectedCategoryId}) =>
-                                    setState(
-                                  () => this.selectedCategoryId =
-                                      selectedCategoryId,
-                                ),
+      body: Column(
+        children: [
+          SizedBox(
+            height: 150,
+            child: TopNavigationBar(size: _size),
+          ),
+          Expanded(
+            flex: 1,
+            child: Stack(
+              children: [
+                FutureBuilder<Map<int, Category>>(
+                  future:
+                      getItemsPage(userID: user.id, jwtToken: auth.jwtToken),
+                  builder: (context, snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.done:
+                        return Column(
+                          children: [
+                            //!categories
+                            CategogyCard(
+                              categories: snapshot.data!,
+                              selectedCategoryId: selectedCategoryId,
+                              onTap: ({required int selectedCategoryId}) =>
+                                  setState(
+                                () => this.selectedCategoryId =
+                                    selectedCategoryId,
                               ),
-                              Expanded(
-                                flex: 1,
-                                child: Center(
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 16),
-                                    child: CustomScrollView(
-                                      slivers: [
-                                        SliverGrid.count(
-                                          crossAxisCount: 2,
-                                          childAspectRatio: 0.65,
-                                          mainAxisSpacing: 5,
-                                          crossAxisSpacing: 5,
-                                          children: <Widget>[] +
-                                              (categoryItems[
-                                                      selectedCategoryId]!
-                                                  .asMap()
-                                                  .entries
-                                                  .map(
-                                                    (e) => StationeryGridItem(
-                                                      onTap: () {
-                                                        Navigator.of(context)
-                                                            .push(
-                                                          MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                ProductDetail(
-                                                              productInMenu:
-                                                                  e.value,
-                                                              onTapBack: () {
-                                                                setState(() {});
-                                                              },
-                                                            ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16),
+                                  child: CustomScrollView(
+                                    slivers: [
+                                      SliverGrid.count(
+                                        crossAxisCount: 2,
+                                        childAspectRatio: 0.65,
+                                        mainAxisSpacing: 5,
+                                        crossAxisSpacing: 5,
+                                        children: <Widget>[] +
+                                            (categoryItems[selectedCategoryId]!
+                                                .asMap()
+                                                .entries
+                                                .map(
+                                                  (e) => StationeryGridItem(
+                                                    onTap: () {
+                                                      Navigator.of(context)
+                                                          .push(
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              ProductDetail(
+                                                            productInMenu:
+                                                                e.value,
+                                                            onTapBack: () {
+                                                              setState(() {});
+                                                            },
                                                           ),
-                                                        );
-                                                      },
-                                                      productInMenu: e.value,
-                                                    ),
-                                                  )
-                                                  .toList()) +
-                                              [
-                                                const SizedBox.shrink(),
-                                              ],
-                                        ),
-                                      ],
-                                    ),
+                                                        ),
+                                                      );
+                                                    },
+                                                    productInMenu: e.value,
+                                                  ),
+                                                )
+                                                .toList()) +
+                                            [
+                                              const SizedBox.shrink(),
+                                            ],
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
-                            ],
-                          );
-                        default:
-                          return Container(
-                            alignment: Alignment.center,
-                            color: Colors.white,
-                            child: const SizedBox(
-                              height: 60,
-                              width: 60,
-                              child: CircularProgressIndicator(
-                                color: primaryColor,
-                                backgroundColor: primaryLightColor,
-                                strokeWidth: 6,
-                                valueColor:
-                                    AlwaysStoppedAnimation<Color>(primaryColor),
-                              ),
                             ),
-                          );
-                      }
-                    },
-                  ),
-                  const Align(
-                    alignment: Alignment.bottomCenter,
-                    child: BottomNavigation(),
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
+                          ],
+                        );
+                      default:
+                        return Container(
+                          alignment: Alignment.center,
+                          color: Colors.white,
+                          child: const SizedBox(
+                            height: 60,
+                            width: 60,
+                            child: CircularProgressIndicator(
+                              color: primaryColor,
+                              backgroundColor: primaryLightColor,
+                              strokeWidth: 6,
+                              valueColor:
+                                  AlwaysStoppedAnimation<Color>(primaryColor),
+                            ),
+                          ),
+                        );
+                    }
+                  },
+                ),
+                const Align(
+                  alignment: Alignment.bottomCenter,
+                  child: BottomNavigation(),
+                ),
+              ],
+            ),
+          )
+        ],
       ),
     );
   }

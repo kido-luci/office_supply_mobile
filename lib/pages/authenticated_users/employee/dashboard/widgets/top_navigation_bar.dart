@@ -28,14 +28,15 @@ class TopNavigationBar extends StatelessWidget {
       children: [
         backgroundImage(imagePath + sweetHomePNG),
         backgroundColor(primaryLightColorTransparent),
-        Center(
+        Align(
+          alignment: Alignment.bottomCenter,
           child: Padding(
-            padding: const EdgeInsets.only(top: 52),
+            padding: const EdgeInsets.only(bottom: 15),
             child: searchTextField(),
           ),
         ),
-        Container(
-          padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+        Padding(
+          padding: const EdgeInsets.only(top: 35, left: 10, right: 10),
           child: Column(
             children: [
               Row(
@@ -335,7 +336,7 @@ class TopNavigationBar extends StatelessWidget {
       );
 
   backgroundImage(String photoUrl) => Container(
-        height: 92,
+        height: 115,
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage(photoUrl),
@@ -345,7 +346,7 @@ class TopNavigationBar extends StatelessWidget {
       );
 
   backgroundColor(Color color) => Container(
-        height: 92,
+        height: 115,
         decoration: BoxDecoration(
           color: color,
         ),
