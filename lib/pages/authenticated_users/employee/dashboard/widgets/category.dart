@@ -168,13 +168,11 @@ class CategoryItem extends StatelessWidget {
             direction: Axis.vertical,
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
-              SizedBox(
-                height: 30,
+              SvgPicture.asset(
+                icon,
+                color: isSelected ? primaryLightColor : primaryColor,
                 width: 30,
-                child: SvgPicture.asset(
-                  icon,
-                  color: isSelected ? primaryLightColor : primaryColor,
-                ),
+                height: 30,
               ),
               Text(
                 category.name,

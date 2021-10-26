@@ -1,5 +1,3 @@
-// ignore_for_file: file_names, avoid_print
-
 import 'dart:convert';
 import 'dart:io';
 import 'package:office_supply_mobile_master/config/paths.dart';

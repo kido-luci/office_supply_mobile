@@ -157,7 +157,8 @@ class _EmployeeDashBoardState extends State<EmployeeDashBoard> {
 
   Future<Map<int, Category>> getItemsPage(
       {required int userID, required String jwtToken}) async {
-    await ProductAPI.fetchItemsPage(id: userID, jwtToken: jwtToken).then((e) {
+    await ProductService.fetchItemsPage(id: userID, jwtToken: jwtToken)
+        .then((e) {
       itemsPage = e;
     });
     categoryItems = <int, List<ProductInMenu>>{};
@@ -182,7 +183,7 @@ class _EmployeeDashBoardState extends State<EmployeeDashBoard> {
     Map<int, Category> categories = <int, Category>{};
 
     await Future.forEach(categoryItems.keys, (key) async {
-      await CategoryAPI.fetchCategory(
+      await CategoryService.fetchCategory(
         id: key as int,
         jwtToken: jwtToken,
       ).then((e) {

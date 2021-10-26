@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:office_supply_mobile_master/config/paths.dart';
 import 'package:office_supply_mobile_master/models/role/role.dart';
 
-class RoleAPI {
+class RoleService {
   static const url = '/api/v1/roles';
 
   static Role parseRole(Map<String, dynamic> jsonData) =>

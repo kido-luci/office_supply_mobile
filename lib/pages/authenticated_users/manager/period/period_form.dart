@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, curly_braces_in_flow_control_structures
+// ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
 
@@ -14,7 +14,7 @@ class _PeriodFormState extends State<PeriodForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Period Form'),
+        title: const Text('Period Form'),
       ),
       body: Padding(
         padding: const EdgeInsets.only(
@@ -27,7 +27,7 @@ class _PeriodFormState extends State<PeriodForm> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'Name',
                   style: TextStyle(
                     fontSize: 18,
@@ -42,7 +42,7 @@ class _PeriodFormState extends State<PeriodForm> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
-                      decoration: InputDecoration(labelText: 'Name'),
+                      decoration: const InputDecoration(labelText: 'Name'),
                     ),
                   ),
                 ),
@@ -74,7 +74,7 @@ class _PeriodFormState extends State<PeriodForm> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'Quota',
                   style: TextStyle(
                     fontSize: 18,
@@ -89,7 +89,7 @@ class _PeriodFormState extends State<PeriodForm> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
-                      decoration: InputDecoration(labelText: 'Quota'),
+                      decoration: const InputDecoration(labelText: 'Quota'),
                       keyboardType: TextInputType.number,
                     ),
                   ),
@@ -104,7 +104,7 @@ class _PeriodFormState extends State<PeriodForm> {
   }
 
   DateTime fromDate = DateTime.now();
-  DateTime toDate = DateTime.now().add(Duration(days: 1));
+  DateTime toDate = DateTime.now().add(const Duration(days: 1));
 
   selectDate(BuildContext context, DateTime initDate, bool from) async {
     final DateTime? picked = await showDatePicker(

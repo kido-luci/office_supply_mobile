@@ -6,7 +6,7 @@ import 'package:office_supply_mobile_master/config/paths.dart';
 import 'package:office_supply_mobile_master/models/category/category.dart'
     as category_model;
 
-class CategoryAPI {
+class CategoryService {
   static const url = '/api/v1/catergories';
 
   static category_model.Category parseCategory(Map<String, dynamic> jsonData) =>

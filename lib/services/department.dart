@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:office_supply_mobile_master/config/paths.dart';
 import 'package:office_supply_mobile_master/models/department/department.dart';
 
-class DepartmentAPI {
+class DepartmentService {
   static const url = '/api/v1/departments';
 
   static Department parseDepartment(Map<String, dynamic> jsonData) =>

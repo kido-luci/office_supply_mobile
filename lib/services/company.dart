@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:office_supply_mobile_master/config/paths.dart';
 import 'package:office_supply_mobile_master/models/company/company.dart';
 
-class CompanyAPI {
+class CompanyService {
   static const url = '/api/v1/companies';
 
   static Company parseCompany(Map<String, dynamic> jsonData) =>

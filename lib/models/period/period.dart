@@ -1,9 +1,6 @@
-// ignore_for_file: unnecessary_this
-
 import 'dart:convert';
 import 'package:json_annotation/json_annotation.dart';
 part 'period.g.dart';
-
 
 @JsonSerializable(explicitToJson: true)
 class Period {
@@ -26,43 +23,13 @@ class Period {
       required this.remainingQuota,
       required this.isExpired});
 
-  // String toJson() {
-  //   Map<String, dynamic> periodMap = {
-  //     'id': this.id,
-  //     'name': this.name,
-  //     'departmentID': this.departmentID,
-  //     'fromTime': this.fromTime,
-  //     'toTime': this.toTime,
-  //     'quota': this.quota,
-  //     'remainingQuota': this.remainingQuota,
-  //     'isExpired': this.isExpired
-  //   };
-
-  //   var jsonData = jsonEncode(periodMap);
-  //   return jsonData;
-  // }
-
-  // factory Period.fromJson(String jsonData) {
-  //   var periodMap = jsonDecode(jsonData);
-
-  //   return Period(
-  //       id: periodMap['id'],
-  //       name: periodMap['name'],
-  //       departmentID: periodMap['departmentID'],
-  //       fromTime: periodMap['fromTime'],
-  //       toTime: periodMap['toTime'],
-  //       quota: periodMap['quota'],
-  //       remainingQuota: periodMap['remainingQuota'],
-  //       isExpired: periodMap['isExpired']);
-  // }
-
-  String toJson(){
+  String toJson() {
     Map<String, dynamic> periodMap = _$PeriodToJson(this);
     var periodJson = jsonEncode(periodMap);
     return periodJson;
   }
 
-  factory Period.fromJson(Map<String, dynamic> periodMap){
+  factory Period.fromJson(Map<String, dynamic> periodMap) {
     return _$PeriodFromJson(periodMap);
   }
 }

@@ -1,9 +1,7 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers
-
 import 'package:flutter/material.dart';
 import 'package:office_supply_mobile_master/controllers/google_sign_in_controller.dart';
 import 'package:office_supply_mobile_master/models/period/period.dart';
-import 'package:office_supply_mobile_master/services/periodService.dart';
+import 'package:office_supply_mobile_master/services/period.dart';
 import 'package:provider/provider.dart';
 
 class ListPeriod extends StatelessWidget {
@@ -16,7 +14,7 @@ class ListPeriod extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Periods'),
+        title: const Text('Periods'),
       ),
       backgroundColor: Colors.grey[350],
       body: FutureBuilder<dynamic>(
@@ -28,12 +26,12 @@ class ListPeriod extends StatelessWidget {
               children: createPeriodList(snapshot.data),
             );
           } else {
-            return Center(child: Text('No Data'));
+            return const Center(child: Text('No Data'));
           }
         },
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         onPressed: () {
           Navigator.pushNamed(context, '/period_form');
         },
@@ -47,6 +45,7 @@ class ListPeriod extends StatelessWidget {
     for (var p in data) {
       var item = InkWell(
         onTap: () {
+          // ignore: avoid_print
           print(p.id);
         },
         child: Padding(
@@ -65,66 +64,66 @@ class ListPeriod extends StatelessWidget {
                   // Text('ID: ' + p.id.toString()),
                   Row(
                     children: [
-                      Icon(Icons.account_circle_rounded),
-                      Text(
+                      const Icon(Icons.account_circle_rounded),
+                      const Text(
                         'Name:',
                         style: TextStyle(fontSize: 18),
                       ),
                       Text(
                         p.name,
-                        style: TextStyle(fontSize: 18),
+                        style: const TextStyle(fontSize: 18),
                       ),
                     ],
                   ),
                   Row(
                     children: [
-                      Icon(Icons.schedule_outlined),
-                      Text(
+                      const Icon(Icons.schedule_outlined),
+                      const Text(
                         'From Time:',
                         style: TextStyle(fontSize: 18),
                       ),
                       Text(
                         p.fromTime.toString(),
-                        style: TextStyle(fontSize: 18),
+                        style: const TextStyle(fontSize: 18),
                       ),
                     ],
                   ),
                   Row(
                     children: [
-                      Icon(Icons.schedule_outlined),
-                      Text(
+                      const Icon(Icons.schedule_outlined),
+                      const Text(
                         'To Time:',
                         style: TextStyle(fontSize: 18),
                       ),
                       Text(
                         p.toTime.toString(),
-                        style: TextStyle(fontSize: 18),
+                        style: const TextStyle(fontSize: 18),
                       ),
                     ],
                   ),
                   Row(
                     children: [
-                      Icon(Icons.attach_money_outlined),
-                      Text(
+                      const Icon(Icons.attach_money_outlined),
+                      const Text(
                         'Quota:',
                         style: TextStyle(fontSize: 18),
                       ),
                       Text(
                         p.quota.toString(),
-                        style: TextStyle(fontSize: 18),
+                        style: const TextStyle(fontSize: 18),
                       ),
                     ],
                   ),
                   Row(
                     children: [
-                      Icon(Icons.attach_money_outlined),
-                      Text(
+                      const Icon(Icons.attach_money_outlined),
+                      const Text(
                         'Remaining Quota',
                         style: TextStyle(fontSize: 18),
                       ),
                       Text(
                         p.remainingQuota.toString(),
-                        style: TextStyle(fontSize: 18),
+                        style: const TextStyle(fontSize: 18),
                       ),
                     ],
                   )

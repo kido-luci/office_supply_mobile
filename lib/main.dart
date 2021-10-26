@@ -6,7 +6,7 @@ import 'package:office_supply_mobile_master/controllers/google_sign_in_controlle
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/dashboard/employee_dashboard.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/manager/period/list_period.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/manager/period/period_form.dart';
-import 'package:office_supply_mobile_master/pages/authenticated_users/manager/provider/periodProvide.dart';
+import 'package:office_supply_mobile_master/pages/authenticated_users/manager/provider/period_provide.dart';
 import 'package:office_supply_mobile_master/pages/guest/sign_in/sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';

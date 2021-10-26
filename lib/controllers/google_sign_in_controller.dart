@@ -35,30 +35,30 @@ class GoogleSignInController with ChangeNotifier {
       ),
     );
 
-    await AuthAPI.fetchAuth(
+    await AuthService.fetchAuth(
       idToken: await FirebaseAuth.instance.currentUser!.getIdToken(),
       signOut: signOut,
     ).then((e) => auth = e);
 
     if (auth != null) {
-      await UserAPI.fetchUser(
+      await UserService.fetchUser(
         id: auth!.id,
         jwtToken: auth!.jwtToken,
       ).then((e) => user = e);
-      await RoleAPI.fetchRole(
+      await RoleService.fetchRole(
         id: user.roleID,
         jwtToken: auth!.jwtToken,
       ).then((e) => userRole = e);
 
       if (user.departmentID != null) {
-        await DepartmentAPI.fetchDepartment(
+        await DepartmentService.fetchDepartment(
           id: user.departmentID!,
           jwtToken: auth!.jwtToken,
         ).then((e) => department = e);
       }
 
       if (user.companyID != null) {
-        await CompanyAPI.fetchCompany(
+        await CompanyService.fetchCompany(
           id: user.departmentID!,
           jwtToken: auth!.jwtToken,
         ).then((e) => company = e);

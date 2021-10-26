@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:office_supply_mobile_master/config/paths.dart';
 import 'package:office_supply_mobile_master/models/auth/auth.dart';
 
-class AuthAPI {
+class AuthService {
   static const url = '/api/v1/auth/token';
 
   static Auth parseAuth(String responseBody) =>
