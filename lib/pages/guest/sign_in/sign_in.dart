@@ -201,7 +201,14 @@ class _SignInPageState extends State<SignInPage> {
       });
       await Provider.of<GoogleSignInController>(context, listen: false)
           .signIn();
-      Navigator.of(context).pushReplacementNamed('/employee_dashboard');
+
+      final userInfo = context.read<GoogleSignInController>().user;
+
+      if (userInfo.roleID == 4) {
+        Navigator.of(context).pushReplacementNamed('/employee_dashboard');
+      } else if (userInfo.roleID == 2) {
+        Navigator.of(context).pushReplacementNamed('/list_period');
+      }
     } catch (e) {
       setState(() {
         isAwaitingSignedIn = false;
