@@ -28,19 +28,17 @@ class _EmployeeDashBoardState extends State<EmployeeDashBoard> {
   late Auth auth;
   late ItemsPage itemsPage;
   late Map<int, List<ProductInMenu>> categoryItems;
-  late Size _size;
   int selectedCategoryId = 1;
 
   @override
   void initState() {
     auth = Provider.of<GoogleSignInController>(context, listen: false).auth!;
-    user = Provider.of<GoogleSignInController>(context, listen: false).user;
+    user = Provider.of<GoogleSignInController>(context, listen: false).user!;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    _size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
       extendBody: true,
@@ -49,9 +47,9 @@ class _EmployeeDashBoardState extends State<EmployeeDashBoard> {
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       body: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 150,
-            child: TopNavigationBar(size: _size),
+            child: TopNavigationBar(),
           ),
           Expanded(
             flex: 1,

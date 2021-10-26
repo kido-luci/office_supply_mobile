@@ -19,7 +19,7 @@ class ListPeriod extends StatelessWidget {
       backgroundColor: Colors.grey[350],
       body: FutureBuilder<dynamic>(
         future: PeriodService.getPeriodOfCompany(
-            companyId: userInfo.companyID, jwtToken: jwtToken!.jwtToken),
+            companyId: userInfo!.companyID, jwtToken: jwtToken!.jwtToken),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return ListView(

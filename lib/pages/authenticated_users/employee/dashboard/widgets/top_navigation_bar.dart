@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:office_supply_mobile_master/config/paths.dart';
 import 'package:office_supply_mobile_master/models/company/company.dart';
 import 'package:office_supply_mobile_master/models/department/department.dart';
+import 'package:office_supply_mobile_master/models/period/period.dart';
+import 'package:office_supply_mobile_master/models/product_in_menu/product_in_menu.dart';
 import 'package:office_supply_mobile_master/models/role/role.dart';
 import 'package:office_supply_mobile_master/models/user/user.dart';
 import 'package:office_supply_mobile_master/pages/guest/sign_in/sign_in.dart';
@@ -10,19 +12,18 @@ import 'package:office_supply_mobile_master/config/themes.dart';
 import 'package:office_supply_mobile_master/controllers/google_sign_in_controller.dart';
 
 class TopNavigationBar extends StatelessWidget {
-  const TopNavigationBar({Key? key, required this.size}) : super(key: key);
-  final Size size;
-
+  const TopNavigationBar({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final user =
         Provider.of<GoogleSignInController>(context, listen: false).user;
-    final userRole =
-        Provider.of<GoogleSignInController>(context, listen: false).userRole;
     final department =
         Provider.of<GoogleSignInController>(context, listen: false).department;
     final company =
         Provider.of<GoogleSignInController>(context, listen: false).company;
+    final period =
+        Provider.of<GoogleSignInController>(context, listen: false).period;
+    Size size = MediaQuery.of(context).size;
 
     return Stack(
       children: [
@@ -32,7 +33,7 @@ class TopNavigationBar extends StatelessWidget {
           alignment: Alignment.bottomCenter,
           child: Padding(
             padding: const EdgeInsets.only(bottom: 15),
-            child: searchTextField(),
+            child: searchTextField(size),
           ),
         ),
         Padding(
@@ -43,7 +44,7 @@ class TopNavigationBar extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  accountAvatar(photoUrl: user.avatarUrl),
+                  accountAvatar(photoUrl: user!.avatarUrl),
                   const SizedBox(
                     width: 10,
                   ),
@@ -52,13 +53,12 @@ class TopNavigationBar extends StatelessWidget {
                     child: user.companyID != null
                         ? accountInfoInCompany(
                             user: user,
-                            userRole: userRole,
                             department: department!,
                             company: company!,
+                            period: period!,
                           )
                         : accountInfo(
                             user: user,
-                            userRole: userRole,
                           ),
                   ),
                   Expanded(
@@ -112,10 +112,9 @@ class TopNavigationBar extends StatelessWidget {
 
   accountInfo({
     required User user,
-    required Role userRole,
   }) {
     String roleNameVietnamese;
-    switch (userRole.name) {
+    switch (user.roleName) {
       case 'Admin':
         roleNameVietnamese = 'Quản trị viên';
         break;
@@ -153,28 +152,6 @@ class TopNavigationBar extends StatelessWidget {
             ),
             textAlign: TextAlign.start,
           ),
-          //!deparment wallet
-          Row(
-            children: [
-              Text(
-                '1,642,000₫',
-                style: h6.copyWith(
-                  color: primaryLightColor,
-                  fontWeight: FontWeight.w300,
-                  fontSize: 14,
-                ),
-                textAlign: TextAlign.start,
-              ),
-              const SizedBox(
-                width: 5,
-              ),
-              Icon(
-                Icons.remove_red_eye,
-                color: Colors.yellow.shade800,
-                size: 14,
-              )
-            ],
-          ),
         ],
       ),
     );
@@ -182,12 +159,12 @@ class TopNavigationBar extends StatelessWidget {
 
   accountInfoInCompany({
     required User user,
-    required Role userRole,
     required Department department,
     required Company company,
+    required Period period,
   }) {
     String roleNameVietnamese;
-    switch (userRole.name) {
+    switch (user.roleName) {
       case 'Admin':
         roleNameVietnamese = 'Quản trị viên';
         break;
@@ -242,7 +219,7 @@ class TopNavigationBar extends StatelessWidget {
                 textAlign: TextAlign.start,
               ),
               Text(
-                '1,642,000₫',
+                ProductInMenu.format(price: period.remainingQuota),
                 style: h6.copyWith(
                   color: primaryLightColor,
                   fontWeight: FontWeight.w300,
@@ -292,7 +269,7 @@ class TopNavigationBar extends StatelessWidget {
         ),
       );
 
-  searchTextField() => SizedBox(
+  searchTextField(Size size) => SizedBox(
         width: size.width * 5 / 7,
         height: 40,
         child: const Material(

@@ -4,14 +4,14 @@ part 'period.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Period {
-  late int id;
-  late String name;
-  late int departmentID;
-  late DateTime fromTime;
-  late DateTime toTime;
-  late double quota;
-  late double remainingQuota;
-  late bool isExpired;
+  final int id;
+  final String name;
+  final int departmentID;
+  final DateTime fromTime;
+  final DateTime toTime;
+  final double quota;
+  final double remainingQuota;
+  final bool isExpired;
 
   Period(
       {required this.id,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:office_supply_mobile_master/config/paths.dart';
+import 'package:office_supply_mobile_master/config/router.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
 import 'package:office_supply_mobile_master/controllers/google_sign_in_controller.dart';
 import 'package:office_supply_mobile_master/pages/guest/widgets/background.dart';
@@ -202,12 +203,15 @@ class _SignInPageState extends State<SignInPage> {
       await Provider.of<GoogleSignInController>(context, listen: false)
           .signIn();
 
-      final userInfo = context.read<GoogleSignInController>().user;
+      final user = context.read<GoogleSignInController>().user;
 
-      if (userInfo.roleID == 4) {
-        Navigator.of(context).pushReplacementNamed('/employee_dashboard');
-      } else if (userInfo.roleID == 2) {
-        Navigator.of(context).pushReplacementNamed('/list_period');
+      switch (user!.roleID) {
+        case 2:
+          Navigator.of(context).pushReplacementNamed(listPeriodRouter);
+          break;
+        case 4:
+          Navigator.of(context).pushReplacementNamed(employeeDashboardRouter);
+          break;
       }
     } catch (e) {
       setState(() {
