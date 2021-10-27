@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
-import 'package:office_supply_mobile_master/controllers/cart_controller.dart';
 import 'package:office_supply_mobile_master/models/product_in_menu/product_in_menu.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/order_detail/widgets/order_item.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/order_detail/widgets/order_status.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/order_detail/widgets/top_navigation_bar.dart';
+import 'package:office_supply_mobile_master/providers/cart.dart';
 import 'package:provider/provider.dart';
 
 class OrderDetail extends StatefulWidget {
@@ -16,6 +16,14 @@ class OrderDetail extends StatefulWidget {
 }
 
 class _OrderDetailState extends State<OrderDetail> {
+  late CartProvider cartProvider;
+
+  @override
+  void initState() {
+    super.initState();
+    cartProvider = Provider.of<CartProvider>(context, listen: false);
+  }
+
   @override
   Widget build(BuildContext context) => Scaffold(
         body: Column(
@@ -133,13 +141,11 @@ class _OrderDetailState extends State<OrderDetail> {
                 style: h5.copyWith(fontWeight: FontWeight.bold),
               ),
             ),
+            //!Have to update
             Expanded(
               flex: 3,
               child: ListView(
-                children: Provider.of<CartController>(context, listen: false)
-                    .cart
-                    .cartItems
-                    .entries
+                children: cartProvider.cart.cartItems.entries
                     .map(
                       (e) => OrderItem(
                         productInMenu: e.value,
@@ -185,10 +191,7 @@ class _OrderDetailState extends State<OrderDetail> {
                   width: 10,
                 ),
                 Text(
-                  ProductInMenu.format(
-                      price: Provider.of<CartController>(context, listen: false)
-                          .cart
-                          .totalPrice),
+                  ProductInMenu.format(price: cartProvider.cart.totalPrice),
                   style: h4.copyWith(
                     height: 1.2,
                     fontWeight: FontWeight.bold,

@@ -4,8 +4,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:office_supply_mobile_master/config/paths.dart';
 import 'package:office_supply_mobile_master/config/router.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
-import 'package:office_supply_mobile_master/controllers/google_sign_in_controller.dart';
 import 'package:office_supply_mobile_master/pages/guest/widgets/background.dart';
+import 'package:office_supply_mobile_master/providers/sign_in.dart';
 import 'package:office_supply_mobile_master/widgets/rounded_input_field.dart';
 import 'package:office_supply_mobile_master/widgets/rounded_password_field.dart';
 import 'package:provider/provider.dart';
@@ -19,11 +19,13 @@ class SignInPage extends StatefulWidget {
 
 class _SignInPageState extends State<SignInPage> {
   var isAwaitingSignedIn = false;
+  late SignInProvider signInProvider;
 
   @override
   void initState() {
-    isSignedIn();
     super.initState();
+    signInProvider = Provider.of<SignInProvider>(context, listen: false);
+    isSignedIn();
   }
 
   @override
@@ -190,22 +192,18 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   isSignedIn() async =>
-      await Provider.of<GoogleSignInController>(context, listen: false)
-              .isSignedIn()
-          ? signIn.call()
-          : () {};
+      await signInProvider.isSignedIn() ? signIn.call() : () {};
 
   signIn() async {
     try {
       setState(() {
         isAwaitingSignedIn = true;
       });
-      await Provider.of<GoogleSignInController>(context, listen: false)
-          .signIn();
+      await signInProvider.signIn();
 
-      final user = context.read<GoogleSignInController>().user;
+      //final user = context.read<SignInProvider>().user;
 
-      switch (user!.roleID) {
+      switch (signInProvider.user!.roleID) {
         case 2:
           Navigator.of(context).pushReplacementNamed(listPeriodRouter);
           break;

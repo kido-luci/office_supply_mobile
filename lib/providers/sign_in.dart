@@ -13,7 +13,7 @@ import 'package:office_supply_mobile_master/services/period.dart';
 import 'package:office_supply_mobile_master/services/role.dart';
 import 'package:office_supply_mobile_master/services/user.dart';
 
-class GoogleSignInController with ChangeNotifier {
+class SignInProvider with ChangeNotifier {
   late GoogleSignInAccount? googleSignInAccount;
   late GoogleSignInAuthentication? googleSignInAuthentication;
   Auth? auth;

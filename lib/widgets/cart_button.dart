@@ -1,20 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
-import 'package:office_supply_mobile_master/controllers/cart_controller.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/shopping_cart/shopping_cart.dart';
+import 'package:office_supply_mobile_master/providers/cart.dart';
 import 'package:provider/provider.dart';
 
-class CartButton extends StatefulWidget {
+class CartButton extends StatelessWidget {
   const CartButton({Key? key}) : super(key: key);
 
   @override
-  _CartButtonState createState() => _CartButtonState();
-}
-
-class _CartButtonState extends State<CartButton> {
-  @override
   Widget build(BuildContext context) {
+    var cartProvider = Provider.of<CartProvider>(context, listen: true);
+
     return Container(
       width: 50,
       height: 50,
@@ -32,19 +29,18 @@ class _CartButtonState extends State<CartButton> {
               color: primaryColor,
             ),
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const ShoppingCart()));
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const ShoppingCart(),
+                ),
+              );
             },
           ),
           Align(
             alignment: Alignment.topRight,
             child: CircleAvatar(
               child: Text(
-                Provider.of<CartController>(context, listen: false)
-                    .cart
-                    .cartItems
-                    .length
-                    .toString(),
+                cartProvider.cart.cartItems.length.toString(),
                 style: h6.copyWith(
                   color: Colors.white,
                 ),

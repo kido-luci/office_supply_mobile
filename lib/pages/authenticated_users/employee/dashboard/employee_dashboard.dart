@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
-import 'package:office_supply_mobile_master/controllers/google_sign_in_controller.dart';
-import 'package:office_supply_mobile_master/models/auth/auth.dart';
 import 'package:office_supply_mobile_master/models/category/category.dart';
 import 'package:office_supply_mobile_master/models/items_page/items_page.dart';
 import 'package:office_supply_mobile_master/models/product_in_menu/product_in_menu.dart';
-import 'package:office_supply_mobile_master/models/user/user.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/dashboard/widgets/bottom_navigation_bar.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/dashboard/widgets/category.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/dashboard/widgets/stationery_grid_item.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/dashboard/widgets/top_navigation_bar.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/product_detail/product_detail.dart';
+import 'package:office_supply_mobile_master/providers/sign_in.dart';
 import 'package:office_supply_mobile_master/services/category.dart';
 import 'package:office_supply_mobile_master/services/product.dart';
 import 'package:office_supply_mobile_master/widgets/cart_button.dart';
@@ -24,17 +22,15 @@ class EmployeeDashBoard extends StatefulWidget {
 }
 
 class _EmployeeDashBoardState extends State<EmployeeDashBoard> {
-  late User user;
-  late Auth auth;
+  late SignInProvider signInProvider;
   late ItemsPage itemsPage;
   late Map<int, List<ProductInMenu>> categoryItems;
   int selectedCategoryId = 1;
 
   @override
   void initState() {
-    auth = Provider.of<GoogleSignInController>(context, listen: false).auth!;
-    user = Provider.of<GoogleSignInController>(context, listen: false).user!;
     super.initState();
+    signInProvider = Provider.of<SignInProvider>(context, listen: false);
   }
 
   @override
@@ -56,8 +52,10 @@ class _EmployeeDashBoardState extends State<EmployeeDashBoard> {
             child: Stack(
               children: [
                 FutureBuilder<Map<int, Category>>(
-                  future:
-                      getItemsPage(userID: user.id, jwtToken: auth.jwtToken),
+                  future: getItemsPage(
+                    userID: signInProvider.user!.id,
+                    jwtToken: signInProvider.auth!.jwtToken,
+                  ),
                   builder: (context, snapshot) {
                     switch (snapshot.connectionState) {
                       case ConnectionState.done:

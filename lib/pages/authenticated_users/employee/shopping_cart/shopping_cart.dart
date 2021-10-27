@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:office_supply_mobile_master/controllers/cart_controller.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/shopping_cart/widgets/bottom_navigation_bar.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/shopping_cart/widgets/cart_item.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/shopping_cart/widgets/top_navigation_bar.dart';
+import 'package:office_supply_mobile_master/providers/cart.dart';
 import 'package:provider/provider.dart';
 
 class ShoppingCart extends StatefulWidget {
@@ -13,6 +13,13 @@ class ShoppingCart extends StatefulWidget {
 }
 
 class _ShoppingCartState extends State<ShoppingCart> {
+  late CartProvider cartProvider;
+  @override
+  void initState() {
+    super.initState();
+    cartProvider = Provider.of<CartProvider>(context, listen: false);
+  }
+
   @override
   Widget build(BuildContext context) => Scaffold(
         body: Column(
@@ -28,10 +35,7 @@ class _ShoppingCartState extends State<ShoppingCart> {
             Expanded(
               flex: 1,
               child: ListView(
-                children: Provider.of<CartController>(context, listen: false)
-                    .cart
-                    .cartItems
-                    .entries
+                children: cartProvider.cart.cartItems.entries
                     .map(
                       (e) => CartItem(
                         productInMenu: e.value,
@@ -42,7 +46,7 @@ class _ShoppingCartState extends State<ShoppingCart> {
               ),
             ),
             BottomNavigation(
-              cart: Provider.of<CartController>(context, listen: false).cart,
+              cart: cartProvider.cart,
             ),
           ],
         ),

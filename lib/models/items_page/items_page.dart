@@ -20,7 +20,7 @@ class ItemsPage {
     required this.totalCount,
     required this.items,
   }) {
-    if (items != null) {
+    if (items != null && itemsObject == null) {
       itemsObject = List.empty(growable: true);
       for (var e in items!) {
         itemsObject!.add(

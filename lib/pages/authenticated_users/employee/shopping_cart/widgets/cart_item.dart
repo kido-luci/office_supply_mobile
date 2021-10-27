@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
-import 'package:office_supply_mobile_master/controllers/cart_controller.dart';
 import 'package:office_supply_mobile_master/models/product_in_menu/product_in_menu.dart';
+import 'package:office_supply_mobile_master/providers/cart.dart';
 import 'package:office_supply_mobile_master/widgets/circle_icon_button.dart';
 import 'package:provider/provider.dart';
 
@@ -20,6 +20,14 @@ class CartItem extends StatefulWidget {
 }
 
 class _CartItemState extends State<CartItem> {
+  late CartProvider cartProvider;
+
+  @override
+  void initState() {
+    super.initState();
+    cartProvider = Provider.of<CartProvider>(context, listen: false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -92,14 +100,11 @@ class _CartItemState extends State<CartItem> {
                   onTap: () {
                     if (widget.productInMenu.productObject!.quantity > 1) {
                       widget.productInMenu.addQuantity(quantity: -1);
-                      Provider.of<CartController>(context, listen: false)
-                          .cart
+                      cartProvider.cart
                           .addTotalPrice(price: -widget.productInMenu.price);
                     } else {
-                      Provider.of<CartController>(context, listen: false)
-                          .cart
-                          .removeItemFromCart(
-                              key: widget.productInMenu.productObject!.id);
+                      cartProvider.cart.removeItemFromCart(
+                          key: widget.productInMenu.productObject!.id);
                     }
                     widget.reloadShoppingCart.call();
                   },
@@ -124,8 +129,7 @@ class _CartItemState extends State<CartItem> {
                 CircleIconButton(
                   onTap: () {
                     widget.productInMenu.addQuantity(quantity: 1);
-                    Provider.of<CartController>(context, listen: false)
-                        .cart
+                    cartProvider.cart
                         .addTotalPrice(price: widget.productInMenu.price);
                     widget.reloadShoppingCart.call();
                   },
@@ -147,10 +151,8 @@ class _CartItemState extends State<CartItem> {
             ),
             child: InkWell(
               onTap: () {
-                Provider.of<CartController>(context, listen: false)
-                    .cart
-                    .removeItemFromCart(
-                        key: widget.productInMenu.productObject!.id);
+                cartProvider.cart.removeItemFromCart(
+                    key: widget.productInMenu.productObject!.id);
                 widget.reloadShoppingCart.call();
               },
               child: Container(

@@ -16,7 +16,7 @@ class TopNavigationBar extends StatelessWidget {
         CircleIconButton(
           onTap: () {
             Navigator.of(context).pop();
-            onTapBack.call();
+            //onTapBack.call();
           },
           margin: const EdgeInsets.only(top: 40, left: 10),
           iconData: Icons.arrow_back_ios,

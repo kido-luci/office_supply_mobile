@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:office_supply_mobile_master/controllers/google_sign_in_controller.dart';
 import 'package:office_supply_mobile_master/models/period/period.dart';
+import 'package:office_supply_mobile_master/providers/sign_in.dart';
 import 'package:office_supply_mobile_master/services/period.dart';
 import 'package:provider/provider.dart';
 
@@ -9,9 +9,8 @@ class ListPeriod extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userInfo = context.watch<GoogleSignInController>().user;
-    final jwtToken = context.watch<GoogleSignInController>().auth;
-
+    SignInProvider signInProvider =
+        Provider.of<SignInProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Periods'),
@@ -19,7 +18,9 @@ class ListPeriod extends StatelessWidget {
       backgroundColor: Colors.grey[350],
       body: FutureBuilder<dynamic>(
         future: PeriodService.getPeriodOfCompany(
-            companyId: userInfo!.companyID, jwtToken: jwtToken!.jwtToken),
+          companyId: signInProvider.user!.companyID,
+          jwtToken: signInProvider.auth!.jwtToken,
+        ),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return ListView(

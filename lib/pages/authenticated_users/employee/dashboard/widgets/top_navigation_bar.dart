@@ -4,25 +4,17 @@ import 'package:office_supply_mobile_master/models/company/company.dart';
 import 'package:office_supply_mobile_master/models/department/department.dart';
 import 'package:office_supply_mobile_master/models/period/period.dart';
 import 'package:office_supply_mobile_master/models/product_in_menu/product_in_menu.dart';
-import 'package:office_supply_mobile_master/models/role/role.dart';
 import 'package:office_supply_mobile_master/models/user/user.dart';
 import 'package:office_supply_mobile_master/pages/guest/sign_in/sign_in.dart';
+import 'package:office_supply_mobile_master/providers/sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
-import 'package:office_supply_mobile_master/controllers/google_sign_in_controller.dart';
 
 class TopNavigationBar extends StatelessWidget {
   const TopNavigationBar({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final user =
-        Provider.of<GoogleSignInController>(context, listen: false).user;
-    final department =
-        Provider.of<GoogleSignInController>(context, listen: false).department;
-    final company =
-        Provider.of<GoogleSignInController>(context, listen: false).company;
-    final period =
-        Provider.of<GoogleSignInController>(context, listen: false).period;
+    final signInProvider = Provider.of<SignInProvider>(context, listen: false);
     Size size = MediaQuery.of(context).size;
 
     return Stack(
@@ -44,21 +36,21 @@ class TopNavigationBar extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  accountAvatar(photoUrl: user!.avatarUrl),
+                  accountAvatar(photoUrl: signInProvider.user!.avatarUrl),
                   const SizedBox(
                     width: 10,
                   ),
                   Expanded(
                     flex: 6,
-                    child: user.companyID != null
+                    child: signInProvider.user!.companyID != null
                         ? accountInfoInCompany(
-                            user: user,
-                            department: department!,
-                            company: company!,
-                            period: period!,
+                            user: signInProvider.user!,
+                            department: signInProvider.department!,
+                            company: signInProvider.company!,
+                            period: signInProvider.period!,
                           )
                         : accountInfo(
-                            user: user,
+                            user: signInProvider.user!,
                           ),
                   ),
                   Expanded(
@@ -73,9 +65,7 @@ class TopNavigationBar extends StatelessWidget {
                         ),
                         signOutButton(
                           () {
-                            Provider.of<GoogleSignInController>(context,
-                                    listen: false)
-                                .signOut();
+                            signInProvider.signOut();
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
                                   builder: (context) => const SignInPage()),

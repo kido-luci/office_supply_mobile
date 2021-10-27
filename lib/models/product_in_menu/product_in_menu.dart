@@ -19,8 +19,9 @@ class ProductInMenu {
     required this.quantity,
     required this.price,
     required this.product,
+    this.productObject,
   }) {
-    if (product != null) {
+    if (product != null && productObject == null) {
       productObject = Product.fromJson(product!);
     }
   }

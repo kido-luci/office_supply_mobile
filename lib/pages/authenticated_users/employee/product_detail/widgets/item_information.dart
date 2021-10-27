@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
-import 'package:office_supply_mobile_master/controllers/cart_controller.dart';
 import 'package:office_supply_mobile_master/models/product_in_menu/product_in_menu.dart';
+import 'package:office_supply_mobile_master/providers/cart.dart';
 import 'package:office_supply_mobile_master/widgets/circle_icon_button.dart';
 import 'package:provider/provider.dart';
 
@@ -22,6 +22,13 @@ class ItemInformation extends StatefulWidget {
 
 class _ItemInformationState extends State<ItemInformation> {
   var _itemQuantity = 1;
+
+  late CartProvider cartProvider;
+  @override
+  void initState() {
+    super.initState();
+    cartProvider = Provider.of<CartProvider>(context, listen: false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -166,9 +173,7 @@ class _ItemInformationState extends State<ItemInformation> {
   itemAddToCart() => InkWell(
         onTap: () => setState(() {
           widget.productInMenu.setQuantity(quantity: _itemQuantity);
-          Provider.of<CartController>(context, listen: false)
-              .cart
-              .addItemToCart(productInMenu: widget.productInMenu);
+          cartProvider.addItemToCart(productInMenu: widget.productInMenu);
           widget.reloadProductDetail.call();
         }),
         child: Container(
