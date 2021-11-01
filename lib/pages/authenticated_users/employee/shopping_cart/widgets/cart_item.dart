@@ -5,7 +5,7 @@ import 'package:office_supply_mobile_master/providers/cart.dart';
 import 'package:office_supply_mobile_master/widgets/circle_icon_button.dart';
 import 'package:provider/provider.dart';
 
-class CartItem extends StatefulWidget {
+class CartItem extends StatelessWidget {
   const CartItem({
     Key? key,
     required this.productInMenu,
@@ -16,20 +16,10 @@ class CartItem extends StatefulWidget {
   final VoidCallback reloadShoppingCart;
 
   @override
-  _CartItemState createState() => _CartItemState();
-}
-
-class _CartItemState extends State<CartItem> {
-  late CartProvider cartProvider;
-
-  @override
-  void initState() {
-    super.initState();
-    cartProvider = Provider.of<CartProvider>(context, listen: false);
-  }
-
-  @override
   Widget build(BuildContext context) {
+    CartProvider cartProvider =
+        Provider.of<CartProvider>(context, listen: false);
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       decoration: BoxDecoration(
@@ -50,7 +40,7 @@ class _CartItemState extends State<CartItem> {
             borderRadius:
                 const BorderRadius.horizontal(left: Radius.circular(20)),
             child: Image.network(
-              widget.productInMenu.productObject!.imageUrl,
+              productInMenu.productObject!.imageUrl,
               height: 90,
               width: 90,
               fit: BoxFit.cover,
@@ -66,7 +56,7 @@ class _CartItemState extends State<CartItem> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.productInMenu.productObject!.name,
+                  productInMenu.productObject!.name,
                   style: h5.copyWith(
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
@@ -75,14 +65,13 @@ class _CartItemState extends State<CartItem> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 5),
                   child: Text(
-                    'Loại: ' + widget.productInMenu.productObject!.category!,
+                    'Loại: ' + productInMenu.productObject!.category!,
                     style: h5.copyWith(color: lightGrey),
                   ),
                 ),
                 Text(
                   ProductInMenu.format(
-                      price: widget.productInMenu.price *
-                          widget.productInMenu.quantity),
+                      price: productInMenu.price * productInMenu.quantity),
                   style: h5.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -90,6 +79,7 @@ class _CartItemState extends State<CartItem> {
               ],
             ),
           ),
+          //!Demo
           Expanded(
             flex: 2,
             child: Row(
@@ -97,16 +87,17 @@ class _CartItemState extends State<CartItem> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 CircleIconButton(
+                  //!Demo
                   onTap: () {
-                    if (widget.productInMenu.productObject!.quantity > 1) {
-                      widget.productInMenu.addQuantity(quantity: -1);
+                    if (productInMenu.productObject!.quantity > 1) {
+                      productInMenu.addQuantity(quantity: -1);
                       cartProvider.cart
-                          .addTotalPrice(price: -widget.productInMenu.price);
+                          .addTotalPrice(price: -productInMenu.price);
                     } else {
                       cartProvider.cart.removeItemFromCart(
-                          key: widget.productInMenu.productObject!.id);
+                          key: productInMenu.productObject!.id);
                     }
-                    widget.reloadShoppingCart.call();
+                    reloadShoppingCart.call();
                   },
                   margin: EdgeInsets.zero,
                   iconData: Icons.remove,
@@ -117,9 +108,9 @@ class _CartItemState extends State<CartItem> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Text(
-                    widget.productInMenu.quantity < 10
-                        ? '0' + widget.productInMenu.quantity.toString()
-                        : widget.productInMenu.quantity.toString(),
+                    productInMenu.quantity < 10
+                        ? '0' + productInMenu.quantity.toString()
+                        : productInMenu.quantity.toString(),
                     style: h5.copyWith(
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
@@ -127,11 +118,11 @@ class _CartItemState extends State<CartItem> {
                   ),
                 ),
                 CircleIconButton(
+                  //!demo
                   onTap: () {
-                    widget.productInMenu.addQuantity(quantity: 1);
-                    cartProvider.cart
-                        .addTotalPrice(price: widget.productInMenu.price);
-                    widget.reloadShoppingCart.call();
+                    productInMenu.addQuantity(quantity: 1);
+                    cartProvider.cart.addTotalPrice(price: productInMenu.price);
+                    reloadShoppingCart.call();
                   },
                   margin: EdgeInsets.zero,
                   iconData: Icons.add,
@@ -151,9 +142,9 @@ class _CartItemState extends State<CartItem> {
             ),
             child: InkWell(
               onTap: () {
-                cartProvider.cart.removeItemFromCart(
-                    key: widget.productInMenu.productObject!.id);
-                widget.reloadShoppingCart.call();
+                cartProvider.cart
+                    .removeItemFromCart(key: productInMenu.productObject!.id);
+                reloadShoppingCart.call();
               },
               child: Container(
                 color: primaryLightColor,

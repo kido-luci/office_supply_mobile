@@ -8,11 +8,9 @@ import 'package:office_supply_mobile_master/widgets/cart_button.dart';
 import 'package:palette_generator/palette_generator.dart';
 
 class ProductDetail extends StatefulWidget {
-  const ProductDetail(
-      {Key? key, required this.productInMenu, required this.onTapBack})
+  const ProductDetail({Key? key, required this.productInMenu})
       : super(key: key);
   final ProductInMenu productInMenu;
-  final VoidCallback onTapBack;
 
   @override
   State<ProductDetail> createState() => _ProductDetailState();
@@ -37,14 +35,13 @@ class _ProductDetailState extends State<ProductDetail> {
     return Scaffold(
       backgroundColor: imageMainColor,
       extendBody: true,
-      // ignore: prefer_const_constructors
       floatingActionButton: CartButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       body: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 80,
-            child: TopNavigationBar(onTapBack: widget.onTapBack),
+            child: TopNavigationBar(),
           ),
           Expanded(
             flex: 1,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
+import 'package:office_supply_mobile_master/models/order_history/order_history.dart';
 import 'package:office_supply_mobile_master/models/product_in_menu/product_in_menu.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/order_detail/widgets/order_item.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/order_detail/widgets/order_status.dart';
@@ -9,7 +10,9 @@ import 'package:office_supply_mobile_master/providers/cart.dart';
 import 'package:provider/provider.dart';
 
 class OrderDetail extends StatefulWidget {
-  const OrderDetail({Key? key}) : super(key: key);
+  final OrderHistory orderHistory;
+
+  const OrderDetail({Key? key, required this.orderHistory}) : super(key: key);
 
   @override
   _OrderDetailState createState() => _OrderDetailState();
@@ -112,7 +115,7 @@ class _OrderDetailState extends State<OrderDetail> {
                         ),
                       ),
                       Text(
-                        'Axbc1QQE',
+                        '#' + widget.orderHistory.id.toString(),
                         style: h6.copyWith(
                           color: Colors.black,
                           height: 1.5,
@@ -130,9 +133,13 @@ class _OrderDetailState extends State<OrderDetail> {
                 style: h5.copyWith(fontWeight: FontWeight.bold),
               ),
             ),
-            const Expanded(
+            Expanded(
               flex: 1,
-              child: OrderStatus(),
+              child: OrderStatus(
+                doneStep: widget.orderHistory.orderStatusID == 3
+                    ? 4
+                    : widget.orderHistory.orderStatusID,
+              ),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 10, left: 15),
@@ -167,7 +174,11 @@ class _OrderDetailState extends State<OrderDetail> {
                   ),
                 ),
                 Text(
-                  DateFormat('kk:mm - dd/MM/yyyy').format(DateTime.now()),
+                  DateFormat('kk:mm - dd/MM/yyyy').format(
+                    widget.orderHistory.createTime.add(
+                      const Duration(hours: 7),
+                    ),
+                  ),
                   style: h6.copyWith(
                     color: Colors.black,
                     height: 1.5,

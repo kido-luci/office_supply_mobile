@@ -23,13 +23,6 @@ class Period {
       required this.remainingQuota,
       required this.isExpired});
 
-  String toJson() {
-    Map<String, dynamic> periodMap = _$PeriodToJson(this);
-    var periodJson = jsonEncode(periodMap);
-    return periodJson;
-  }
-
-  factory Period.fromJson(Map<String, dynamic> periodMap) {
-    return _$PeriodFromJson(periodMap);
-  }
+  String toJson() => jsonEncode(_$PeriodToJson(this));
+  factory Period.fromJson(Map<String, dynamic> json) => _$PeriodFromJson(json);
 }

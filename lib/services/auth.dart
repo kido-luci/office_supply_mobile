@@ -17,7 +17,7 @@ class AuthService {
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(<String, String>{'idToken': idToken}),
+      body: jsonEncode({'idToken': idToken}),
     );
     switch (response.statusCode) {
       case 200:

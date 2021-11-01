@@ -18,12 +18,6 @@ class PeriodService {
       HttpHeaders.authorizationHeader: 'Bearer ' + jwtToken,
     });
 
-    // http.Request req = http.Request('GET', Uri.parse(api));     // initiate an http request
-    // req.body= 'data request';                                   // set body data request
-    // req.headers;                                                // get header
-    // req.contentLength=256;                                      // set content length
-    // req.send();                                                 // send request
-
     if (res.statusCode == 200) {
       Map<String, dynamic> jsonData = json.decode(res.body);
       final responseData = jsonData['responseData'] as Map<String, dynamic>;
@@ -42,7 +36,7 @@ class PeriodService {
   static Period parsePeriod(Map<String, dynamic> jsonData) =>
       Period.fromJson(jsonData);
 
-  static Future<Period> fetchPeriod({
+  static Future<Period?> fetchPeriod({
     required int departmentId,
     required String jwtToken,
   }) async {

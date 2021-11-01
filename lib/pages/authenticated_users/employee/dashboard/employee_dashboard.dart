@@ -98,9 +98,6 @@ class _EmployeeDashBoardState extends State<EmployeeDashBoard> {
                                                               ProductDetail(
                                                             productInMenu:
                                                                 e.value,
-                                                            onTapBack: () {
-                                                              setState(() {});
-                                                            },
                                                           ),
                                                         ),
                                                       );

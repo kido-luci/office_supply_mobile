@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:office_supply_mobile_master/models/period/period.dart';
+import 'package:office_supply_mobile_master/pages/authenticated_users/manager/period/widget/top_navigation_bar.dart';
 import 'package:office_supply_mobile_master/providers/sign_in.dart';
 import 'package:office_supply_mobile_master/services/period.dart';
 import 'package:provider/provider.dart';
@@ -12,24 +13,37 @@ class ListPeriod extends StatelessWidget {
     SignInProvider signInProvider =
         Provider.of<SignInProvider>(context, listen: false);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Periods'),
-      ),
+      // appBar: AppBar(
+      //   title: const Text('Periods'),
+      // ),
       backgroundColor: Colors.grey[350],
-      body: FutureBuilder<dynamic>(
-        future: PeriodService.getPeriodOfCompany(
-          companyId: signInProvider.user!.companyID,
-          jwtToken: signInProvider.auth!.jwtToken,
-        ),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return ListView(
-              children: createPeriodList(snapshot.data),
-            );
-          } else {
-            return const Center(child: Text('No Data'));
-          }
-        },
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const SizedBox(
+            height: 150,
+            child: TopNavigationBar(),
+          ),
+          Expanded(
+            flex: 1,
+            child: FutureBuilder<dynamic>(
+              future: PeriodService.getPeriodOfCompany(
+                companyId: signInProvider.user!.companyID,
+                jwtToken: signInProvider.auth!.jwtToken,
+              ),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return ListView(
+                    children: createPeriodList(snapshot.data),
+                  );
+                } else {
+                  return const Center(child: Text('No Data'));
+                }
+              },
+            ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
