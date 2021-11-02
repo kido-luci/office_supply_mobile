@@ -13,3 +13,6 @@ var signInRouter = '/sign_in';
 // manager
 var listPeriodRouter = '/list_period';
 var periodForm = '/period_form';
+
+// authenticated user
+var profile = '/profile';

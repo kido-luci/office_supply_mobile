@@ -8,7 +8,7 @@ class User {
   final String lastname;
   final DateTime? dateOfBirth;
   final bool? isMale;
-  final int? phoneNumber;
+  final String? phoneNumber;
   final String email;
   final String? address;
   final String avatarUrl;

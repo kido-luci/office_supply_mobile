@@ -4,6 +4,9 @@ import 'package:office_supply_mobile_master/config/router.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/dashboard/employee_dashboard.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/manager/period/list_period.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/manager/period/period_form.dart';
+import 'package:office_supply_mobile_master/pages/authenticated_users/manager/provider/companyProvide.dart';
+import 'package:office_supply_mobile_master/pages/authenticated_users/manager/provider/departmentProvide.dart';
+import 'package:office_supply_mobile_master/pages/authenticated_users/profile.dart';
 import 'package:office_supply_mobile_master/pages/guest/sign_in/sign_in.dart';
 import 'package:office_supply_mobile_master/providers/cart.dart';
 import 'package:office_supply_mobile_master/providers/sign_in.dart';
@@ -42,6 +45,12 @@ class MainApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => CartProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => DepartmentProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => CompanyProvider(),
+        )
       ],
       child: MaterialApp(
         title: 'Sign In',
@@ -51,6 +60,7 @@ class MainApp extends StatelessWidget {
           employeeDashboardRouter: (context) => const EmployeeDashBoard(),
           listPeriodRouter: (context) => const ListPeriod(),
           periodForm: (context) => const PeriodForm(),
+          profile: (context) => const Profile(),
         },
         theme: ThemeData(
           primaryColor: kPrimaryColor,

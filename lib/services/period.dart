@@ -4,19 +4,22 @@ import 'package:flutter/foundation.dart';
 import 'package:office_supply_mobile_master/config/paths.dart';
 import 'package:http/http.dart' as http;
 import 'package:office_supply_mobile_master/models/period/period.dart';
+import 'package:office_supply_mobile_master/models/period/periodPayload.dart';
+import 'package:office_supply_mobile_master/models/user/user.dart';
 
 class PeriodService {
   static const url = '/api/v1/periods';
   static const api = apiPath + url;
 
   static Future<List<Period>?> getPeriodOfCompany({
-    required int? companyId,
+    required User user,
     required String jwtToken,
   }) async {
-    final res = await http
-        .get(Uri.parse(api + '?CompanyID=' + companyId.toString()), headers: {
-      HttpHeaders.authorizationHeader: 'Bearer ' + jwtToken,
-    });
+    final res = await http.get(
+        Uri.parse(api + '?CompanyID=' + user.companyID.toString()),
+        headers: {
+          HttpHeaders.authorizationHeader: 'Bearer ' + jwtToken,
+        });
 
     if (res.statusCode == 200) {
       Map<String, dynamic> jsonData = json.decode(res.body);
@@ -29,6 +32,8 @@ class PeriodService {
         var period = Period.fromJson(periodMap);
         data.add(period);
       }
+
+      // await DepartmentAPI.getDepartments(userID: user.id, jwtToken: jwtToken, all: true);
       return data;
     }
   }
@@ -54,6 +59,28 @@ class PeriodService {
             parsePeriod, jsonDecode['responseData'] as Map<String, dynamic>);
       default:
         throw Exception('Error ${response.statusCode}, cannot get period');
+    }
+  }
+
+  static Future<Map<String, dynamic>?> createPeriod({
+    required String jwtToken,
+    required PeriodPayload periodPayload,
+  }) async {
+    final res = await http.post(
+      Uri.parse(api),
+      headers: {
+        HttpHeaders.authorizationHeader: 'Bearer ' + jwtToken,
+        'Content-type': 'application/json',
+      },
+      body: periodPayload.toJson(),
+    );
+
+    if (res.statusCode == 200) {
+      Map<String, dynamic> jsonData = json.decode(res.body);
+      return jsonData;
+    } else if (res.statusCode == 400) {
+      Map<String, dynamic> jsonData = json.decode(res.body);
+      return jsonData;
     }
   }
 }

@@ -72,6 +72,18 @@ class SignInProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  getUserInfo() async {
+    user = await UserService.fetchUser(
+      id: auth!.id,
+      jwtToken: auth!.jwtToken,
+    );
+    var role = await RoleService.fetchRole(
+      id: user!.roleID,
+      jwtToken: auth!.jwtToken,
+    );
+    user!.roleName = role.name;
+  }
+
   signOut() async {
     await GoogleSignIn().signOut();
     await FirebaseAuth.instance.signOut();

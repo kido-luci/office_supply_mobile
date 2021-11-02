@@ -14,7 +14,7 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
           ? null
           : DateTime.parse(json['dateOfBirth'] as String),
       isMale: json['isMale'] as bool?,
-      phoneNumber: json['phoneNumber'] as int?,
+      phoneNumber: json['phoneNumber'] as String?,
       email: json['email'] as String,
       address: json['address'] as String?,
       avatarUrl: json['avatarUrl'] as String,
