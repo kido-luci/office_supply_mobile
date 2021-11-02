@@ -176,31 +176,20 @@ class TopNavigationBar extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          //!user name && role
-          RichText(
-            text: TextSpan(
-              text: user.firstname + ' ' + user.lastname,
-              style: h6.copyWith(
-                color: primaryLightColor,
-                fontSize: 14,
-              ),
-              children: [
-                TextSpan(
-                  text: ' ($roleNameVietnamese)',
-                  style: h6.copyWith(
-                    color: primaryLightColor,
-                    fontWeight: FontWeight.w300,
-                    fontSize: 13,
-                  ),
-                )
-              ],
+          Text(
+            'Công ty: ${company.name}',
+            style: h6.copyWith(
+              color: primaryLightColor,
+              fontWeight: FontWeight.w300,
+              fontSize: 14,
             ),
+            textAlign: TextAlign.start,
           ),
           //!deparment wallet
           Row(
             children: [
               Text(
-                'Phòng: ${department.name} - ',
+                'Phòng ban: ${department.name} - ',
                 style: h6.copyWith(
                   color: primaryLightColor,
                   fontWeight: FontWeight.w300,
@@ -227,14 +216,25 @@ class TopNavigationBar extends StatelessWidget {
               )
             ],
           ),
-          Text(
-            'Công ty: ${company.name}',
-            style: h6.copyWith(
-              color: primaryLightColor,
-              fontWeight: FontWeight.w300,
-              fontSize: 14,
+          //!user name && role
+          RichText(
+            text: TextSpan(
+              text: user.firstname + ' ' + user.lastname,
+              style: h6.copyWith(
+                color: primaryLightColor,
+                fontSize: 14,
+              ),
+              children: [
+                TextSpan(
+                  text: ' ($roleNameVietnamese)',
+                  style: h6.copyWith(
+                    color: primaryLightColor,
+                    fontWeight: FontWeight.w300,
+                    fontSize: 13,
+                  ),
+                )
+              ],
             ),
-            textAlign: TextAlign.start,
           ),
         ],
       ),

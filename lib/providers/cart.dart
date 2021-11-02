@@ -9,4 +9,9 @@ class CartProvider extends ChangeNotifier {
     cart.addItemToCart(productInMenu: productInMenu);
     notifyListeners();
   }
+
+  removeAllItem() {
+    cart.cartItems = <int, ProductInMenu>{};
+    notifyListeners();
+  }
 }

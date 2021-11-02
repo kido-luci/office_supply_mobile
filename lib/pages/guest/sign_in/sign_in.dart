@@ -4,8 +4,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:office_supply_mobile_master/config/paths.dart';
 import 'package:office_supply_mobile_master/config/router.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
-import 'package:office_supply_mobile_master/pages/guest/widgets/background.dart';
+import 'package:office_supply_mobile_master/pages/guest/sign_in/widgets/background.dart';
 import 'package:office_supply_mobile_master/providers/sign_in.dart';
+import 'package:office_supply_mobile_master/widgets/loading_ui.dart';
 import 'package:office_supply_mobile_master/widgets/rounded_input_field.dart';
 import 'package:office_supply_mobile_master/widgets/rounded_password_field.dart';
 import 'package:provider/provider.dart';
@@ -168,22 +169,7 @@ class _SignInPageState extends State<SignInPage> {
             ),
             Visibility(
               visible: isAwaitingSignedIn,
-              child: Container(
-                height: _size.height,
-                width: _size.width,
-                alignment: Alignment.center,
-                color: Colors.black26,
-                child: const SizedBox(
-                  height: 60,
-                  width: 60,
-                  child: CircularProgressIndicator(
-                    color: primaryColor,
-                    backgroundColor: primaryLightColor,
-                    strokeWidth: 6,
-                    valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
-                  ),
-                ),
-              ),
+              child: const LoadingUI(),
             ),
           ],
         ),
@@ -200,8 +186,6 @@ class _SignInPageState extends State<SignInPage> {
         isAwaitingSignedIn = true;
       });
       await signInProvider.signIn();
-
-      //final user = context.read<SignInProvider>().user;
 
       switch (signInProvider.user!.roleID) {
         case 2:

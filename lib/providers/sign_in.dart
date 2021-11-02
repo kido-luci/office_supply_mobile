@@ -73,8 +73,9 @@ class SignInProvider with ChangeNotifier {
   }
 
   signOut() async {
-    await GoogleSignIn().signOut().then((e) => googleSignInAccount = e);
+    await GoogleSignIn().signOut();
     await FirebaseAuth.instance.signOut();
+    googleSignInAccount = null;
     googleSignInAuthentication = null;
     auth = null;
     user = null;

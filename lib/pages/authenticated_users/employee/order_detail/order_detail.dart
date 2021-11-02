@@ -1,30 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
+import 'package:office_supply_mobile_master/models/order_detail_history/order_detail_history.dart';
 import 'package:office_supply_mobile_master/models/order_history/order_history.dart';
 import 'package:office_supply_mobile_master/models/product_in_menu/product_in_menu.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/order_detail/widgets/order_item.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/order_detail/widgets/order_status.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/order_detail/widgets/top_navigation_bar.dart';
-import 'package:office_supply_mobile_master/providers/cart.dart';
-import 'package:provider/provider.dart';
 
 class OrderDetail extends StatefulWidget {
   final OrderHistory orderHistory;
-
-  const OrderDetail({Key? key, required this.orderHistory}) : super(key: key);
+  final List<OrderDetailHistory> orderdetailHistory;
+  const OrderDetail({
+    Key? key,
+    required this.orderHistory,
+    required this.orderdetailHistory,
+  }) : super(key: key);
 
   @override
   _OrderDetailState createState() => _OrderDetailState();
 }
 
 class _OrderDetailState extends State<OrderDetail> {
-  late CartProvider cartProvider;
+  var totalPrice = 0.0;
 
   @override
   void initState() {
     super.initState();
-    cartProvider = Provider.of<CartProvider>(context, listen: false);
+    for (var e in widget.orderdetailHistory) {
+      totalPrice += e.price * e.quantity;
+    }
   }
 
   @override
@@ -78,6 +83,45 @@ class _OrderDetailState extends State<OrderDetail> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
+                        'Phòng ban: ',
+                        style: h6.copyWith(
+                          color: Colors.black,
+                          height: 1.5,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        'Quản lý',
+                        style: h6.copyWith(
+                          color: Colors.black,
+                          height: 1.5,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      Text(
+                        'Mã đơn hàng: ',
+                        style: h6.copyWith(
+                          color: Colors.black,
+                          height: 1.5,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        '#' + widget.orderHistory.id.toString(),
+                        style: h6.copyWith(
+                          color: Colors.black,
+                          height: 1.5,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
                         'Người đặt hàng: ',
                         style: h6.copyWith(
                           color: Colors.black,
@@ -102,27 +146,6 @@ class _OrderDetailState extends State<OrderDetail> {
                       ),
                     ],
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Mã đơn hàng: ',
-                        style: h6.copyWith(
-                          color: Colors.black,
-                          height: 1.5,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        '#' + widget.orderHistory.id.toString(),
-                        style: h6.copyWith(
-                          color: Colors.black,
-                          height: 1.5,
-                        ),
-                      ),
-                    ],
-                  ),
                 ],
               ),
             ),
@@ -133,13 +156,10 @@ class _OrderDetailState extends State<OrderDetail> {
                 style: h5.copyWith(fontWeight: FontWeight.bold),
               ),
             ),
-            Expanded(
-              flex: 1,
-              child: OrderStatus(
-                doneStep: widget.orderHistory.orderStatusID == 3
-                    ? 4
-                    : widget.orderHistory.orderStatusID,
-              ),
+            OrderStatus(
+              doneStep: widget.orderHistory.orderStatusID == 3
+                  ? 4
+                  : widget.orderHistory.orderStatusID,
             ),
             Padding(
               padding: const EdgeInsets.only(top: 10, left: 15),
@@ -152,12 +172,12 @@ class _OrderDetailState extends State<OrderDetail> {
             Expanded(
               flex: 3,
               child: ListView(
-                children: cartProvider.cart.cartItems.entries
-                    .map(
-                      (e) => OrderItem(
-                        productInMenu: e.value,
-                      ),
-                    )
+                children: widget.orderdetailHistory
+                    .asMap()
+                    .entries
+                    .map((e) => OrderItem(
+                          orderDetailHistory: e.value,
+                        ))
                     .toList(),
               ),
             ),
@@ -202,7 +222,7 @@ class _OrderDetailState extends State<OrderDetail> {
                   width: 10,
                 ),
                 Text(
-                  ProductInMenu.format(price: cartProvider.cart.totalPrice),
+                  ProductInMenu.format(price: totalPrice),
                   style: h4.copyWith(
                     height: 1.2,
                     fontWeight: FontWeight.bold,

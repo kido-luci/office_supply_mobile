@@ -1,9 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:office_supply_mobile_master/models/order/order.dart';
 import 'package:office_supply_mobile_master/models/order_detail/order_detail.dart';
+import 'package:office_supply_mobile_master/models/order_detail_history/order_detail_history.dart';
 import 'package:office_supply_mobile_master/models/order_history/order_history.dart';
+import 'package:office_supply_mobile_master/models/product_in_menu/product_in_menu.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/shopping_cart/widgets/bottom_navigation_bar.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/shopping_cart/widgets/cart_item.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/shopping_cart/widgets/top_navigation_bar.dart';
@@ -12,6 +12,8 @@ import 'package:office_supply_mobile_master/providers/sign_in.dart';
 import 'package:office_supply_mobile_master/services/order.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/order_detail/order_detail.dart'
     as order_detail_page;
+import 'package:office_supply_mobile_master/services/order_detail.dart';
+import 'package:office_supply_mobile_master/widgets/loading_ui.dart';
 import 'package:provider/provider.dart';
 
 class ShoppingCart extends StatefulWidget {
@@ -24,6 +26,8 @@ class ShoppingCart extends StatefulWidget {
 class _ShoppingCartState extends State<ShoppingCart> {
   late CartProvider cartProvider;
   late SignInProvider signInProvider;
+  var isCheckOut = false;
+
   @override
   void initState() {
     super.initState();
@@ -33,39 +37,50 @@ class _ShoppingCartState extends State<ShoppingCart> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
+        body: Stack(
           children: [
-            SizedBox(
-              height: 80,
-              child: TopNavigationBar(onTapBack: () {
-                setState(() {});
-              }),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 80,
+                  child: TopNavigationBar(onTapBack: () {
+                    setState(() {});
+                  }),
+                ),
+                Expanded(
+                  flex: 1,
+                  //!demo
+                  child: ListView(
+                    children: cartProvider.cart.cartItems.entries
+                        .map(
+                          (e) => CartItem(
+                            productInMenu: e.value,
+                            reloadShoppingCart: () => setState(() {}),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ),
+                BottomNavigation(
+                  onTapCheckOut: checkOut,
+                  cart: cartProvider.cart,
+                ),
+              ],
             ),
-            Expanded(
-              flex: 1,
-              //!demo
-              child: ListView(
-                children: cartProvider.cart.cartItems.entries
-                    .map(
-                      (e) => CartItem(
-                        productInMenu: e.value,
-                        reloadShoppingCart: () => setState(() {}),
-                      ),
-                    )
-                    .toList(),
-              ),
-            ),
-            BottomNavigation(
-              onTapCheckOut: checkOut,
-              cart: cartProvider.cart,
+            Visibility(
+              visible: isCheckOut,
+              child: const LoadingUI(),
             ),
           ],
         ),
       );
 
   checkOut() async {
+    setState(() {
+      isCheckOut = true;
+    });
     Order order = Order(
       userOrderID: signInProvider.user!.id,
     );
@@ -78,13 +93,18 @@ class _ShoppingCartState extends State<ShoppingCart> {
     });
     OrderHistory orderHistory = await OrderService.postOrder(
         jsonBody: order.toJson(), jwtToken: signInProvider.auth!.jwtToken);
+    List<OrderDetailHistory> orderDetailHistory =
+        await OrderDetailService.fetchOrderDetail(
+            orderId: orderHistory.id, jwtToken: signInProvider.auth!.jwtToken);
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(
         builder: (context) => order_detail_page.OrderDetail(
           orderHistory: orderHistory,
+          orderdetailHistory: orderDetailHistory,
         ),
       ),
       ModalRoute.withName('/employee_dashboard'),
     );
+    cartProvider.removeAllItem();
   }
 }

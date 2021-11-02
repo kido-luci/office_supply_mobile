@@ -12,6 +12,7 @@ import 'package:office_supply_mobile_master/providers/sign_in.dart';
 import 'package:office_supply_mobile_master/services/category.dart';
 import 'package:office_supply_mobile_master/services/product.dart';
 import 'package:office_supply_mobile_master/widgets/cart_button.dart';
+import 'package:office_supply_mobile_master/widgets/loading_ui.dart';
 import 'package:provider/provider.dart';
 
 class EmployeeDashBoard extends StatefulWidget {
@@ -120,18 +121,7 @@ class _EmployeeDashBoardState extends State<EmployeeDashBoard> {
                       default:
                         return Container(
                           alignment: Alignment.center,
-                          color: Colors.white,
-                          child: const SizedBox(
-                            height: 60,
-                            width: 60,
-                            child: CircularProgressIndicator(
-                              color: primaryColor,
-                              backgroundColor: primaryLightColor,
-                              strokeWidth: 6,
-                              valueColor:
-                                  AlwaysStoppedAnimation<Color>(primaryColor),
-                            ),
-                          ),
+                          child: const LoadingUI(),
                         );
                     }
                   },
