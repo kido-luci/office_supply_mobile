@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:office_supply_mobile_master/config/paths.dart';
 import 'package:office_supply_mobile_master/models/items_page/items_page.dart';
 
-class ProductAPI {
+class ProductService {
   static const url = '/api/v1/products';
 
   static ItemsPage parseItemsPage(Map<String, dynamic> jsonData) =>

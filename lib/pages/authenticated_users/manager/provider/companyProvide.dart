@@ -11,7 +11,7 @@ class CompanyProvider with ChangeNotifier {
     required int id,
     required String jwtToken,
   }) async {
-    company = await CompanyAPI.fetchCompany(id: id, jwtToken: jwtToken);
+    company = await CompanyService.fetchCompany(id: id, jwtToken: jwtToken);
     notifyListeners();
   }
 }

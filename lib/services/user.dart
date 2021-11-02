@@ -6,7 +6,7 @@ import 'package:office_supply_mobile_master/config/paths.dart';
 import 'package:office_supply_mobile_master/models/user/user.dart';
 import 'package:office_supply_mobile_master/models/user/userUpdatePayload.dart';
 
-class UserAPI {
+class UserService {
   static const url = '/api/v1/users';
   static const api = apiPath + url;
 

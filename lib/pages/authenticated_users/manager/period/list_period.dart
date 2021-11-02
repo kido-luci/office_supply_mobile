@@ -1,12 +1,12 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers
+// ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:office_supply_mobile_master/controllers/google_sign_in_controller.dart';
 import 'package:office_supply_mobile_master/models/department/department.dart';
 import 'package:office_supply_mobile_master/models/period/period.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/manager/managerBottomNav.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/manager/provider/departmentProvide.dart';
-import 'package:office_supply_mobile_master/services/periodService.dart';
+import 'package:office_supply_mobile_master/providers/sign_in.dart';
+import 'package:office_supply_mobile_master/services/period.dart';
 import 'package:provider/provider.dart';
 
 class ListPeriod extends StatelessWidget {
@@ -14,16 +14,16 @@ class ListPeriod extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userInfo = context.watch<GoogleSignInController>().user;
-    final jwtToken = context.watch<GoogleSignInController>().auth;
+    final userInfo = context.watch<SignInProvider>().user;
+    final jwtToken = context.watch<SignInProvider>().auth;
 
     context.read<DepartmentProvider>().getDepartmentOfCompany(
-        userID: userInfo.id, jwtToken: jwtToken!.jwtToken, all: true);
+        userID: userInfo!.id, jwtToken: jwtToken!.jwtToken, all: true);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Periods'),
-      ),
+      // appBar: AppBar(
+      //   title: const Text('Periods'),
+      // ),
       backgroundColor: Colors.grey[350],
       body: FutureBuilder<dynamic>(
         future: PeriodService.getPeriodOfCompany(
@@ -39,7 +39,7 @@ class ListPeriod extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         onPressed: () {
           Navigator.pushNamed(context, '/period_form');
         },
@@ -54,6 +54,7 @@ class ListPeriod extends StatelessWidget {
     for (var p in data) {
       var item = InkWell(
         onTap: () {
+          // ignore: avoid_print
           print(p.id);
         },
         child: Padding(

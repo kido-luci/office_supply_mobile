@@ -2,9 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:office_supply_mobile_master/controllers/google_sign_in_controller.dart';
 import 'package:office_supply_mobile_master/models/user/userUpdatePayload.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/manager/managerBottomNav.dart';
+import 'package:office_supply_mobile_master/providers/sign_in.dart';
 import 'package:office_supply_mobile_master/services/user.dart';
 import 'package:provider/provider.dart';
 
@@ -31,11 +31,11 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    var userInfo = context.watch<GoogleSignInController>().user;
-    var jwtToken = context.watch<GoogleSignInController>().auth!;
-    var company = context.watch<GoogleSignInController>().company!;
-    var department = context.watch<GoogleSignInController>().department!;
-    var role = context.watch<GoogleSignInController>().userRole;
+    var userInfo = context.watch<SignInProvider>().user!;
+    var jwtToken = context.watch<SignInProvider>().auth!;
+    var company = context.watch<SignInProvider>().company!;
+    var department = context.watch<SignInProvider>().department!;
+    // var role = context.watch<SignInProvider>().userRole;
 
     // print(userInfo.toString());
 
@@ -102,7 +102,7 @@ class _ProfileState extends State<Profile> {
             // department
             createUserInfo('Department: ${department.name}'),
             // role
-            createUserInfo('Role: ${role.name}'),
+            createUserInfo('Role: ${userInfo.roleName}'),
             // first name
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -385,11 +385,11 @@ class _ProfileState extends State<Profile> {
         phoneNumber: phoneNumber,
         address: address);
 
-    var result = await UserAPI.updateUserInfo(
+    var result = await UserService.updateUserInfo(
         userId: userId, jwtToken: jwtToken, userPayload: userUpdatePayload);
 
     if (result!) {
-      context.read<GoogleSignInController>().getUserInfo();
+      context.read<SignInProvider>().getUserInfo();
     }
     return result;
   }

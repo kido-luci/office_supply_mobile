@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:office_supply_mobile_master/config/paths.dart';
+import 'package:office_supply_mobile_master/config/router.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
-import 'package:office_supply_mobile_master/controllers/google_sign_in_controller.dart';
-import 'package:office_supply_mobile_master/pages/guest/widgets/background.dart';
+import 'package:office_supply_mobile_master/pages/guest/sign_in/widgets/background.dart';
+import 'package:office_supply_mobile_master/providers/sign_in.dart';
+import 'package:office_supply_mobile_master/widgets/loading_ui.dart';
 import 'package:office_supply_mobile_master/widgets/rounded_input_field.dart';
 import 'package:office_supply_mobile_master/widgets/rounded_password_field.dart';
 import 'package:provider/provider.dart';
@@ -18,11 +20,13 @@ class SignInPage extends StatefulWidget {
 
 class _SignInPageState extends State<SignInPage> {
   var isAwaitingSignedIn = false;
+  late SignInProvider signInProvider;
 
   @override
   void initState() {
-    isSignedIn();
     super.initState();
+    signInProvider = Provider.of<SignInProvider>(context, listen: false);
+    isSignedIn();
   }
 
   @override
@@ -165,22 +169,7 @@ class _SignInPageState extends State<SignInPage> {
             ),
             Visibility(
               visible: isAwaitingSignedIn,
-              child: Container(
-                height: _size.height,
-                width: _size.width,
-                alignment: Alignment.center,
-                color: Colors.black26,
-                child: const SizedBox(
-                  height: 60,
-                  width: 60,
-                  child: CircularProgressIndicator(
-                    color: primaryColor,
-                    backgroundColor: primaryLightColor,
-                    strokeWidth: 6,
-                    valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
-                  ),
-                ),
-              ),
+              child: const LoadingUI(),
             ),
           ],
         ),
@@ -189,25 +178,22 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   isSignedIn() async =>
-      await Provider.of<GoogleSignInController>(context, listen: false)
-              .isSignedIn()
-          ? signIn.call()
-          : () {};
+      await signInProvider.isSignedIn() ? signIn.call() : () {};
 
   signIn() async {
     try {
       setState(() {
         isAwaitingSignedIn = true;
       });
-      await Provider.of<GoogleSignInController>(context, listen: false)
-          .signIn();
+      await signInProvider.signIn();
 
-      final userInfo = context.read<GoogleSignInController>().user;
-
-      if (userInfo.roleID == 4) {
-        Navigator.of(context).pushReplacementNamed('/employee_dashboard');
-      } else if (userInfo.roleID == 2) {
-        Navigator.of(context).pushReplacementNamed('/list_period');
+      switch (signInProvider.user!.roleID) {
+        case 2:
+          Navigator.of(context).pushReplacementNamed(listPeriodRouter);
+          break;
+        case 4:
+          Navigator.of(context).pushReplacementNamed(employeeDashboardRouter);
+          break;
       }
     } catch (e) {
       setState(() {

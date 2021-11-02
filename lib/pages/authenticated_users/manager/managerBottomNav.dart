@@ -27,7 +27,7 @@ class ManagerBottomNav extends StatelessWidget {
           case 0:
             Navigator.of(context).pushReplacementNamed('/list_period');
             break;
-          case 1:
+          case 2:
             Navigator.of(context).pushReplacementNamed('/profile');
             break;
           default:

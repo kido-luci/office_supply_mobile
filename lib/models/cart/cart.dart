@@ -12,15 +12,15 @@ class Cart {
     cartItems.update(
       productInMenu.productObject!.id,
       (value) => value.addQuantity(quantity: productInMenu.quantity),
-      // ifAbsent: () => Item(
-      //   name: item.name,
-      //   quantity: item.quantity,
-      //   imagePath: item.imagePath,
-      //   originalPrice: item.originalPrice,
-      //   discountPercent: item.discountPercent,
-      // ),
-      //!warming
-      ifAbsent: () => productInMenu,
+      ifAbsent: () => ProductInMenu(
+        menuID: productInMenu.menuID,
+        price: productInMenu.price,
+        product: productInMenu.product,
+        productID: productInMenu.productID,
+        quantity: productInMenu.quantity,
+        productObject: productInMenu.productObject,
+      ),
+      //ifAbsent: () => productInMenu,
     );
 
     totalPrice += productInMenu.quantity * productInMenu.price;

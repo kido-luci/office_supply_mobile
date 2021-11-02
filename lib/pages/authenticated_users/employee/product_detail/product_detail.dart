@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
@@ -8,11 +10,9 @@ import 'package:office_supply_mobile_master/widgets/cart_button.dart';
 import 'package:palette_generator/palette_generator.dart';
 
 class ProductDetail extends StatefulWidget {
-  const ProductDetail(
-      {Key? key, required this.productInMenu, required this.onTapBack})
+  const ProductDetail({Key? key, required this.productInMenu})
       : super(key: key);
   final ProductInMenu productInMenu;
-  final VoidCallback onTapBack;
 
   @override
   State<ProductDetail> createState() => _ProductDetailState();
@@ -37,41 +37,38 @@ class _ProductDetailState extends State<ProductDetail> {
     return Scaffold(
       backgroundColor: imageMainColor,
       extendBody: true,
-      // ignore: prefer_const_constructors
       floatingActionButton: CartButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      body: SafeArea(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 50,
-              child: TopNavigationBar(onTapBack: widget.onTapBack),
+      body: Column(
+        children: [
+          const SizedBox(
+            height: 80,
+            child: TopNavigationBar(),
+          ),
+          Expanded(
+            flex: 1,
+            child: Stack(
+              children: [
+                itemImage(_size),
+                itemSaleDiscount(),
+                Column(
+                  children: [
+                    const Spacer(
+                      flex: 1,
+                    ),
+                    Expanded(
+                      flex: 2,
+                      child: ItemInformation(
+                        productInMenu: widget.productInMenu,
+                        reloadProductDetail: () => setState(() {}),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-            Expanded(
-              flex: 1,
-              child: Stack(
-                children: [
-                  itemImage(_size),
-                  itemSaleDiscount(),
-                  Column(
-                    children: [
-                      const Spacer(
-                        flex: 1,
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: ItemInformation(
-                          productInMenu: widget.productInMenu,
-                          reloadProductDetail: () => setState(() {}),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }

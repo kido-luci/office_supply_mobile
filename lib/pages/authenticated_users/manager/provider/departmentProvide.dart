@@ -12,7 +12,7 @@ class DepartmentProvider with ChangeNotifier {
     required int userID,
     required bool all,
   }) async {
-    departments = (await DepartmentAPI.getDepartments(
+    departments = (await DepartmentService.getDepartments(
         userID: userID, jwtToken: jwtToken, all: all))!;
     notifyListeners();
   }

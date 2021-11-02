@@ -17,6 +17,8 @@ class User {
   final int? menuID;
   final int roleID;
   final bool isDelete;
+  @JsonKey(ignore: true)
+  late String roleName;
 
   User({
     required this.id,

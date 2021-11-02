@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
 import 'package:office_supply_mobile_master/models/cart/cart.dart';
 import 'package:office_supply_mobile_master/models/product_in_menu/product_in_menu.dart';
-import 'package:office_supply_mobile_master/pages/authenticated_users/employee/order_detail/order_detail.dart';
 
 class BottomNavigation extends StatelessWidget {
-  const BottomNavigation({Key? key, required this.cart}) : super(key: key);
+  const BottomNavigation(
+      {Key? key, required this.cart, required this.onTapCheckOut})
+      : super(key: key);
 
   final Cart cart;
+  final VoidCallback onTapCheckOut;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -79,13 +81,10 @@ class BottomNavigation extends StatelessWidget {
                     )
                   ],
                 ),
+                //!Thanh toan
                 child: InkWell(
                   onTap: () {
-                    Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (context) => const OrderDetail()),
-                      ModalRoute.withName('/employee_dashboard'),
-                    );
+                    onTapCheckOut.call();
                   },
                   child: Center(
                     child: Row(

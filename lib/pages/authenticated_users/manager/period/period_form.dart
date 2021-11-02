@@ -1,11 +1,11 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, curly_braces_in_flow_control_structures, deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'package:office_supply_mobile_master/controllers/google_sign_in_controller.dart';
 import 'package:office_supply_mobile_master/models/department/department.dart';
 import 'package:office_supply_mobile_master/models/period/periodPayload.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/manager/provider/departmentProvide.dart';
-import 'package:office_supply_mobile_master/services/periodService.dart';
+import 'package:office_supply_mobile_master/providers/sign_in.dart';
+import 'package:office_supply_mobile_master/services/period.dart';
 import 'package:provider/provider.dart';
 
 class PeriodForm extends StatefulWidget {
@@ -23,8 +23,8 @@ class _PeriodFormState extends State<PeriodForm> {
   @override
   Widget build(BuildContext context) {
     final departments = context.watch<DepartmentProvider>().departments;
-    final jwtToken = context.watch<GoogleSignInController>().auth!;
-    final company = context.watch<GoogleSignInController>().company;
+    final jwtToken = context.watch<SignInProvider>().auth!;
+    final company = context.watch<SignInProvider>().company;
 
     return Scaffold(
       appBar: AppBar(
@@ -318,7 +318,7 @@ class _PeriodFormState extends State<PeriodForm> {
   }
 
   DateTime fromDate = DateTime.now();
-  DateTime toDate = DateTime.now().add(Duration(days: 1));
+  DateTime toDate = DateTime.now().add(const Duration(days: 1));
 
   selectDate(BuildContext context, DateTime initDate, bool from) async {
     final DateTime? picked = await showDatePicker(

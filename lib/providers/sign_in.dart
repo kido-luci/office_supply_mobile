@@ -4,22 +4,23 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:office_supply_mobile_master/models/auth/auth.dart';
 import 'package:office_supply_mobile_master/models/company/company.dart';
 import 'package:office_supply_mobile_master/models/department/department.dart';
-import 'package:office_supply_mobile_master/models/role/role.dart';
+import 'package:office_supply_mobile_master/models/period/period.dart';
 import 'package:office_supply_mobile_master/models/user/user.dart' as app_user;
 import 'package:office_supply_mobile_master/services/auth.dart';
 import 'package:office_supply_mobile_master/services/company.dart';
 import 'package:office_supply_mobile_master/services/department.dart';
+import 'package:office_supply_mobile_master/services/period.dart';
 import 'package:office_supply_mobile_master/services/role.dart';
 import 'package:office_supply_mobile_master/services/user.dart';
 
-class GoogleSignInController with ChangeNotifier {
+class SignInProvider with ChangeNotifier {
   late GoogleSignInAccount? googleSignInAccount;
   late GoogleSignInAuthentication? googleSignInAuthentication;
   Auth? auth;
-  late app_user.User user;
-  late Role userRole;
-  Department? department;
+  late app_user.User? user;
   Company? company;
+  Department? department;
+  Period? period;
 
   Future<bool> isSignedIn() async => await GoogleSignIn().isSignedIn();
 
@@ -35,50 +36,64 @@ class GoogleSignInController with ChangeNotifier {
       ),
     );
 
-    await AuthAPI.fetchAuth(
+    await AuthService.fetchAuth(
       idToken: await FirebaseAuth.instance.currentUser!.getIdToken(),
       signOut: signOut,
     ).then((e) => auth = e);
 
     if (auth != null) {
-      await UserAPI.fetchUser(
+      await UserService.fetchUser(
         id: auth!.id,
         jwtToken: auth!.jwtToken,
       ).then((e) => user = e);
-      await RoleAPI.fetchRole(
-        id: user.roleID,
+      await RoleService.fetchRole(
+        id: user!.roleID,
         jwtToken: auth!.jwtToken,
-      ).then((e) => userRole = e);
+      ).then((e) => user!.roleName = e.name);
 
-      if (user.departmentID != null) {
-        await DepartmentAPI.fetchDepartment(
-          id: user.departmentID!,
-          jwtToken: auth!.jwtToken,
-        ).then((e) => department = e);
-      }
-
-      if (user.companyID != null) {
-        await CompanyAPI.fetchCompany(
-          id: user.departmentID!,
+      if (user!.companyID != null) {
+        await CompanyService.fetchCompany(
+          id: user!.departmentID!,
           jwtToken: auth!.jwtToken,
         ).then((e) => company = e);
+
+        if (user!.departmentID != null) {
+          await DepartmentService.fetchDepartment(
+            id: user!.departmentID!,
+            jwtToken: auth!.jwtToken,
+          ).then((e) => department = e);
+
+          await PeriodService.fetchPeriod(
+                  departmentId: user!.departmentID!, jwtToken: auth!.jwtToken)
+              .then((e) => period = e);
+        }
       }
     }
     notifyListeners();
   }
 
   getUserInfo() async {
-    user = await UserAPI.fetchUser(
+    user = await UserService.fetchUser(
       id: auth!.id,
       jwtToken: auth!.jwtToken,
     );
+    var role = await RoleService.fetchRole(
+      id: user!.roleID,
+      jwtToken: auth!.jwtToken,
+    );
+    user!.roleName = role.name;
   }
 
   signOut() async {
+    await GoogleSignIn().signOut();
+    await FirebaseAuth.instance.signOut();
+    googleSignInAccount = null;
     googleSignInAuthentication = null;
     auth = null;
-    await GoogleSignIn().signOut().then((e) => googleSignInAccount = e);
-    await FirebaseAuth.instance.signOut();
+    user = null;
+    company = null;
+    department = null;
+    period = null;
     notifyListeners();
   }
 }

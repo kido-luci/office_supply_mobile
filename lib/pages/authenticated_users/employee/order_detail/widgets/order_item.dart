@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
+import 'package:office_supply_mobile_master/models/order_detail_history/order_detail_history.dart';
 import 'package:office_supply_mobile_master/models/product_in_menu/product_in_menu.dart';
 
 class OrderItem extends StatelessWidget {
   const OrderItem({
     Key? key,
-    required this.productInMenu,
+    required this.orderDetailHistory,
   }) : super(key: key);
-  final ProductInMenu productInMenu;
+  final OrderDetailHistory orderDetailHistory;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -30,7 +31,7 @@ class OrderItem extends StatelessWidget {
               borderRadius:
                   const BorderRadius.horizontal(left: Radius.circular(20)),
               child: Image.network(
-                productInMenu.productObject!.imageUrl,
+                orderDetailHistory.productInMenuObject.productObject!.imageUrl,
                 height: 70,
                 width: 70,
                 fit: BoxFit.cover,
@@ -46,7 +47,7 @@ class OrderItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    productInMenu.productObject!.name,
+                    orderDetailHistory.productInMenuObject.productObject!.name,
                     style: h6.copyWith(
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
@@ -54,7 +55,9 @@ class OrderItem extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    'Loại: bút',
+                    'Loại: ' +
+                        orderDetailHistory.productInMenuObject.productObject!
+                            .categoryObject.name,
                     style: h6.copyWith(color: lightGrey, height: 1.5),
                   ),
                 ],
@@ -67,7 +70,7 @@ class OrderItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'Số lượng: ${productInMenu.quantity < 10 ? '0' + productInMenu.quantity.toString() : productInMenu.quantity.toString()}',
+                    'Số lượng: ${orderDetailHistory.quantity < 10 ? '0' + orderDetailHistory.quantity.toString() : orderDetailHistory.quantity.toString()}',
                     style: h6.copyWith(
                       color: Colors.black,
                       height: 1.5,
@@ -75,7 +78,8 @@ class OrderItem extends StatelessWidget {
                   ),
                   Text(
                     ProductInMenu.format(
-                        price: productInMenu.price * productInMenu.quantity),
+                        price: orderDetailHistory.price *
+                            orderDetailHistory.quantity),
                     style: h6.copyWith(
                       fontWeight: FontWeight.bold,
                       height: 1.5,
