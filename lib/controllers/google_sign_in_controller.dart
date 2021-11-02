@@ -67,6 +67,13 @@ class GoogleSignInController with ChangeNotifier {
     notifyListeners();
   }
 
+  getUserInfo() async {
+    user = await UserAPI.fetchUser(
+      id: auth!.id,
+      jwtToken: auth!.jwtToken,
+    );
+  }
+
   signOut() async {
     googleSignInAuthentication = null;
     auth = null;

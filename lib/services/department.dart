@@ -31,4 +31,30 @@ class DepartmentAPI {
         throw Exception('Error ${response.statusCode}, cannot get department');
     }
   }
+
+  static Future<List<Department>?> getDepartments({
+    required String jwtToken,
+    required int userID,
+    required bool all,
+  }) async {
+    String api = apiPath + url + '?userID=$userID&all=$all';
+
+    final res = await http.get(Uri.parse(api), headers: {
+      HttpHeaders.authorizationHeader: 'Bearer ' + jwtToken,
+    });
+
+    if (res.statusCode == 200) {
+      Map<String, dynamic> jsonData = json.decode(res.body);
+      final responseData = jsonData['responseData'] as List;
+
+      List<Department> data = List.empty(growable: true);
+      for (var item in responseData) {
+        var departmentMap = item as Map<String, dynamic>;
+        var departments = Department.fromJson(departmentMap);
+        data.add(departments);
+      }
+
+      return data;
+    }
+  }
 }

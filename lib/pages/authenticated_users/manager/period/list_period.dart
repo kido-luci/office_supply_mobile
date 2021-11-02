@@ -2,7 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:office_supply_mobile_master/controllers/google_sign_in_controller.dart';
+import 'package:office_supply_mobile_master/models/department/department.dart';
 import 'package:office_supply_mobile_master/models/period/period.dart';
+import 'package:office_supply_mobile_master/pages/authenticated_users/manager/managerBottomNav.dart';
+import 'package:office_supply_mobile_master/pages/authenticated_users/manager/provider/departmentProvide.dart';
 import 'package:office_supply_mobile_master/services/periodService.dart';
 import 'package:provider/provider.dart';
 
@@ -14,6 +17,9 @@ class ListPeriod extends StatelessWidget {
     final userInfo = context.watch<GoogleSignInController>().user;
     final jwtToken = context.watch<GoogleSignInController>().auth;
 
+    context.read<DepartmentProvider>().getDepartmentOfCompany(
+        userID: userInfo.id, jwtToken: jwtToken!.jwtToken, all: true);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Periods'),
@@ -21,11 +27,11 @@ class ListPeriod extends StatelessWidget {
       backgroundColor: Colors.grey[350],
       body: FutureBuilder<dynamic>(
         future: PeriodService.getPeriodOfCompany(
-            companyId: userInfo.companyID, jwtToken: jwtToken!.jwtToken),
+            user: userInfo, jwtToken: jwtToken.jwtToken),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return ListView(
-              children: createPeriodList(snapshot.data),
+              children: createPeriodList(context, snapshot.data),
             );
           } else {
             return Center(child: Text('No Data'));
@@ -38,10 +44,11 @@ class ListPeriod extends StatelessWidget {
           Navigator.pushNamed(context, '/period_form');
         },
       ),
+      bottomNavigationBar: ManagerBottomNav(),
     );
   }
 
-  List<Widget> createPeriodList(List<Period> data) {
+  List<Widget> createPeriodList(BuildContext context, List<Period> data) {
     List<Widget> list = List.empty(growable: true);
 
     for (var p in data) {
@@ -65,67 +72,155 @@ class ListPeriod extends StatelessWidget {
                   // Text('ID: ' + p.id.toString()),
                   Row(
                     children: [
-                      Icon(Icons.account_circle_rounded),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 5),
+                        child: Icon(Icons.account_circle_rounded),
+                      ),
                       Text(
                         'Name:',
                         style: TextStyle(fontSize: 18),
                       ),
-                      Text(
-                        p.name,
-                        style: TextStyle(fontSize: 18),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 5),
+                        child: Text(
+                          p.name,
+                          style: TextStyle(fontSize: 18),
+                        ),
                       ),
                     ],
                   ),
+                  SizedBox(
+                    height: 5,
+                  ),
                   Row(
                     children: [
-                      Icon(Icons.schedule_outlined),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 5),
+                        child: Icon(Icons.business),
+                      ),
+                      Text(
+                        'Department:',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 5),
+                        child: Text(
+                          getDepartmentName(context, p.departmentID)!.name,
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 5),
+                        child: Icon(Icons.schedule_outlined),
+                      ),
                       Text(
                         'From Time:',
                         style: TextStyle(fontSize: 18),
                       ),
-                      Text(
-                        p.fromTime.toString(),
-                        style: TextStyle(fontSize: 18),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 5),
+                        child: Text(
+                          '${p.fromTime.year}-${p.fromTime.month}-${p.fromTime.day}',
+                          style: TextStyle(fontSize: 18),
+                        ),
                       ),
                     ],
                   ),
+                  SizedBox(
+                    height: 5,
+                  ),
                   Row(
                     children: [
-                      Icon(Icons.schedule_outlined),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 5),
+                        child: Icon(Icons.schedule_outlined),
+                      ),
                       Text(
                         'To Time:',
                         style: TextStyle(fontSize: 18),
                       ),
-                      Text(
-                        p.toTime.toString(),
-                        style: TextStyle(fontSize: 18),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 5),
+                        child: Text(
+                          '${p.toTime.year}-${p.toTime.month}-${p.toTime.day}',
+                          style: TextStyle(fontSize: 18),
+                        ),
                       ),
                     ],
                   ),
+                  SizedBox(
+                    height: 5,
+                  ),
                   Row(
                     children: [
-                      Icon(Icons.attach_money_outlined),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 5),
+                        child: Icon(Icons.attach_money_outlined),
+                      ),
                       Text(
                         'Quota:',
                         style: TextStyle(fontSize: 18),
                       ),
-                      Text(
-                        p.quota.toString(),
-                        style: TextStyle(fontSize: 18),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 5),
+                        child: Text(
+                          '${p.quota} VNĐ',
+                          style: TextStyle(fontSize: 18),
+                        ),
                       ),
                     ],
                   ),
+                  SizedBox(
+                    height: 5,
+                  ),
                   Row(
                     children: [
-                      Icon(Icons.attach_money_outlined),
-                      Text(
-                        'Remaining Quota',
-                        style: TextStyle(fontSize: 18),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 5),
+                        child: Icon(Icons.attach_money_outlined),
                       ),
                       Text(
-                        p.remainingQuota.toString(),
+                        'Remaining Quota:',
                         style: TextStyle(fontSize: 18),
                       ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 5),
+                        child: Text(
+                          '${p.remainingQuota} VNĐ',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 5),
+                        child: Icon(Icons.timer_off),
+                      ),
+                      Text(
+                        'Expired:',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 5),
+                        child: Text(
+                          '${p.isExpired}',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      )
                     ],
                   )
                 ],
@@ -137,5 +232,16 @@ class ListPeriod extends StatelessWidget {
       list.add(item);
     }
     return list;
+  }
+
+  Department? getDepartmentName(BuildContext context, int departmentId) {
+    final departments = context.watch<DepartmentProvider>().departments;
+
+    for (var item in departments) {
+      if (item.id == departmentId) {
+        return item;
+      }
+    }
+    return null;
   }
 }
