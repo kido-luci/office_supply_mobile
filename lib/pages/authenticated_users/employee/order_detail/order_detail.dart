@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
 import 'package:office_supply_mobile_master/models/company/company.dart';
+import 'package:office_supply_mobile_master/models/department/department.dart';
 import 'package:office_supply_mobile_master/models/order_detail_history/order_detail_history.dart';
 import 'package:office_supply_mobile_master/models/order_history/order_history.dart';
 import 'package:office_supply_mobile_master/models/product_in_menu/product_in_menu.dart';
@@ -15,6 +16,7 @@ class OrderDetail extends StatefulWidget {
   final List<OrderDetailHistory> orderdetailHistory;
   final User userOrder;
   final Company company;
+  final Department department;
 
   const OrderDetail({
     Key? key,
@@ -22,6 +24,7 @@ class OrderDetail extends StatefulWidget {
     required this.orderdetailHistory,
     required this.userOrder,
     required this.company,
+    required this.department,
   }) : super(key: key);
 
   @override
@@ -98,7 +101,7 @@ class _OrderDetailState extends State<OrderDetail> {
                         ),
                       ),
                       Text(
-                        'Quản lý',
+                        widget.department.name,
                         style: h6.copyWith(
                           color: Colors.black,
                           height: 1.5,
