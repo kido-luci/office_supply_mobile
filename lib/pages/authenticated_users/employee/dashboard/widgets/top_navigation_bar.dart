@@ -11,12 +11,13 @@ import 'package:provider/provider.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
 
 class TopNavigationBar extends StatelessWidget {
-  const TopNavigationBar({Key? key}) : super(key: key);
+  const TopNavigationBar({Key? key, this.onTap}) : super(key: key);
+  final Function({required String search})? onTap;
   @override
   Widget build(BuildContext context) {
     final signInProvider = Provider.of<SignInProvider>(context, listen: false);
     Size size = MediaQuery.of(context).size;
-
+    String search = "";
     return Stack(
       children: [
         backgroundImage(imagePath + sweetHomePNG),
@@ -25,7 +26,7 @@ class TopNavigationBar extends StatelessWidget {
           alignment: Alignment.bottomCenter,
           child: Padding(
             padding: const EdgeInsets.only(bottom: 15),
-            child: searchTextField(size),
+            child: searchTextField(size, search),
           ),
         ),
         Padding(
@@ -259,30 +260,35 @@ class TopNavigationBar extends StatelessWidget {
         ),
       );
 
-  searchTextField(Size size) => SizedBox(
+  searchTextField(Size size, String search) => SizedBox(
         width: size.width * 5 / 7,
         height: 40,
-        child: const Material(
+        child: Material(
           elevation: 5,
           shadowColor: primaryColor,
-          borderRadius: BorderRadius.all(
+          borderRadius: const BorderRadius.all(
             Radius.circular(25),
           ),
           child: TextField(
             obscureText: false,
             autofocus: false,
+            onChanged: (text) {
+              search = text;
+            },
             decoration: InputDecoration(
               isCollapsed: true,
-              prefixIcon: Icon(
-                Icons.search,
+              prefixIcon: IconButton(
+                icon: const Icon(Icons.search),
+                onPressed: () {
+                  onTap!.call(search: search);
+                },
                 color: primaryColor,
-                size: 18,
               ),
-              suffixIcon: Icon(
-                Icons.list,
-                color: primaryColor,
-                size: 18,
-              ),
+              // suffixIcon: Icon(
+              //   Icons.list,
+              //   color: primaryColor,
+              //   size: 18,
+              // ),
               hintText: 'Tìm loại văn phòng phẩm',
               hintStyle: TextStyle(
                 fontSize: 10,
