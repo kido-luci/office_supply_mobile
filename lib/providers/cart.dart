@@ -14,4 +14,9 @@ class CartProvider extends ChangeNotifier {
     cart.cartItems = <int, ProductInMenu>{};
     notifyListeners();
   }
+
+  removeItemFromCart({required int key}) {
+    cart.removeItemFromCart(key: key);
+    notifyListeners();
+  }
 }

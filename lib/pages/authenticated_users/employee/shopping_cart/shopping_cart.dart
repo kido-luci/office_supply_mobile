@@ -191,6 +191,7 @@ class _ShoppingCartState extends State<ShoppingCart> {
       MaterialPageRoute(
         builder: (context) => order_detail_page.OrderDetail(
           orderHistory: orderHistory,
+          orderHistoryItem: null,
           orderdetailHistory: orderDetailHistory,
           userOrder: user,
           company: company,

@@ -5,6 +5,7 @@ import 'package:office_supply_mobile_master/models/company/company.dart';
 import 'package:office_supply_mobile_master/models/department/department.dart';
 import 'package:office_supply_mobile_master/models/order_detail_history/order_detail_history.dart';
 import 'package:office_supply_mobile_master/models/order_history/order_history.dart';
+import 'package:office_supply_mobile_master/models/order_history_item/order_history_item.dart';
 import 'package:office_supply_mobile_master/models/product_in_menu/product_in_menu.dart';
 import 'package:office_supply_mobile_master/models/user/user.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/order_detail/widgets/order_item.dart';
@@ -12,7 +13,8 @@ import 'package:office_supply_mobile_master/pages/authenticated_users/employee/o
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/order_detail/widgets/top_navigation_bar.dart';
 
 class OrderDetail extends StatefulWidget {
-  final OrderHistory orderHistory;
+  final OrderHistory? orderHistory;
+  final OrderHistoryItem? orderHistoryItem;
   final List<OrderDetailHistory> orderdetailHistory;
   final User userOrder;
   final Company company;
@@ -21,6 +23,7 @@ class OrderDetail extends StatefulWidget {
   const OrderDetail({
     Key? key,
     required this.orderHistory,
+    required this.orderHistoryItem,
     required this.orderdetailHistory,
     required this.userOrder,
     required this.company,
@@ -118,13 +121,21 @@ class _OrderDetailState extends State<OrderDetail> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Text(
-                        '#' + widget.orderHistory.id.toString(),
-                        style: h6.copyWith(
-                          color: Colors.black,
-                          height: 1.5,
-                        ),
-                      ),
+                      widget.orderHistory != null
+                          ? Text(
+                              '#' + widget.orderHistory!.id.toString(),
+                              style: h6.copyWith(
+                                color: Colors.black,
+                                height: 1.5,
+                              ),
+                            )
+                          : Text(
+                              '#' + widget.orderHistoryItem!.id.toString(),
+                              style: h6.copyWith(
+                                color: Colors.black,
+                                height: 1.5,
+                              ),
+                            ),
                     ],
                   ),
                   Row(
@@ -168,11 +179,17 @@ class _OrderDetailState extends State<OrderDetail> {
                 style: h5.copyWith(fontWeight: FontWeight.bold),
               ),
             ),
-            OrderStatus(
-              doneStep: widget.orderHistory.orderStatusID == 3
-                  ? 4
-                  : widget.orderHistory.orderStatusID,
-            ),
+            widget.orderHistory != null
+                ? OrderStatus(
+                    doneStep: widget.orderHistory!.orderStatusID == 3
+                        ? 4
+                        : widget.orderHistory!.orderStatusID,
+                  )
+                : OrderStatus(
+                    doneStep: widget.orderHistoryItem!.orderStatusID == 3
+                        ? 4
+                        : widget.orderHistoryItem!.orderStatusID,
+                  ),
             Padding(
               padding: const EdgeInsets.only(top: 10, left: 15),
               child: Text(
@@ -180,7 +197,6 @@ class _OrderDetailState extends State<OrderDetail> {
                 style: h5.copyWith(fontWeight: FontWeight.bold),
               ),
             ),
-            //!Have to update
             Expanded(
               flex: 3,
               child: ListView(
@@ -206,11 +222,14 @@ class _OrderDetailState extends State<OrderDetail> {
                   ),
                 ),
                 Text(
-                  DateFormat('kk:mm - dd/MM/yyyy').format(
-                    widget.orderHistory.createTime.add(
-                      const Duration(hours: 7),
-                    ),
-                  ),
+                  DateFormat('kk:mm - dd/MM/yyyy')
+                      .format(widget.orderHistory != null
+                          ? widget.orderHistory!.createTime.add(
+                              const Duration(hours: 7),
+                            )
+                          : widget.orderHistoryItem!.createTime.add(
+                              const Duration(hours: 7),
+                            )),
                   style: h6.copyWith(
                     color: Colors.black,
                     height: 1.5,

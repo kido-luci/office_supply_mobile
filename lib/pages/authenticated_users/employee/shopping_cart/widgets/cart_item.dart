@@ -136,8 +136,8 @@ class CartItem extends StatelessWidget {
             ),
             child: InkWell(
               onTap: () {
-                cartProvider.cart
-                    .removeItemFromCart(key: productInMenu.productObject!.id);
+                cartProvider.removeItemFromCart(
+                    key: productInMenu.productObject!.id);
                 reloadShoppingCart.call();
               },
               child: Container(
