@@ -79,7 +79,6 @@ class CartItem extends StatelessWidget {
               ],
             ),
           ),
-          //!Demo
           Expanded(
             flex: 2,
             child: Row(
@@ -87,7 +86,6 @@ class CartItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 CircleIconButton(
-                  //!Demo
                   onTap: () {
                     if (productInMenu.productObject!.quantity > 1) {
                       productInMenu.addQuantity(quantity: -1);

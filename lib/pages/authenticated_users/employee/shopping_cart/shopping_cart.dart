@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:office_supply_mobile_master/models/company/company.dart';
+import 'package:office_supply_mobile_master/models/department/department.dart';
 import 'package:office_supply_mobile_master/models/order/order.dart';
 import 'package:office_supply_mobile_master/models/order_detail/order_detail.dart';
 import 'package:office_supply_mobile_master/models/order_detail_history/order_detail_history.dart';
@@ -11,6 +12,7 @@ import 'package:office_supply_mobile_master/pages/authenticated_users/employee/s
 import 'package:office_supply_mobile_master/providers/cart.dart';
 import 'package:office_supply_mobile_master/providers/sign_in.dart';
 import 'package:office_supply_mobile_master/services/company.dart';
+import 'package:office_supply_mobile_master/services/department.dart';
 import 'package:office_supply_mobile_master/services/order.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/order_detail/order_detail.dart'
     as order_detail_page;
@@ -103,6 +105,11 @@ class _ShoppingCartState extends State<ShoppingCart> {
       jwtToken: signInProvider.auth!.jwtToken,
     );
 
+    Department department = await DepartmentService.fetchDepartment(
+      id: user.departmentID!,
+      jwtToken: signInProvider.auth!.jwtToken,
+    );
+
     List<OrderDetailHistory> orderDetailHistory =
         await OrderDetailService.fetchOrderDetail(
             orderId: orderHistory.id, jwtToken: signInProvider.auth!.jwtToken);
@@ -114,6 +121,7 @@ class _ShoppingCartState extends State<ShoppingCart> {
           orderdetailHistory: orderDetailHistory,
           userOrder: user,
           company: company,
+          department: department,
         ),
       ),
       ModalRoute.withName('/employee_dashboard'),
