@@ -87,15 +87,12 @@ class CartItem extends StatelessWidget {
               children: [
                 CircleIconButton(
                   onTap: () {
-                    if (productInMenu.productObject!.quantity > 1) {
+                    if (productInMenu.quantity > 1) {
                       productInMenu.addQuantity(quantity: -1);
                       cartProvider.cart
                           .addTotalPrice(price: -productInMenu.price);
-                    } else {
-                      cartProvider.cart.removeItemFromCart(
-                          key: productInMenu.productObject!.id);
+                      reloadShoppingCart.call();
                     }
-                    reloadShoppingCart.call();
                   },
                   margin: EdgeInsets.zero,
                   iconData: Icons.remove,
@@ -116,7 +113,6 @@ class CartItem extends StatelessWidget {
                   ),
                 ),
                 CircleIconButton(
-                  //!demo
                   onTap: () {
                     productInMenu.addQuantity(quantity: 1);
                     cartProvider.cart.addTotalPrice(price: productInMenu.price);

@@ -27,8 +27,8 @@ class _EmployeeDashBoardState extends State<EmployeeDashBoard> {
   late SignInProvider signInProvider;
   late ItemsPage itemsPage;
   late Map<int, List<ProductInMenu>> categoryItems;
-  late String searchItem = "";
-  int selectedCategoryId = 1;
+  String searchItem = "";
+  int selectedCategoryId = -1;
 
   @override
   void initState() {
@@ -41,17 +41,16 @@ class _EmployeeDashBoardState extends State<EmployeeDashBoard> {
     return Scaffold(
       backgroundColor: Colors.white,
       extendBody: true,
-      // ignore: prefer_const_constructors
-      floatingActionButton: CartButton(),
+      floatingActionButton: const CartButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       body: Column(
         children: [
           SizedBox(
             height: 150,
             child: TopNavigationBar(
-              onTap: ({required String search}) {
+              onTapSearch: ({required String searchItem}) {
                 setState(() {
-                  searchItem = search;
+                  this.searchItem = searchItem;
                 });
               },
             ),
@@ -70,7 +69,7 @@ class _EmployeeDashBoardState extends State<EmployeeDashBoard> {
                     switch (snapshot.connectionState) {
                       case ConnectionState.done:
                         return categoryItems[selectedCategoryId] == null
-                            ? Center(
+                            ? SingleChildScrollView(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -79,13 +78,21 @@ class _EmployeeDashBoardState extends State<EmployeeDashBoard> {
                                       padding: const EdgeInsets.only(top: 100),
                                       child: Image.asset(
                                         imagePath + notFoundPNG,
-                                        height: 200,
+                                        height: 180,
                                       ),
                                     ),
-                                    Text(
-                                      'Không tìm thấy sản phẩm "$searchItem"',
-                                      style: h4,
-                                      textAlign: TextAlign.center,
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 70,
+                                        vertical: 30,
+                                      ),
+                                      child: Text(
+                                        'Không tìm thấy sản phẩm phù hợp với "$searchItem"',
+                                        style: h5.copyWith(
+                                          fontStyle: FontStyle.italic,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -216,7 +223,9 @@ class _EmployeeDashBoardState extends State<EmployeeDashBoard> {
       });
     });
 
-    //selectedCategoryId = categories.keys.elementAt(0);
+    if (selectedCategoryId == -1) {
+      selectedCategoryId = categories.keys.elementAt(0);
+    }
 
     return categories;
   }

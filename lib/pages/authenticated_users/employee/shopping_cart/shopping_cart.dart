@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:office_supply_mobile_master/config/themes.dart';
 import 'package:office_supply_mobile_master/models/company/company.dart';
 import 'package:office_supply_mobile_master/models/department/department.dart';
 import 'package:office_supply_mobile_master/models/order/order.dart';
@@ -48,30 +50,101 @@ class _ShoppingCartState extends State<ShoppingCart> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 80,
-                  child: TopNavigationBar(onTapBack: () {
-                    setState(() {});
-                  }),
+                  child: TopNavigationBar(),
                 ),
                 Expanded(
                   flex: 1,
-                  child: ListView(
-                    children: cartProvider.cart.cartItems.entries
-                        .map(
-                          (e) => CartItem(
-                            productInMenu: e.value,
-                            reloadShoppingCart: () => setState(() {}),
+                  child: cartProvider.cart.cartItems.isEmpty
+                      ? Container(
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.symmetric(horizontal: 60),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Có vẻ như giỏ hàng của bạn chưa có gì, để tiếp tục hãy thêm sản phẩm vào giỏ hàng',
+                                style: h6.copyWith(fontStyle: FontStyle.italic),
+                                textAlign: TextAlign.center,
+                              ),
+                              Container(
+                                height: 40,
+                                margin:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                decoration: BoxDecoration(
+                                  color: primaryColor,
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(20),
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.3),
+                                      offset: Offset.zero,
+                                      blurRadius: 3,
+                                    )
+                                  ],
+                                ),
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Center(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'Thêm sản phẩm vào giỏ hàng',
+                                          style: h5.copyWith(
+                                              color: Colors.white,
+                                              fontStyle: FontStyle.italic),
+                                        ),
+                                        const SizedBox(
+                                          width: 5,
+                                        ),
+                                        const Icon(
+                                          CupertinoIcons.cart_badge_plus,
+                                          color: Colors.white,
+                                          size: 18,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
                           ),
                         )
-                        .toList(),
-                  ),
+                      : ListView(
+                          children: cartProvider.cart.cartItems.entries
+                              .map(
+                                (e) => CartItem(
+                                  productInMenu: e.value,
+                                  reloadShoppingCart: () => setState(() {}),
+                                ),
+                              )
+                              .toList(),
+                        ),
                 ),
                 BottomNavigation(
                   onTapCheckOut: checkOut,
                   cart: cartProvider.cart,
                 ),
               ],
+            ),
+            Visibility(
+              visible: cartProvider.cart.cartItems.isEmpty,
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  height: 100,
+                  color: Colors.white24,
+                ),
+              ),
             ),
             Visibility(
               visible: isCheckOut,
@@ -127,5 +200,6 @@ class _ShoppingCartState extends State<ShoppingCart> {
       ModalRoute.withName('/employee_dashboard'),
     );
     cartProvider.removeAllItem();
+    cartProvider.cart.totalPrice = 0;
   }
 }
