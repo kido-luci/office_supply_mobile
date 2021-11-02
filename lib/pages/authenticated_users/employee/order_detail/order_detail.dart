@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
+import 'package:office_supply_mobile_master/models/company/company.dart';
 import 'package:office_supply_mobile_master/models/order_detail_history/order_detail_history.dart';
 import 'package:office_supply_mobile_master/models/order_history/order_history.dart';
 import 'package:office_supply_mobile_master/models/product_in_menu/product_in_menu.dart';
+import 'package:office_supply_mobile_master/models/user/user.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/order_detail/widgets/order_item.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/order_detail/widgets/order_status.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/order_detail/widgets/top_navigation_bar.dart';
@@ -11,10 +13,15 @@ import 'package:office_supply_mobile_master/pages/authenticated_users/employee/o
 class OrderDetail extends StatefulWidget {
   final OrderHistory orderHistory;
   final List<OrderDetailHistory> orderdetailHistory;
+  final User userOrder;
+  final Company company;
+
   const OrderDetail({
     Key? key,
     required this.orderHistory,
     required this.orderdetailHistory,
+    required this.userOrder,
+    required this.company,
   }) : super(key: key);
 
   @override
@@ -70,7 +77,7 @@ class _OrderDetailState extends State<OrderDetail> {
                         ),
                       ),
                       Text(
-                        'TNHH một thành viên ABC',
+                        widget.company.name,
                         style: h6.copyWith(
                           color: Colors.black,
                           height: 1.5,
@@ -130,7 +137,9 @@ class _OrderDetailState extends State<OrderDetail> {
                         ),
                       ),
                       Text(
-                        'Tiêu Trung Lập',
+                        widget.userOrder.firstname +
+                            ' ' +
+                            widget.userOrder.lastname,
                         style: h6.copyWith(
                           color: Colors.black,
                           height: 1.5,
