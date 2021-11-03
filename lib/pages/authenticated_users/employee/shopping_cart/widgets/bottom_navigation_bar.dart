@@ -81,7 +81,6 @@ class BottomNavigation extends StatelessWidget {
                     )
                   ],
                 ),
-                //!Thanh toan
                 child: InkWell(
                   onTap: () {
                     onTapCheckOut.call();

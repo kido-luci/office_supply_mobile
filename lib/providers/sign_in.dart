@@ -54,7 +54,7 @@ class SignInProvider with ChangeNotifier {
 
       if (user!.companyID != null) {
         await CompanyService.fetchCompany(
-          id: user!.departmentID!,
+          id: user!.companyID!,
           jwtToken: auth!.jwtToken,
         ).then((e) => company = e);
 

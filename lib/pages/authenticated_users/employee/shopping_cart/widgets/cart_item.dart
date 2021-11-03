@@ -79,7 +79,6 @@ class CartItem extends StatelessWidget {
               ],
             ),
           ),
-          //!Demo
           Expanded(
             flex: 2,
             child: Row(
@@ -87,17 +86,13 @@ class CartItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 CircleIconButton(
-                  //!Demo
                   onTap: () {
-                    if (productInMenu.productObject!.quantity > 1) {
+                    if (productInMenu.quantity > 1) {
                       productInMenu.addQuantity(quantity: -1);
                       cartProvider.cart
                           .addTotalPrice(price: -productInMenu.price);
-                    } else {
-                      cartProvider.cart.removeItemFromCart(
-                          key: productInMenu.productObject!.id);
+                      reloadShoppingCart.call();
                     }
-                    reloadShoppingCart.call();
                   },
                   margin: EdgeInsets.zero,
                   iconData: Icons.remove,
@@ -118,7 +113,6 @@ class CartItem extends StatelessWidget {
                   ),
                 ),
                 CircleIconButton(
-                  //!demo
                   onTap: () {
                     productInMenu.addQuantity(quantity: 1);
                     cartProvider.cart.addTotalPrice(price: productInMenu.price);
@@ -142,8 +136,8 @@ class CartItem extends StatelessWidget {
             ),
             child: InkWell(
               onTap: () {
-                cartProvider.cart
-                    .removeItemFromCart(key: productInMenu.productObject!.id);
+                cartProvider.removeItemFromCart(
+                    key: productInMenu.productObject!.id);
                 reloadShoppingCart.call();
               },
               child: Container(

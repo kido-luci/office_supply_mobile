@@ -10,8 +10,8 @@ class PeriodProvider with ChangeNotifier {
   late Period periodOfDepartment;
 
   getPeriodsOfCompany(User user, String jwtToken) async {
-    final data = await PeriodService.getPeriodOfCompany(
-        user: user, jwtToken: jwtToken);
+    final data =
+        await PeriodService.getPeriodOfCompany(user: user, jwtToken: jwtToken);
     periods = data!;
     notifyListeners();
   }

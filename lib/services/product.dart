@@ -14,9 +14,18 @@ class ProductService {
   static Future<ItemsPage> fetchItemsPage({
     required int id,
     required String jwtToken,
+    required String search,
   }) async {
     final response = await http.get(
-      Uri.parse(apiPath + url + '?' + 'UserID=' + id.toString()),
+      (search == "")
+          ? Uri.parse(apiPath + url + '?' + 'UserID=' + id.toString())
+          : Uri.parse(apiPath +
+              url +
+              '?' +
+              'UserID=' +
+              id.toString() +
+              '&Name=' +
+              search),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
         HttpHeaders.authorizationHeader: 'Bearer ' + jwtToken,

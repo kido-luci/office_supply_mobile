@@ -17,6 +17,7 @@ const blueAndPinkPNG = 'blue_and_pink.png';
 const infomationPNG = 'information.png';
 const blueAndPinkBackgroundPNG = 'blue_and_pink_background.png';
 const sweetHomePNG = 'sweet_home.png';
+const notFoundPNG = 'not_found.png';
 
 //icons
 const iconPath = 'assets/icons/';
