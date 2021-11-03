@@ -10,14 +10,20 @@ class AuthService {
   static Auth parseAuth(String responseBody) =>
       Auth.fromJson(json.decode(responseBody));
 
-  static Future<Auth> fetchAuth(
-      {required String idToken, required VoidCallback signOut}) async {
+  static Future<Auth> fetchAuth({
+    required String idToken,
+    required VoidCallback signOut,
+    required String regisToken,
+  }) async {
     final response = await http.post(
       Uri.parse(apiPath + url),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode({'idToken': idToken}),
+      body: jsonEncode({
+        'idToken': idToken,
+        'regisToken': regisToken,
+      }),
     );
     switch (response.statusCode) {
       case 200:

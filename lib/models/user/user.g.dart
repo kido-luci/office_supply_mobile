@@ -17,7 +17,7 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       phoneNumber: json['phoneNumber'] as String?,
       email: json['email'] as String,
       address: json['address'] as String?,
-      avatarUrl: json['avatarUrl'] as String,
+      avatarUrl: json['avatarUrl'] as String?,
       departmentID: json['departmentID'] as int?,
       companyID: json['companyID'] as int?,
       menuID: json['menuID'] as int?,

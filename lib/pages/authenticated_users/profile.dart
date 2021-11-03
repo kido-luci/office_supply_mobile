@@ -69,6 +69,7 @@ class _ProfileState extends State<Profile> {
     // print(dateSelect);
 
     return Scaffold(
+      backgroundColor: Colors.indigo[100],
       bottomNavigationBar: ManagerBottomNav(),
       body: SingleChildScrollView(
         child: Column(
@@ -87,7 +88,7 @@ class _ProfileState extends State<Profile> {
                     // overflow: Overflow.visible,
                     children: [
                       CircleAvatar(
-                        backgroundImage: NetworkImage(userInfo.avatarUrl),
+                        backgroundImage: NetworkImage(userInfo.avatarUrl!),
                       ),
                     ],
                   ),

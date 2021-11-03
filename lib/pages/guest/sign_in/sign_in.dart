@@ -6,6 +6,7 @@ import 'package:office_supply_mobile_master/config/router.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
 import 'package:office_supply_mobile_master/pages/guest/sign_in/widgets/background.dart';
 import 'package:office_supply_mobile_master/providers/sign_in.dart';
+import 'package:office_supply_mobile_master/services/messaging.dart';
 import 'package:office_supply_mobile_master/widgets/loading_ui.dart';
 import 'package:office_supply_mobile_master/widgets/rounded_input_field.dart';
 import 'package:office_supply_mobile_master/widgets/rounded_password_field.dart';
@@ -22,11 +23,22 @@ class _SignInPageState extends State<SignInPage> {
   var isAwaitingSignedIn = false;
   late SignInProvider signInProvider;
 
+  final MessagingService _messagingService = MessagingService.instance;
+
+  late String userDevice;
+
   @override
   void initState() {
     super.initState();
+    setupMessaging();
     signInProvider = Provider.of<SignInProvider>(context, listen: false);
     isSignedIn();
+  }
+
+  Future<void> setupMessaging() async {
+    await _messagingService.initialize();
+    userDevice = _messagingService.userDeviceToken;
+    print(_messagingService.userDeviceToken);
   }
 
   @override
@@ -185,7 +197,7 @@ class _SignInPageState extends State<SignInPage> {
       setState(() {
         isAwaitingSignedIn = true;
       });
-      await signInProvider.signIn();
+      await signInProvider.signIn(userDevice);
 
       switch (signInProvider.user!.roleID) {
         case 2:

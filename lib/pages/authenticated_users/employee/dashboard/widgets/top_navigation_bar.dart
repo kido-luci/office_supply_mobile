@@ -36,7 +36,7 @@ class TopNavigationBar extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  accountAvatar(photoUrl: signInProvider.user!.avatarUrl),
+                  accountAvatar(photoUrl: signInProvider.user!.avatarUrl!),
                   const SizedBox(
                     width: 10,
                   ),

@@ -24,7 +24,7 @@ class SignInProvider with ChangeNotifier {
 
   Future<bool> isSignedIn() async => await GoogleSignIn().isSignedIn();
 
-  signIn() async {
+  signIn(String regisToken) async {
     await GoogleSignIn().signIn().then((e) => googleSignInAccount = e);
     await googleSignInAccount!.authentication
         .then((e) => googleSignInAuthentication = e);
@@ -39,6 +39,7 @@ class SignInProvider with ChangeNotifier {
     await AuthService.fetchAuth(
       idToken: await FirebaseAuth.instance.currentUser!.getIdToken(),
       signOut: signOut,
+      regisToken: regisToken,
     ).then((e) => auth = e);
 
     if (auth != null) {

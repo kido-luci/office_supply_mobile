@@ -21,11 +21,12 @@ class ListPeriod extends StatelessWidget {
         userID: userInfo!.id, jwtToken: jwtToken!.jwtToken, all: true);
 
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text('Periods'),
-      // ),
-      backgroundColor: Colors.grey[350],
-      body: FutureBuilder<dynamic>(
+      appBar: AppBar(
+        title: const Text('Periods'),
+        backgroundColor: Colors.indigo[400],
+      ),
+      backgroundColor: Colors.indigo[100],
+      body: FutureBuilder<List<Period>?>(
         future: PeriodService.getPeriodOfCompany(
             user: userInfo, jwtToken: jwtToken.jwtToken),
         builder: (context, snapshot) {
@@ -48,13 +49,12 @@ class ListPeriod extends StatelessWidget {
     );
   }
 
-  List<Widget> createPeriodList(BuildContext context, List<Period> data) {
+  List<Widget> createPeriodList(BuildContext context, List<Period>? data) {
     List<Widget> list = List.empty(growable: true);
 
-    for (var p in data) {
+    for (var p in data!) {
       var item = InkWell(
         onTap: () {
-          // ignore: avoid_print
           print(p.id);
         },
         child: Padding(

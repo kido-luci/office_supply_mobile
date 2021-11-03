@@ -11,7 +11,7 @@ class User {
   final String? phoneNumber;
   final String email;
   final String? address;
-  final String avatarUrl;
+  final String? avatarUrl;
   final int? departmentID;
   final int? companyID;
   final int? menuID;

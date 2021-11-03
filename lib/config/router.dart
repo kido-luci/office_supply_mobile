@@ -13,6 +13,8 @@ var signInRouter = '/sign_in';
 // manager
 var listPeriodRouter = '/list_period';
 var periodForm = '/period_form';
+var listOrderRouter = '/list_order';
+var orderRequestDetail = '/order_request_detail';
 
 // authenticated user
 var profile = '/profile';
