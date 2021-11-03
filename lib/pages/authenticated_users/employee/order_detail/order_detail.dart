@@ -43,6 +43,22 @@ class _OrderDetailState extends State<OrderDetail> {
     for (var e in widget.orderdetailHistory) {
       totalPrice += e.price * e.quantity;
     }
+    switch (widget.userOrder.roleName) {
+      case 'Admin':
+        widget.userOrder.roleName = 'Quản trị viên';
+        break;
+      case 'Manager':
+        widget.userOrder.roleName = 'Quản lý';
+        break;
+      case 'Leader':
+        widget.userOrder.roleName = 'Trưởng phòng';
+        break;
+      case 'Employee':
+        widget.userOrder.roleName = 'Nhân viên';
+        break;
+      default:
+        widget.userOrder.roleName = 'Khách';
+    }
   }
 
   @override
@@ -160,7 +176,7 @@ class _OrderDetailState extends State<OrderDetail> {
                         ),
                       ),
                       Text(
-                        ' (nhân viên)',
+                        ' (' + widget.userOrder.roleName + ')',
                         style: h6.copyWith(
                           color: lightGrey,
                           height: 1.5,
@@ -228,7 +244,7 @@ class _OrderDetailState extends State<OrderDetail> {
                               const Duration(hours: 7),
                             )
                           : widget.orderHistoryItem!.createTime.add(
-                              const Duration(hours: 7),
+                              const Duration(hours: 0),
                             )),
                   style: h6.copyWith(
                     color: Colors.black,
