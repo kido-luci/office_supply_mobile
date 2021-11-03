@@ -1,12 +1,15 @@
 // ignore_for_file: file_names, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:office_supply_mobile_master/pages/authenticated_users/manager/provider/commonProvide.dart';
+import 'package:provider/provider.dart';
 
 class ManagerBottomNav extends StatelessWidget {
   const ManagerBottomNav({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var currentIndex = context.watch<CommonProvider>().currentIndexBottomNav;
     return BottomNavigationBar(
       items: [
         BottomNavigationBarItem(
@@ -22,16 +25,20 @@ class ManagerBottomNav extends StatelessWidget {
           label: 'Profile',
         ),
       ],
+      currentIndex: currentIndex,
       onTap: (index) {
         switch (index) {
           case 0:
             Navigator.of(context).pushReplacementNamed('/list_period');
+            context.read<CommonProvider>().setCurrentIndexBottomNav(index);
             break;
           case 1:
             Navigator.of(context).pushReplacementNamed('/list_order');
+            context.read<CommonProvider>().setCurrentIndexBottomNav(index);
             break;
           case 2:
             Navigator.of(context).pushReplacementNamed('/profile');
+            context.read<CommonProvider>().setCurrentIndexBottomNav(index);
             break;
           default:
         }
