@@ -200,11 +200,20 @@ class _SignInPageState extends State<SignInPage> {
       await signInProvider.signIn(userDevice);
 
       switch (signInProvider.user!.roleID) {
+        case 1:
+          signInProvider.signOut();
+          break;
         case 2:
           Navigator.of(context).pushReplacementNamed(listPeriodRouter);
           break;
+        case 3:
+          Navigator.of(context).pushReplacementNamed(employeeDashboardRouter);
+          break;
         case 4:
           Navigator.of(context).pushReplacementNamed(employeeDashboardRouter);
+          break;
+        case 5:
+          signInProvider.signOut();
           break;
       }
     } catch (e) {

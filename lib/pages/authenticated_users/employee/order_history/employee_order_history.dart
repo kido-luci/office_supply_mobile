@@ -6,6 +6,7 @@ import 'package:office_supply_mobile_master/models/department/department.dart';
 import 'package:office_supply_mobile_master/models/order_detail_history/order_detail_history.dart';
 import 'package:office_supply_mobile_master/models/order_history_item/order_history_item.dart';
 import 'package:office_supply_mobile_master/models/order_history_page/order_history_page.dart';
+import 'package:office_supply_mobile_master/models/user/user.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/order_history/widgets/bottom_navigation_bar.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/order_history/widgets/order_history_item.dart'
     as order_history_item_ui;
@@ -17,6 +18,7 @@ import 'package:office_supply_mobile_master/services/company.dart';
 import 'package:office_supply_mobile_master/services/department.dart';
 import 'package:office_supply_mobile_master/services/order.dart';
 import 'package:office_supply_mobile_master/services/order_detail.dart';
+import 'package:office_supply_mobile_master/services/user.dart';
 import 'package:office_supply_mobile_master/widgets/loading_ui.dart';
 import 'package:provider/provider.dart';
 
@@ -114,9 +116,12 @@ class _EmployeeOrderHistoryState extends State<EmployeeOrderHistory> {
       jwtToken: signInProvider.auth!.jwtToken,
     );
 
+    User user = await UserService.fetchUser(
+        id: orderHistoryItem.userOrderID,
+        jwtToken: signInProvider.auth!.jwtToken);
     //!error
     Company company = await CompanyService.fetchCompany(
-      id: orderHistoryItem.userOrdrerObject.departmentID!,
+      id: user.companyID!,
       jwtToken: signInProvider.auth!.jwtToken,
     );
 
