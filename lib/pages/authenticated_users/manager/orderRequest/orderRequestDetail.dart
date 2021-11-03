@@ -55,7 +55,7 @@ class OrderRequestDetail extends StatelessWidget {
                         SizedBox(width: 20),
                         Expanded(
                           child: Text(
-                            'To Time: ${periodOfDepartment.quota} VNĐ',
+                            'To Time: ${periodOfDepartment.toTime.year}/${periodOfDepartment.toTime.month}/${periodOfDepartment.toTime.day}',
                             style: TextStyle(fontSize: 18),
                           ),
                         ),
