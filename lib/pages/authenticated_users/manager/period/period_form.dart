@@ -22,9 +22,10 @@ class _PeriodFormState extends State<PeriodForm> {
 
   @override
   Widget build(BuildContext context) {
+    final signInProvider = Provider.of<SignInProvider>(context, listen: false);
     final departments = context.watch<DepartmentProvider>().departments;
-    final jwtToken = context.watch<SignInProvider>().auth!;
-    final company = context.watch<SignInProvider>().company;
+    final jwtToken = signInProvider.auth!;
+    final company = signInProvider.company;
 
     return Scaffold(
       appBar: AppBar(

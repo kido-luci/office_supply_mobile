@@ -65,8 +65,10 @@ class OrderService {
     }
   }
 
-  static Future<bool?> updateOrder(
-      {required String jwtToken, required OrderUpdatePayload oup}) async {
+  static Future<bool?> updateOrder({
+    required String jwtToken,
+    required OrderUpdatePayload oup,
+  }) async {
     final res = await http.put(
       Uri.parse(api),
       headers: {

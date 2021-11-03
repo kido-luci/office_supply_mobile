@@ -14,11 +14,12 @@ class ListPeriod extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userInfo = context.watch<SignInProvider>().user;
-    final jwtToken = context.watch<SignInProvider>().auth;
+    final signInProvider = Provider.of<SignInProvider>(context, listen: false);
+    final userInfo = signInProvider.user!;
+    final jwtToken = signInProvider.auth!;
 
     context.read<DepartmentProvider>().getDepartmentOfCompany(
-        userID: userInfo!.id, jwtToken: jwtToken!.jwtToken, all: true);
+        userID: userInfo.id, jwtToken: jwtToken.jwtToken, all: true);
 
     return Scaffold(
       appBar: AppBar(
@@ -236,7 +237,7 @@ class ListPeriod extends StatelessWidget {
   }
 
   Department? getDepartmentName(BuildContext context, int departmentId) {
-    final departments = context.watch<DepartmentProvider>().departments;
+    final departments = context.watch<SignInProvider>().departments;
 
     for (var item in departments) {
       if (item.id == departmentId) {

@@ -21,6 +21,7 @@ class SignInProvider with ChangeNotifier {
   Company? company;
   Department? department;
   Period? period;
+  late List<Department> departments;
 
   Future<bool> isSignedIn() async => await GoogleSignIn().isSignedIn();
 
@@ -67,6 +68,12 @@ class SignInProvider with ChangeNotifier {
           await PeriodService.fetchPeriod(
                   departmentId: user!.departmentID!, jwtToken: auth!.jwtToken)
               .then((e) => period = e);
+        }
+
+        // get list department if user is manager
+        if (user!.roleID == 2) {
+          departments = (await DepartmentService.getDepartments(
+              userID: user!.id, jwtToken: auth!.jwtToken, all: true))!;
         }
       }
     }

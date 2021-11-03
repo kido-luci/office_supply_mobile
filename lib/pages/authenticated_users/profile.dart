@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:office_supply_mobile_master/models/user/userUpdatePayload.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/manager/managerBottomNav.dart';
+import 'package:office_supply_mobile_master/pages/guest/sign_in/sign_in.dart';
 import 'package:office_supply_mobile_master/providers/sign_in.dart';
 import 'package:office_supply_mobile_master/services/user.dart';
 import 'package:provider/provider.dart';
@@ -31,10 +32,11 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    var userInfo = context.watch<SignInProvider>().user!;
-    var jwtToken = context.watch<SignInProvider>().auth!;
-    var company = context.watch<SignInProvider>().company!;
-    var department = context.watch<SignInProvider>().department!;
+    final signInProvider = Provider.of<SignInProvider>(context, listen: false);
+    var userInfo = signInProvider.user!;
+    var jwtToken = signInProvider.auth!;
+    var company = signInProvider.company!;
+    var department = signInProvider.department!;
     // var role = context.watch<SignInProvider>().userRole;
 
     // print(userInfo.toString());
@@ -313,6 +315,32 @@ class _ProfileState extends State<Profile> {
                     minimumSize: Size(MediaQuery.of(context).size.width, 50),
                   ),
                   child: Text('Update'),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Color(0xFFF5F6F9),
+                ),
+                child: ElevatedButton.icon(
+                  onPressed: () async {
+                    await signInProvider.signOut();
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                          builder: (context) => const SignInPage()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.blueGrey,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    minimumSize: Size(MediaQuery.of(context).size.width, 50),
+                  ),
+                  icon: Icon(Icons.logout_outlined),
+                  label: Text('Logout'),
                 ),
               ),
             ),
