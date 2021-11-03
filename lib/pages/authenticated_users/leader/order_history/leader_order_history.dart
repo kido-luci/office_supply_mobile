@@ -6,13 +6,14 @@ import 'package:office_supply_mobile_master/models/department/department.dart';
 import 'package:office_supply_mobile_master/models/order_detail_history/order_detail_history.dart';
 import 'package:office_supply_mobile_master/models/order_history_item/order_history_item.dart';
 import 'package:office_supply_mobile_master/models/order_history_page/order_history_page.dart';
+import 'package:office_supply_mobile_master/models/product_in_menu/product_in_menu.dart';
 import 'package:office_supply_mobile_master/models/user/user.dart';
-import 'package:office_supply_mobile_master/pages/authenticated_users/employee/order_history/widgets/bottom_navigation_bar.dart';
-import 'package:office_supply_mobile_master/pages/authenticated_users/employee/order_history/widgets/order_history_item.dart'
+import 'package:office_supply_mobile_master/pages/authenticated_users/leader/order_history/widgets/bottom_navigation_bar.dart';
+import 'package:office_supply_mobile_master/pages/authenticated_users/leader/order_history/widgets/order_history_item.dart'
     as order_history_item_ui;
-import 'package:office_supply_mobile_master/pages/authenticated_users/employee/order_detail/order_detail.dart'
+import 'package:office_supply_mobile_master/pages/authenticated_users/leader/order_detail/order_detail.dart'
     as order_detail_page;
-import 'package:office_supply_mobile_master/pages/authenticated_users/employee/order_history/widgets/top_navigation_bar.dart';
+import 'package:office_supply_mobile_master/pages/authenticated_users/leader/order_history/widgets/top_navigation_bar.dart';
 import 'package:office_supply_mobile_master/providers/sign_in.dart';
 import 'package:office_supply_mobile_master/services/company.dart';
 import 'package:office_supply_mobile_master/services/department.dart';
@@ -23,14 +24,14 @@ import 'package:office_supply_mobile_master/services/user.dart';
 import 'package:office_supply_mobile_master/widgets/loading_ui.dart';
 import 'package:provider/provider.dart';
 
-class EmployeeOrderHistory extends StatefulWidget {
-  const EmployeeOrderHistory({Key? key}) : super(key: key);
+class LeaderOrderHistory extends StatefulWidget {
+  const LeaderOrderHistory({Key? key}) : super(key: key);
 
   @override
-  State<EmployeeOrderHistory> createState() => _EmployeeOrderHistoryState();
+  State<LeaderOrderHistory> createState() => _LeaderOrderHistoryState();
 }
 
-class _EmployeeOrderHistoryState extends State<EmployeeOrderHistory> {
+class _LeaderOrderHistoryState extends State<LeaderOrderHistory> {
   late SignInProvider signInProvider;
   bool isWattingGetOrderDetail = false;
 
@@ -49,9 +50,9 @@ class _EmployeeOrderHistoryState extends State<EmployeeOrderHistory> {
         children: [
           Column(
             children: [
-              const SizedBox(
+              SizedBox(
                 height: 150,
-                child: TopNavigationBar(),
+                child: TopNavigationBar(signInProvider: signInProvider),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -59,18 +60,30 @@ class _EmployeeOrderHistoryState extends State<EmployeeOrderHistory> {
                 children: [
                   Image.asset(
                     imagePath + recentPNG,
-                    height: 30,
-                    width: 30,
+                    height: 20,
+                    width: 20,
                     fit: BoxFit.cover,
                   ),
                   const SizedBox(
-                    width: 10,
+                    width: 5,
                   ),
-                  const Text(
-                    'Lịch sử đặt hàng',
-                    style: h4,
+                  Text(
+                    'Lịch sử đơn hàng phòng ban: ' +
+                        signInProvider.department!.name,
+                    style: h4.copyWith(fontSize: 16),
                   ),
                 ],
+              ),
+              Text(
+                'Giới hạn của kỳ: ' +
+                    ProductInMenu.format(price: signInProvider.period!.quota),
+                style: h5.copyWith(fontSize: 18, fontWeight: FontWeight.w300),
+              ),
+              Text(
+                'Số tiền còn lại: ' +
+                    ProductInMenu.format(
+                        price: signInProvider.period!.remainingQuota),
+                style: h5.copyWith(fontSize: 20, fontWeight: FontWeight.w300),
               ),
               Expanded(
                 flex: 1,
@@ -80,6 +93,7 @@ class _EmployeeOrderHistoryState extends State<EmployeeOrderHistory> {
                       jwtToken: signInProvider.auth!.jwtToken),
                   builder: (context, snapshot) => snapshot.hasData
                       ? ListView(
+                          padding: const EdgeInsets.only(top: 10, bottom: 50),
                           children: snapshot.data!.itemsObject!
                               .asMap()
                               .entries
@@ -94,11 +108,9 @@ class _EmployeeOrderHistoryState extends State<EmployeeOrderHistory> {
               ),
             ],
           ),
-          Align(
+          const Align(
             alignment: Alignment.bottomCenter,
-            child: BottomNavigation(
-              signInProvider: signInProvider,
-            ),
+            child: BottomNavigation(),
           ),
           Visibility(
             visible: isWattingGetOrderDetail,

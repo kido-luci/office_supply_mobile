@@ -202,18 +202,24 @@ class _SignInPageState extends State<SignInPage> {
       switch (signInProvider.user!.roleID) {
         case 1:
           signInProvider.signOut();
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const SignInPage()),
+          );
           break;
         case 2:
           Navigator.of(context).pushReplacementNamed(listPeriodRouter);
           break;
         case 3:
-          Navigator.of(context).pushReplacementNamed(employeeDashboardRouter);
+          Navigator.of(context).pushReplacementNamed(leaderDashboardRouter);
           break;
         case 4:
           Navigator.of(context).pushReplacementNamed(employeeDashboardRouter);
           break;
         case 5:
           signInProvider.signOut();
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const SignInPage()),
+          );
           break;
       }
     } catch (e) {

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:office_supply_mobile_master/config/router.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/dashboard/employee_dashboard.dart';
+import 'package:office_supply_mobile_master/pages/authenticated_users/leader/dashboard/leader_dashboard.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/manager/orderRequest/list_orderRequest.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/manager/orderRequest/orderRequestDetail.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/manager/period/list_period.dart';
@@ -77,6 +78,7 @@ class MainApp extends StatelessWidget {
         routes: {
           mainRouter: (context) => const SignInPage(),
           employeeDashboardRouter: (context) => const EmployeeDashBoard(),
+          leaderDashboardRouter: (context) => const LeaderDashBoard(),
           listPeriodRouter: (context) => const ListPeriod(),
           periodForm: (context) => const PeriodForm(),
           profile: (context) => const Profile(),

@@ -4,9 +4,15 @@ import 'package:office_supply_mobile_master/config/paths.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/dashboard/employee_dashboard.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/order_history/employee_order_history.dart';
+import 'package:office_supply_mobile_master/providers/sign_in.dart';
+import 'package:office_supply_mobile_master/services/period.dart';
 
 class BottomNavigation extends StatelessWidget {
-  const BottomNavigation({Key? key}) : super(key: key);
+  final SignInProvider signInProvider;
+  const BottomNavigation({
+    Key? key,
+    required this.signInProvider,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +23,8 @@ class BottomNavigation extends StatelessWidget {
       backgroundColor: Colors.transparent,
       buttonBackgroundColor: primaryColor,
       onTap: (index) {
+        reloadPeriod(signInProvider: signInProvider);
+
         switch (index) {
           case 0:
             Navigator.of(context).pushReplacement(
@@ -88,5 +96,11 @@ class BottomNavigation extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  reloadPeriod({required SignInProvider signInProvider}) async {
+    signInProvider.period = await PeriodService.fetchPeriod(
+        departmentId: signInProvider.department!.id,
+        jwtToken: signInProvider.auth!.jwtToken);
   }
 }

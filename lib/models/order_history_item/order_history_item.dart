@@ -12,9 +12,13 @@ class OrderHistoryItem {
   int? userApproveID;
   int orderStatusID;
   final Map<String, dynamic> userOrder;
+  final Map<String, dynamic>? userApprove;
+
   @JsonKey(ignore: true)
   late User userOrdrerObject;
-  String? userApprove;
+
+  @JsonKey(ignore: true)
+  late User? userApproveObject;
 
   OrderHistoryItem({
     required this.id,
@@ -27,6 +31,9 @@ class OrderHistoryItem {
     required this.userApprove,
   }) {
     userOrdrerObject = User.fromJson(userOrder);
+    if (userApprove != null) {
+      userApproveObject = User.fromJson(userApprove!);
+    }
   }
 
   factory OrderHistoryItem.fromJson(Map<String, dynamic> json) =>

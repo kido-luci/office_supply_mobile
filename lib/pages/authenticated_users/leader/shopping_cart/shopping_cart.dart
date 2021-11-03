@@ -9,15 +9,15 @@ import 'package:office_supply_mobile_master/models/order_detail/order_detail.dar
 import 'package:office_supply_mobile_master/models/order_detail_history/order_detail_history.dart';
 import 'package:office_supply_mobile_master/models/order_history/order_history.dart';
 import 'package:office_supply_mobile_master/models/user/user.dart';
-import 'package:office_supply_mobile_master/pages/authenticated_users/employee/shopping_cart/widgets/bottom_navigation_bar.dart';
-import 'package:office_supply_mobile_master/pages/authenticated_users/employee/shopping_cart/widgets/cart_item.dart';
-import 'package:office_supply_mobile_master/pages/authenticated_users/employee/shopping_cart/widgets/top_navigation_bar.dart';
+import 'package:office_supply_mobile_master/pages/authenticated_users/leader/shopping_cart/widgets/bottom_navigation_bar.dart';
+import 'package:office_supply_mobile_master/pages/authenticated_users/leader/shopping_cart/widgets/cart_item.dart';
+import 'package:office_supply_mobile_master/pages/authenticated_users/leader/shopping_cart/widgets/top_navigation_bar.dart';
 import 'package:office_supply_mobile_master/providers/cart.dart';
 import 'package:office_supply_mobile_master/providers/sign_in.dart';
 import 'package:office_supply_mobile_master/services/company.dart';
 import 'package:office_supply_mobile_master/services/department.dart';
 import 'package:office_supply_mobile_master/services/order.dart';
-import 'package:office_supply_mobile_master/pages/authenticated_users/employee/order_detail/order_detail.dart'
+import 'package:office_supply_mobile_master/pages/authenticated_users/leader/order_detail/order_detail.dart'
     as order_detail_page;
 import 'package:office_supply_mobile_master/services/order_detail.dart';
 import 'package:office_supply_mobile_master/services/role.dart';
@@ -205,7 +205,7 @@ class _ShoppingCartState extends State<ShoppingCart> {
           department: department,
         ),
       ),
-      ModalRoute.withName(employeeDashboardRouter),
+      ModalRoute.withName(leaderDashboardRouter),
     );
     cartProvider.removeAllItem();
     cartProvider.cart.totalPrice = 0;

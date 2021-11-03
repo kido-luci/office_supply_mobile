@@ -12,11 +12,15 @@ import 'package:provider/provider.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
 
 class TopNavigationBar extends StatelessWidget {
-  const TopNavigationBar({Key? key}) : super(key: key);
+  final signInProvider;
+
+  const TopNavigationBar({
+    Key? key,
+    required this.signInProvider,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final signInProvider = Provider.of<SignInProvider>(context, listen: false);
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
 
     return Stack(

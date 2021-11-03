@@ -6,6 +6,7 @@ import 'package:office_supply_mobile_master/models/period/period.dart';
 import 'package:office_supply_mobile_master/models/product_in_menu/product_in_menu.dart';
 import 'package:office_supply_mobile_master/models/user/user.dart';
 import 'package:office_supply_mobile_master/pages/guest/sign_in/sign_in.dart';
+import 'package:office_supply_mobile_master/providers/cart.dart';
 import 'package:office_supply_mobile_master/providers/sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
@@ -18,6 +19,7 @@ class TopNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final signInProvider = Provider.of<SignInProvider>(context, listen: false);
+    final cartProvider = Provider.of<CartProvider>(context, listen: false);
     Size size = MediaQuery.of(context).size;
     String searchItem = "";
     return Stack(
@@ -69,6 +71,8 @@ class TopNavigationBar extends StatelessWidget {
                         signOutButton(
                           () {
                             signInProvider.signOut();
+                            cartProvider.removeAllItem();
+                            cartProvider.cart.totalPrice = 0;
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
                                   builder: (context) => const SignInPage()),

@@ -12,19 +12,30 @@ import 'package:provider/provider.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
 
 class TopNavigationBar extends StatelessWidget {
-  const TopNavigationBar({Key? key}) : super(key: key);
+  const TopNavigationBar({Key? key, required this.onTapSearch})
+      : super(key: key);
+  final Function({required String searchItem}) onTapSearch;
 
   @override
   Widget build(BuildContext context) {
     final signInProvider = Provider.of<SignInProvider>(context, listen: false);
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
 
+    Size size = MediaQuery.of(context).size;
+    String searchItem = "";
     return Stack(
       children: [
         backgroundImage(imagePath + sweetHomePNG),
         backgroundColor(primaryLightColorTransparent),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 15),
+            child: searchTextField(size, searchItem),
+          ),
+        ),
         Padding(
-          padding: const EdgeInsets.only(top: 45, left: 10, right: 10),
+          padding: const EdgeInsets.only(top: 35, left: 10, right: 10),
           child: Column(
             children: [
               Row(
@@ -253,6 +264,49 @@ class TopNavigationBar extends StatelessWidget {
           Icons.logout_outlined,
           color: primaryLightColor,
           size: 15,
+        ),
+      );
+
+  searchTextField(Size size, String searchItem) => SizedBox(
+        width: size.width * 5 / 7,
+        height: 40,
+        child: Material(
+          elevation: 5,
+          shadowColor: primaryColor,
+          borderRadius: const BorderRadius.all(
+            Radius.circular(25),
+          ),
+          child: TextField(
+            obscureText: false,
+            autofocus: false,
+            onChanged: (value) {
+              searchItem = value;
+            },
+            decoration: InputDecoration(
+              isCollapsed: true,
+              prefixIcon: IconButton(
+                icon: const Icon(Icons.search),
+                onPressed: () {
+                  onTapSearch(searchItem: searchItem);
+                },
+                color: primaryColor,
+              ),
+              hintText: 'Tìm loại văn phòng phẩm',
+              hintStyle: const TextStyle(
+                fontSize: 10,
+                color: lightGrey,
+              ),
+              fillColor: Colors.white,
+              filled: true,
+              contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+              enabledBorder: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(25),
+                ),
+                borderSide: BorderSide(color: primaryColor),
+              ),
+            ),
+          ),
         ),
       );
 

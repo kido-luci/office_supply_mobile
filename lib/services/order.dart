@@ -96,7 +96,7 @@ class OrderService {
           url +
           '?UserID=' +
           userId.toString() +
-          '&PageSize=15&PageNumber=1'),
+          '&PageSize=1000&PageNumber=1&orderBy=id desc'),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
         HttpHeaders.authorizationHeader: 'Bearer ' + jwtToken,

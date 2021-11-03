@@ -15,8 +15,8 @@ OrderHistory _$OrderHistoryFromJson(Map<String, dynamic> json) => OrderHistory(
       userOrderID: json['userOrderID'] as int,
       userApproveID: json['userApproveID'] as int?,
       orderStatusID: json['orderStatusID'] as int,
-      userApprove: json['userApprove'] as String?,
-      userOrder: json['userOrder'] as String?,
+      userOrder: json['userOrder'] as Map<String, dynamic>,
+      userApprove: json['userApprove'] as Map<String, dynamic>?,
     );
 
 Map<String, dynamic> _$OrderHistoryToJson(OrderHistory instance) =>

@@ -4,11 +4,11 @@ import 'package:office_supply_mobile_master/config/themes.dart';
 import 'package:office_supply_mobile_master/models/category/category.dart';
 import 'package:office_supply_mobile_master/models/items_page/items_page.dart';
 import 'package:office_supply_mobile_master/models/product_in_menu/product_in_menu.dart';
-import 'package:office_supply_mobile_master/pages/authenticated_users/employee/dashboard/widgets/bottom_navigation_bar.dart';
-import 'package:office_supply_mobile_master/pages/authenticated_users/employee/dashboard/widgets/category.dart';
-import 'package:office_supply_mobile_master/pages/authenticated_users/employee/dashboard/widgets/stationery_grid_item.dart';
-import 'package:office_supply_mobile_master/pages/authenticated_users/employee/dashboard/widgets/top_navigation_bar.dart';
-import 'package:office_supply_mobile_master/pages/authenticated_users/employee/product_detail/product_detail.dart';
+import 'package:office_supply_mobile_master/pages/authenticated_users/leader/dashboard/widgets/bottom_navigation_bar.dart';
+import 'package:office_supply_mobile_master/pages/authenticated_users/leader/dashboard/widgets/category.dart';
+import 'package:office_supply_mobile_master/pages/authenticated_users/leader/dashboard/widgets/stationery_grid_item.dart';
+import 'package:office_supply_mobile_master/pages/authenticated_users/leader/dashboard/widgets/top_navigation_bar.dart';
+import 'package:office_supply_mobile_master/pages/authenticated_users/leader/product_detail/product_detail.dart';
 import 'package:office_supply_mobile_master/providers/sign_in.dart';
 import 'package:office_supply_mobile_master/services/category.dart';
 import 'package:office_supply_mobile_master/services/product.dart';
@@ -16,14 +16,14 @@ import 'package:office_supply_mobile_master/widgets/cart_button.dart';
 import 'package:office_supply_mobile_master/widgets/loading_ui.dart';
 import 'package:provider/provider.dart';
 
-class EmployeeDashBoard extends StatefulWidget {
-  const EmployeeDashBoard({Key? key}) : super(key: key);
+class LeaderDashBoard extends StatefulWidget {
+  const LeaderDashBoard({Key? key}) : super(key: key);
 
   @override
-  State<EmployeeDashBoard> createState() => _EmployeeDashBoardState();
+  State<LeaderDashBoard> createState() => _LeaderDashBoardState();
 }
 
-class _EmployeeDashBoardState extends State<EmployeeDashBoard> {
+class _LeaderDashBoardState extends State<LeaderDashBoard> {
   late SignInProvider signInProvider;
   late ItemsPage itemsPage;
   late Map<int, List<ProductInMenu>> categoryItems;
