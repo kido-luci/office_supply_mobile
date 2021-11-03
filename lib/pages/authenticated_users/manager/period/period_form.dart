@@ -31,6 +31,7 @@ class _PeriodFormState extends State<PeriodForm> {
       appBar: AppBar(
         title: Text('Period Form'),
       ),
+      backgroundColor: Colors.indigo[100],
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(
@@ -44,7 +45,7 @@ class _PeriodFormState extends State<PeriodForm> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  createInfo('Wallet: ${company!.wallet}'),
+                  createInfo('Wallet: ${company!.wallet} VNĐ'),
                   SizedBox(
                     height: 5,
                   ),
@@ -130,70 +131,73 @@ class _PeriodFormState extends State<PeriodForm> {
                 height: 10,
               ),
               ////////////////////////////////////////// chose time
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'From Time',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          selectDate(context, fromDate, true);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          primary: Color(0xFFF5F6F9),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                        ),
-                        child: Text(
-                          '${fromDate.month}/${fromDate.day}/${fromDate.year}',
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'From Time',
                           style: TextStyle(
                             fontSize: 18,
-                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                      )
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'To Time',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: Color(0xFFF5F6F9),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
+                        ElevatedButton(
+                          onPressed: () {
+                            selectDate(context, fromDate, true);
+                          },
+                          style: ElevatedButton.styleFrom(
+                              primary: Color(0xFFF5F6F9),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              minimumSize: Size(150, 40)),
+                          child: Text(
+                            '${fromDate.month}/${fromDate.day}/${fromDate.year}',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.black,
+                            ),
                           ),
-                        ),
-                        onPressed: () {
-                          selectDate(context, toDate, false);
-                        },
-                        child: Text(
-                          '${toDate.month}/${toDate.day}/${toDate.year}',
+                        )
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'To Time',
                           style: TextStyle(
                             fontSize: 18,
-                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                      )
-                    ],
-                  ),
-                ],
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              primary: Color(0xFFF5F6F9),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              minimumSize: Size(150, 40)),
+                          onPressed: () {
+                            selectDate(context, toDate, false);
+                          },
+                          child: Text(
+                            '${toDate.month}/${toDate.day}/${toDate.year}',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.black,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
               ),
               SizedBox(
                 height: 10,
@@ -314,7 +318,6 @@ class _PeriodFormState extends State<PeriodForm> {
           ),
         ),
       ),
-      backgroundColor: Colors.grey[350],
     );
   }
 

@@ -7,6 +7,7 @@ import 'package:office_supply_mobile_master/pages/authenticated_users/manager/or
 import 'package:office_supply_mobile_master/pages/authenticated_users/manager/orderRequest/orderRequestDetail.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/manager/period/list_period.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/manager/period/period_form.dart';
+import 'package:office_supply_mobile_master/pages/authenticated_users/manager/provider/commonProvide.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/manager/provider/companyProvide.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/manager/provider/departmentProvide.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/manager/provider/orderProvide.dart';
@@ -65,6 +66,9 @@ class MainApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => OrderProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => CommonProvider(),
         )
       ],
       child: MaterialApp(
