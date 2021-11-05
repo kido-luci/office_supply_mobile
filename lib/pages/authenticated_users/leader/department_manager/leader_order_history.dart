@@ -70,6 +70,9 @@ class _DepartmentManagerState extends State<DepartmentManager> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+                          const SizedBox(
+                            height: 100,
+                          ),
                           Center(
                             child: Text(
                               'Phòng ban ' + signInProvider.department!.name,
@@ -162,13 +165,13 @@ class _DepartmentManagerState extends State<DepartmentManager> {
                               ],
                             ),
                           ),
-                          Center(
-                            child: Text(
-                              'Thành viên phòng ban',
-                              style: h5.copyWith(
-                                  fontSize: 20, fontWeight: FontWeight.w500),
-                            ),
-                          ),
+                          // Center(
+                          //   child: Text(
+                          //     'Thành viên phòng ban',
+                          //     style: h5.copyWith(
+                          //         fontSize: 20, fontWeight: FontWeight.w500),
+                          //   ),
+                          // ),
                         ],
                       ),
                     )
