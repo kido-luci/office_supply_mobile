@@ -47,8 +47,14 @@ class ListOrderRequest extends StatelessWidget {
     for (var o in data!) {
       var item = InkWell(
         onTap: () async {
-          await context.read<PeriodProvider>().getPeriodOfDepartment(jwtToken.jwtToken, o.userApprove.departmentID!);
-          await context.read<OrderProvider>().getOrderDetails(orderId: o.id, jwtToken: jwtToken.jwtToken);
+          await context
+              .read<OrderProvider>()
+              .changeStatusOrderSelected(orderStatus: o.orderStatusID);
+          await context.read<PeriodProvider>().getPeriodOfDepartment(
+              jwtToken.jwtToken, o.userApprove.departmentID!);
+          await context
+              .read<OrderProvider>()
+              .getOrderDetails(orderId: o.id, jwtToken: jwtToken.jwtToken);
           Navigator.of(context).pushReplacementNamed('/order_request_detail');
         },
         child: Padding(

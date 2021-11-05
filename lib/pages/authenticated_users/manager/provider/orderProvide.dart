@@ -6,12 +6,19 @@ import 'package:office_supply_mobile_master/services/order_detail.dart';
 
 class OrderProvider with ChangeNotifier {
   late List<OrderDetailHistory> orderDetails;
+  late int statusOrderSelected;
 
   getOrderDetails({
     required int orderId,
     required String jwtToken,
   }) async {
-    orderDetails = await OrderDetailService.fetchOrderDetail(jwtToken: jwtToken, orderId: orderId);
+    orderDetails = await OrderDetailService.fetchOrderDetail(
+        jwtToken: jwtToken, orderId: orderId);
+    notifyListeners();
+  }
+
+  changeStatusOrderSelected({required int orderStatus}) {
+    statusOrderSelected = orderStatus;
     notifyListeners();
   }
 }

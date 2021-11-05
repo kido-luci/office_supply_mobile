@@ -20,6 +20,8 @@ class OrderRequestDetail extends StatelessWidget {
     var periodOfDepartment = context.watch<PeriodProvider>().periodOfDepartment;
     var orderDetails = context.watch<OrderProvider>().orderDetails;
     var jwtToken = context.watch<SignInProvider>().auth!;
+    var statusOrderSelected =
+        context.watch<OrderProvider>().statusOrderSelected;
 
     return Scaffold(
       backgroundColor: Colors.indigo[100],
@@ -104,21 +106,34 @@ class OrderRequestDetail extends StatelessWidget {
                 ),
                 child: ElevatedButton(
                   onPressed: () async {
-                    var oup = OrderUpdatePayload(
-                        userApproveID: userInfo.id,
-                        orderID: orderDetails[0].orderID,
-                        description: '',
-                        isApprove: true);
-
-                    var result = await OrderService.updateOrder(
-                        jwtToken: jwtToken.jwtToken, oup: oup);
-
-                    if (result!) {
+                    if (statusOrderSelected == 3 || statusOrderSelected == 4) {
                       Fluttertoast.showToast(
-                          msg: 'Approve success',
+                          msg: 'Cannot perform this action',
                           fontSize: 18,
                           gravity: ToastGravity.CENTER);
-                      Navigator.of(context).pushReplacementNamed('/list_order');
+                    } else {
+                      var oup = OrderUpdatePayload(
+                          userApproveID: userInfo.id,
+                          orderID: orderDetails[0].orderID,
+                          description: '',
+                          isApprove: true);
+
+                      var result = await OrderService.updateOrder(
+                          jwtToken: jwtToken.jwtToken, oup: oup);
+
+                      if (result!) {
+                        Fluttertoast.showToast(
+                            msg: 'Approve success',
+                            fontSize: 18,
+                            gravity: ToastGravity.CENTER);
+                        Navigator.of(context)
+                            .pushReplacementNamed('/list_order');
+                      } else {
+                        Fluttertoast.showToast(
+                            msg: 'Server error, please try again',
+                            fontSize: 18,
+                            gravity: ToastGravity.CENTER);
+                      }
                     }
                   },
                   style: ElevatedButton.styleFrom(
@@ -140,21 +155,34 @@ class OrderRequestDetail extends StatelessWidget {
                 ),
                 child: ElevatedButton(
                   onPressed: () async {
-                    var oup = OrderUpdatePayload(
-                        userApproveID: userInfo.id,
-                        orderID: orderDetails[0].orderID,
-                        description: '',
-                        isApprove: false);
-
-                    var result = await OrderService.updateOrder(
-                        jwtToken: jwtToken.jwtToken, oup: oup);
-
-                    if (result!) {
+                    if (statusOrderSelected == 3 || statusOrderSelected == 4) {
                       Fluttertoast.showToast(
-                          msg: 'Cancel this order request',
+                          msg: 'Cannot perform this action',
                           fontSize: 18,
                           gravity: ToastGravity.CENTER);
-                      Navigator.of(context).pushReplacementNamed('/list_order');
+                    } else {
+                      var oup = OrderUpdatePayload(
+                          userApproveID: userInfo.id,
+                          orderID: orderDetails[0].orderID,
+                          description: '',
+                          isApprove: false);
+
+                      var result = await OrderService.updateOrder(
+                          jwtToken: jwtToken.jwtToken, oup: oup);
+
+                      if (result!) {
+                        Fluttertoast.showToast(
+                            msg: 'Cancel this order request',
+                            fontSize: 18,
+                            gravity: ToastGravity.CENTER);
+                        Navigator.of(context)
+                            .pushReplacementNamed('/list_order');
+                      } else {
+                        Fluttertoast.showToast(
+                            msg: 'Server error, please try again',
+                            fontSize: 18,
+                            gravity: ToastGravity.CENTER);
+                      }
                     }
                   },
                   style: ElevatedButton.styleFrom(
