@@ -30,6 +30,7 @@ class _PeriodFormState extends State<PeriodForm> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Period Form'),
+        backgroundColor: Colors.indigo[400],
       ),
       backgroundColor: Colors.indigo[100],
       body: SingleChildScrollView(
@@ -230,86 +231,91 @@ class _PeriodFormState extends State<PeriodForm> {
               ////////////////// button
               Column(
                 children: [
-                  ElevatedButton.icon(
-                    onPressed: () async {
-                      var periodPayload = PeriodPayload(
-                        name: txtName.text,
-                        departmentID: selectedValue,
-                        fromTime: fromDate,
-                        toTime: toDate,
-                        quota: double.parse(txtQuota.text),
-                      );
-                      var result =
-                          await createPeriod(periodPayload, jwtToken.jwtToken);
-                      if (result!['isSuccess']) {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text('Create Result'),
-                              content: Text('Create success'),
-                              actions: [
-                                ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.of(context)
-                                        .pushReplacementNamed('/list_period');
-                                  },
-                                  child: Text('Ok'),
-                                )
-                              ],
-                            );
-                          },
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    child: ElevatedButton.icon(
+                      onPressed: () async {
+                        var periodPayload = PeriodPayload(
+                          name: txtName.text,
+                          departmentID: selectedValue,
+                          fromTime: fromDate,
+                          toTime: toDate,
+                          quota: double.parse(txtQuota.text),
                         );
-                      } else {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text('Create Result'),
-                              content: Text(result['messageDetail'].toString()),
-                              actions: [
-                                ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text('Ok'),
-                                )
-                              ],
-                            );
-                          },
-                        );
-                      }
-                    },
-                    icon: Icon(Icons.add),
-                    label: Text('Create'),
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
+                        var result = await createPeriod(
+                            periodPayload, jwtToken.jwtToken);
+                        if (result!['isSuccess']) {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Create Result'),
+                                content: Text('Create success'),
+                                actions: [
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .pushReplacementNamed('/list_period');
+                                    },
+                                    child: Text('Ok'),
+                                  )
+                                ],
+                              );
+                            },
+                          );
+                        } else {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Create Result'),
+                                content:
+                                    Text(result['messageDetail'].toString()),
+                                actions: [
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('Ok'),
+                                  )
+                                ],
+                              );
+                            },
+                          );
+                        }
+                      },
+                      icon: Icon(Icons.add),
+                      label: Text('Create'),
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        textStyle: TextStyle(fontSize: 18),
+                        minimumSize:
+                            Size(MediaQuery.of(context).size.width, 50),
                       ),
-                      textStyle: TextStyle(fontSize: 18),
-                      padding: EdgeInsets.only(
-                          top: 15, bottom: 15, left: 20, right: 20),
-                      minimumSize: Size(300, 50),
                     ),
                   ),
                   SizedBox(
                     height: 10,
                   ),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    icon: Icon(Icons.dangerous_outlined),
-                    label: Text('Cancel'),
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      icon: Icon(Icons.dangerous_outlined),
+                      label: Text('Cancel'),
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        textStyle: TextStyle(fontSize: 18),
+                        minimumSize:
+                            Size(MediaQuery.of(context).size.width, 50),
+                        primary: Colors.red[400],
                       ),
-                      textStyle: TextStyle(fontSize: 18),
-                      padding: EdgeInsets.only(
-                          top: 15, bottom: 15, left: 20, right: 20),
-                      minimumSize: Size(300, 50),
-                      primary: Colors.red[400],
                     ),
                   )
                 ],
