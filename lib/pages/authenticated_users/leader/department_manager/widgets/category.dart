@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:office_supply_mobile_master/config/paths.dart';
+
 import 'package:office_supply_mobile_master/config/themes.dart';
-import 'package:office_supply_mobile_master/models/category/category.dart';
 
 class CategogyCard extends StatelessWidget {
+  final int selectedIndex;
+  final Function({required int selectedCategoryId}) onTap;
+  final List<String> categories;
+
   const CategogyCard({
     Key? key,
-    required this.categories,
-    required this.selectedCategoryId,
+    required this.selectedIndex,
     required this.onTap,
+    required this.categories,
   }) : super(key: key);
-
-  final Map<int, Category> categories;
-  final int selectedCategoryId;
-  final Function({required int selectedCategoryId}) onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +24,11 @@ class CategogyCard extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 15),
             alignment: Alignment.centerLeft,
             child: Text(
-              'Loại văn phòng phẩm',
+              'Trạng thái đơn hàng',
               style: h5.copyWith(
                 color: lightGrey,
                 fontSize: 14,
+                fontStyle: FontStyle.italic,
               ),
             ),
           ),
@@ -38,12 +37,14 @@ class CategogyCard extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(15),
               child: Wrap(
-                spacing: 28,
-                children: categories.entries
+                spacing: 15,
+                children: categories
+                    .asMap()
+                    .entries
                     .map((e) => CategoryItem(
                           category: e.value,
                           index: e.key,
-                          isSelected: e.key == selectedCategoryId,
+                          isSelected: e.key == selectedIndex,
                           onTap: () => onTap.call(selectedCategoryId: e.key),
                         ))
                     .toList(),
@@ -58,6 +59,7 @@ class CategogyCard extends StatelessWidget {
               style: h5.copyWith(
                 color: lightGrey,
                 fontSize: 14,
+                fontStyle: FontStyle.italic,
               ),
             ),
           ),
@@ -68,6 +70,11 @@ class CategogyCard extends StatelessWidget {
 }
 
 class CategoryItem extends StatelessWidget {
+  final String category;
+  final bool isSelected;
+  final int index;
+  final VoidCallback onTap;
+
   const CategoryItem({
     Key? key,
     required this.category,
@@ -76,32 +83,14 @@ class CategoryItem extends StatelessWidget {
     required this.onTap,
   }) : super(key: key);
 
-  final Category category;
-  final bool isSelected;
-  final int index;
-  final VoidCallback onTap;
-
   @override
   Widget build(BuildContext context) {
-    String icon;
-    switch (category.name) {
-      case 'Bút':
-        icon = iconPath + pencilBoxSvg;
-        break;
-      case 'Sổ sách':
-        icon = iconPath + notebookSvg;
-        break;
-      case 'Giấy':
-        icon = iconPath + paperSvg;
-        break;
-      default:
-        icon = iconPath + pencilBoxSvg;
-    }
     return InkWell(
       onTap: onTap,
       child: Container(
-        height: 60,
-        width: 80,
+        height: 50,
+        width: 50,
+        alignment: Alignment.center,
         decoration: BoxDecoration(
           color: isSelected ? primaryColor : primaryLightColor,
           boxShadow: [
@@ -114,27 +103,15 @@ class CategoryItem extends StatelessWidget {
             ),
           ],
         ),
-        child: Center(
-          child: Wrap(
-            direction: Axis.vertical,
-            crossAxisAlignment: WrapCrossAlignment.center,
-            children: [
-              SvgPicture.asset(
-                icon,
-                color: isSelected ? primaryLightColor : primaryColor,
-                width: 30,
-                height: 30,
-              ),
-              Text(
-                category.name,
-                style: h5.copyWith(
-                  color: isSelected ? primaryLightColor : primaryColor,
-                  fontSize: 15,
-                  height: 1.5,
-                ),
-              )
-            ],
+        child: Text(
+          category,
+          style: h5.copyWith(
+            color: isSelected ? primaryLightColor : primaryColor,
+            fontSize: 15,
+            fontWeight: FontWeight.w500,
+            height: 1.2,
           ),
+          textAlign: TextAlign.center,
         ),
       ),
     );

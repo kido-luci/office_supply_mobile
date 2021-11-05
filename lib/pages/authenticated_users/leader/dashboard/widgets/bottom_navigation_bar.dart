@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:office_supply_mobile_master/config/paths.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/leader/dashboard/leader_dashboard.dart';
+import 'package:office_supply_mobile_master/pages/authenticated_users/leader/department_manager/leader_order_history.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/leader/order_history/leader_order_history.dart';
 import 'package:office_supply_mobile_master/providers/sign_in.dart';
 import 'package:office_supply_mobile_master/services/period.dart';
@@ -27,9 +28,10 @@ class BottomNavigation extends StatelessWidget {
 
         switch (index) {
           case 0:
+            reloadPeriod(signInProvider: signInProvider);
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
-                builder: (context) => const LeaderDashBoard(),
+                builder: (context) => const DepartmentManager(),
               ),
             );
             break;

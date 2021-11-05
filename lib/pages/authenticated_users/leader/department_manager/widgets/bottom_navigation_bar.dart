@@ -18,7 +18,7 @@ class BottomNavigation extends StatelessWidget {
 
     return CurvedNavigationBar(
       height: 46,
-      index: 3,
+      index: 0,
       color: primaryLightColor,
       backgroundColor: Colors.transparent,
       buttonBackgroundColor: primaryColor,

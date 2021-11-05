@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 //color
 const primaryColor = Color(0xFF6F35A5);
 const primaryLightColor = Color(0xFFF1E6FF);
+const primaryDarkColor = Color(0xFF41236b);
 const primaryLightColorTransparent = Color(0x956F35A5);
 const lightGrey = Color.fromRGBO(0, 0, 0, 0.54);
 const lightGreyBackground = Color(0xFFF6F6F6);

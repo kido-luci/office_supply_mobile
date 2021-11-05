@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
 import 'package:office_supply_mobile_master/models/company/company.dart';
 import 'package:office_supply_mobile_master/models/department/department.dart';
+import 'package:office_supply_mobile_master/models/order/orderUpdatePayload.dart';
 import 'package:office_supply_mobile_master/models/order_detail_history/order_detail_history.dart';
 import 'package:office_supply_mobile_master/models/order_history/order_history.dart';
 import 'package:office_supply_mobile_master/models/order_history_item/order_history_item.dart';
@@ -12,6 +13,8 @@ import 'package:office_supply_mobile_master/pages/authenticated_users/leader/ord
 import 'package:office_supply_mobile_master/pages/authenticated_users/leader/order_detail/widgets/order_status.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/leader/order_detail/widgets/top_navigation_bar.dart';
 import 'package:office_supply_mobile_master/providers/sign_in.dart';
+import 'package:office_supply_mobile_master/services/order.dart';
+import 'package:provider/provider.dart';
 
 class OrderDetail extends StatefulWidget {
   final OrderHistory? orderHistory;
@@ -20,6 +23,7 @@ class OrderDetail extends StatefulWidget {
   final User userOrder;
   final Company company;
   final Department department;
+  final VoidCallback? onTapBack;
 
   const OrderDetail({
     Key? key,
@@ -29,6 +33,7 @@ class OrderDetail extends StatefulWidget {
     required this.userOrder,
     required this.company,
     required this.department,
+    this.onTapBack,
   }) : super(key: key);
 
   @override
@@ -37,10 +42,24 @@ class OrderDetail extends StatefulWidget {
 
 class _OrderDetailState extends State<OrderDetail> {
   var totalPrice = 0.0;
+  late SignInProvider signInProvider;
+  late OrderHistoryItem tmp;
 
   @override
   void initState() {
-    super.initState();
+    signInProvider = Provider.of<SignInProvider>(context, listen: false);
+    tmp = widget.orderHistoryItem ??
+        OrderHistoryItem(
+          approveTime: widget.orderHistory!.approveTime,
+          createTime:
+              widget.orderHistory!.createTime.add(const Duration(hours: 7)),
+          id: widget.orderHistory!.id,
+          orderStatusID: widget.orderHistory!.orderStatusID,
+          userApprove: widget.orderHistory!.userApprove,
+          userApproveID: widget.orderHistory!.userApproveID,
+          userOrder: widget.orderHistory!.userOrder,
+          userOrderID: widget.orderHistory!.userOrderID,
+        );
     for (var e in widget.orderdetailHistory) {
       totalPrice += e.price * e.quantity;
     }
@@ -60,6 +79,7 @@ class _OrderDetailState extends State<OrderDetail> {
       default:
         widget.userOrder.roleName = 'Khách';
     }
+    super.initState();
   }
 
   @override
@@ -70,9 +90,7 @@ class _OrderDetailState extends State<OrderDetail> {
           children: [
             SizedBox(
               height: 80,
-              child: TopNavigationBar(onTapBack: () {
-                setState(() {});
-              }),
+              child: TopNavigationBar(onTapBack: widget.onTapBack),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 10, bottom: 0, left: 15),
@@ -138,21 +156,13 @@ class _OrderDetailState extends State<OrderDetail> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      widget.orderHistory != null
-                          ? Text(
-                              '#' + widget.orderHistory!.id.toString(),
-                              style: h6.copyWith(
-                                color: Colors.black,
-                                height: 1.5,
-                              ),
-                            )
-                          : Text(
-                              '#' + widget.orderHistoryItem!.id.toString(),
-                              style: h6.copyWith(
-                                color: Colors.black,
-                                height: 1.5,
-                              ),
-                            ),
+                      Text(
+                        '#' + tmp.id.toString(),
+                        style: h6.copyWith(
+                          color: Colors.black,
+                          height: 1.5,
+                        ),
+                      ),
                     ],
                   ),
                   Row(
@@ -196,9 +206,8 @@ class _OrderDetailState extends State<OrderDetail> {
                 style: h5.copyWith(fontWeight: FontWeight.bold),
               ),
             ),
-            //!orderHistoryItem
-            widget.orderHistoryItem != null &&
-                    widget.orderHistoryItem!.orderStatusID == 4
+            //!orderstatus
+            tmp.orderStatusID == 4
                 ? Center(
                     child: Text(
                       'Đã huỷ đơn hàng',
@@ -206,30 +215,9 @@ class _OrderDetailState extends State<OrderDetail> {
                       textAlign: TextAlign.center,
                     ),
                   )
-                : widget.orderHistoryItem != null
-                    ? OrderStatus(
-                        doneStep: widget.orderHistoryItem!.orderStatusID == 3
-                            ? 4
-                            : widget.orderHistoryItem!.orderStatusID,
-                      )
-                    : const SizedBox.shrink(),
-            //!orderHistory
-            widget.orderHistory != null &&
-                    widget.orderHistory!.orderStatusID == 4
-                ? Center(
-                    child: Text(
-                      'Đã huỷ đơn hàng',
-                      style: h4.copyWith(fontSize: 20),
-                      textAlign: TextAlign.center,
-                    ),
-                  )
-                : widget.orderHistory != null
-                    ? OrderStatus(
-                        doneStep: widget.orderHistory!.orderStatusID == 3
-                            ? 4
-                            : widget.orderHistory!.orderStatusID,
-                      )
-                    : const SizedBox.shrink(),
+                : OrderStatus(
+                    doneStep: tmp.orderStatusID == 3 ? 4 : tmp.orderStatusID,
+                  ),
             Padding(
               padding: const EdgeInsets.only(top: 10, left: 15),
               child: Text(
@@ -246,12 +234,131 @@ class _OrderDetailState extends State<OrderDetail> {
                     .map(
                       (e) => OrderItem(
                         orderDetailHistory: e.value,
-                        isCancelCheckOut: widget.orderHistoryItem != null
-                            ? widget.orderHistoryItem!.orderStatusID == 4
-                            : widget.orderHistory!.orderStatusID == 4,
+                        isCancelCheckOut: tmp.orderStatusID == 4,
                       ),
                     )
                     .toList(),
+              ),
+            ),
+            Visibility(
+              visible: tmp.orderStatusID == 1,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    height: 40,
+                    width: 150,
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFAD4444),
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(20),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.3),
+                          offset: Offset.zero,
+                          blurRadius: 3,
+                        )
+                      ],
+                    ),
+                    child: InkWell(
+                      onTap: () async {
+                        setState(() {
+                          tmp.orderStatusID = 4;
+                        });
+                        await OrderService.updateOrder(
+                          jwtToken: signInProvider.auth!.jwtToken,
+                          oup: OrderUpdatePayload(
+                            isApprove: false,
+                            orderID: tmp.id,
+                            userApproveID: signInProvider.user!.id,
+                            description: '',
+                          ),
+                        );
+                      },
+                      child: Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Huỷ đơn hàng',
+                              style: h5.copyWith(
+                                  color: Colors.white,
+                                  fontStyle: FontStyle.italic),
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            const Icon(
+                              Icons.remove,
+                              color: Colors.white,
+                              size: 18,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: 40,
+                    width: 150,
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    decoration: BoxDecoration(
+                      color: primaryColor,
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(20),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.3),
+                          offset: Offset.zero,
+                          blurRadius: 3,
+                        )
+                      ],
+                    ),
+                    child: InkWell(
+                      onTap: () async {
+                        setState(() {
+                          tmp.orderStatusID = 2;
+                        });
+                        await OrderService.updateOrder(
+                          jwtToken: signInProvider.auth!.jwtToken,
+                          oup: OrderUpdatePayload(
+                            isApprove: true,
+                            orderID: tmp.id,
+                            userApproveID: signInProvider.user!.id,
+                            description: '',
+                          ),
+                        );
+                      },
+                      child: Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Duyệt đơn hàng',
+                              style: h5.copyWith(
+                                  color: Colors.white,
+                                  fontStyle: FontStyle.italic),
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            const Icon(
+                              Icons.check,
+                              color: Colors.white,
+                              size: 18,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
             Row(
@@ -267,14 +374,11 @@ class _OrderDetailState extends State<OrderDetail> {
                   ),
                 ),
                 Text(
-                  DateFormat('kk:mm - dd/MM/yyyy')
-                      .format(widget.orderHistory != null
-                          ? widget.orderHistory!.createTime.add(
-                              const Duration(hours: 7),
-                            )
-                          : widget.orderHistoryItem!.createTime.add(
-                              const Duration(hours: 0),
-                            )),
+                  DateFormat('kk:mm - dd/MM/yyyy').format(
+                    tmp.createTime.add(
+                      const Duration(hours: 0),
+                    ),
+                  ),
                   style: h6.copyWith(
                     color: Colors.black,
                     height: 1.5,
@@ -302,10 +406,7 @@ class _OrderDetailState extends State<OrderDetail> {
                   style: h4.copyWith(
                     height: 1.2,
                     fontWeight: FontWeight.bold,
-                    decoration: (widget.orderHistoryItem != null &&
-                                widget.orderHistoryItem!.orderStatusID == 4) ||
-                            (widget.orderHistory != null &&
-                                widget.orderHistory!.orderStatusID == 4)
+                    decoration: tmp.orderStatusID == 4
                         ? TextDecoration.lineThrough
                         : TextDecoration.none,
                   ),
