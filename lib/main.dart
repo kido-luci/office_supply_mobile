@@ -43,8 +43,6 @@ Future<void> main() async {
 class MainApp extends StatelessWidget {
   const MainApp({Key? key}) : super(key: key);
 
-  get kPrimaryColor => null;
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -86,7 +84,7 @@ class MainApp extends StatelessWidget {
           orderRequestDetail: (context) => const OrderRequestDetail(),
         },
         theme: ThemeData(
-          primaryColor: kPrimaryColor,
+          //primaryColor: ,
           scaffoldBackgroundColor: Colors.white,
         ),
         debugShowCheckedModeBanner: false,

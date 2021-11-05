@@ -22,38 +22,15 @@ class CategogyCard extends StatelessWidget {
       color: Colors.white,
       child: Column(
         children: [
-          Padding(
+          Container(
             padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Loại văn phòng phẩm',
-                  style: h5.copyWith(
-                    color: lightGrey,
-                    fontSize: 14,
-                  ),
-                ),
-                InkWell(
-                  child: Wrap(
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    children: [
-                      Text(
-                        'Xem tất cả',
-                        style: h5.copyWith(
-                          color: primaryColor,
-                          fontSize: 14,
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 5),
-                        child: Icon(Icons.arrow_forward,
-                            color: primaryColor, size: 14),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Loại văn phòng phẩm',
+              style: h5.copyWith(
+                color: lightGrey,
+                fontSize: 14,
+              ),
             ),
           ),
           SingleChildScrollView(
@@ -73,41 +50,15 @@ class CategogyCard extends StatelessWidget {
               ),
             ),
           ),
-          Padding(
+          Container(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Sản phẩm nổi bật',
-                  style: h5.copyWith(
-                    color: lightGrey,
-                    fontSize: 14,
-                  ),
-                ),
-                InkWell(
-                  child: Wrap(
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    children: [
-                      Text(
-                        'Xem tất cả',
-                        style: h5.copyWith(
-                          color: primaryColor,
-                          fontSize: 14,
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 5),
-                        child: Icon(
-                          Icons.arrow_forward,
-                          color: primaryColor,
-                          size: 14,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Kết quả tìm kiếm',
+              style: h5.copyWith(
+                color: lightGrey,
+                fontSize: 14,
+              ),
             ),
           ),
         ],

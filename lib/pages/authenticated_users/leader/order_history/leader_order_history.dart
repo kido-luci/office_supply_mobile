@@ -68,22 +68,10 @@ class _LeaderOrderHistoryState extends State<LeaderOrderHistory> {
                     width: 5,
                   ),
                   Text(
-                    'Lịch sử đơn hàng phòng ban: ' +
-                        signInProvider.department!.name,
-                    style: h4.copyWith(fontSize: 16),
+                    'Lịch sử đơn hàng',
+                    style: h4.copyWith(fontSize: 20),
                   ),
                 ],
-              ),
-              Text(
-                'Giới hạn của kỳ: ' +
-                    ProductInMenu.format(price: signInProvider.period!.quota),
-                style: h5.copyWith(fontSize: 18, fontWeight: FontWeight.w300),
-              ),
-              Text(
-                'Số tiền còn lại: ' +
-                    ProductInMenu.format(
-                        price: signInProvider.period!.remainingQuota),
-                style: h5.copyWith(fontSize: 20, fontWeight: FontWeight.w300),
               ),
               Expanded(
                 flex: 1,
@@ -97,11 +85,13 @@ class _LeaderOrderHistoryState extends State<LeaderOrderHistory> {
                           children: snapshot.data!.itemsObject!
                               .asMap()
                               .entries
-                              .map(
-                                  (e) => order_history_item_ui.OrderHistoryItem(
-                                        orderHistoryItem: e.value,
-                                        onTap: viewOrderDetail,
-                                      ))
+                              .map((e) =>
+                                  e.value.userOrderID == signInProvider.user!.id
+                                      ? order_history_item_ui.OrderHistoryItem(
+                                          orderHistoryItem: e.value,
+                                          onTap: viewOrderDetail,
+                                        )
+                                      : const SizedBox.shrink())
                               .toList())
                       : const LoadingUI(),
                 ),

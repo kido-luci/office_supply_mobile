@@ -38,6 +38,15 @@ class OrderHistoryItem extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              ClipRRect(
+                borderRadius:
+                    const BorderRadius.horizontal(left: Radius.circular(20)),
+                child: Image.network(
+                  orderHistoryItem.userOrdrerObject.avatarUrl!,
+                  fit: BoxFit.cover,
+                  height: 60,
+                ),
+              ),
               const SizedBox(
                 width: 15,
               ),
@@ -66,6 +75,12 @@ class OrderHistoryItem extends StatelessWidget {
                       ),
                     ),
                     Text(
+                      orderHistoryItem.userOrdrerObject.firstname +
+                          ' ' +
+                          orderHistoryItem.userOrdrerObject.lastname,
+                      style: h6.copyWith(color: primaryColor, height: 1.2),
+                    ),
+                    Text(
                       DateFormat('kk:mm - dd/MM/yyyy')
                           .format(orderHistoryItem.createTime),
                       style: h6.copyWith(color: lightGrey, height: 1.2),
@@ -74,32 +89,25 @@ class OrderHistoryItem extends StatelessWidget {
                 ),
               ),
               Expanded(
-                flex: 5,
+                flex: 3,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      'Trạng thái đơn hàng',
-                      style: h6.copyWith(
-                        color: Colors.black,
-                        height: 1.5,
-                      ),
-                    ),
-                    Text(
                       orderHistoryItem.orderStatusID == 1
-                          ? 'Chờ trưởng phòng duyệt'
+                          ? 'Chờ trưởng \nphòng duyệt'
                           : orderHistoryItem.orderStatusID == 2
-                              ? 'Chờ quản lý duyệt'
+                              ? 'Chờ quản \nlý duyệt'
                               : orderHistoryItem.orderStatusID == 3
-                                  ? 'Hoàn thành đơn hàng'
-                                  : 'Đã huỷ đơn hàng',
+                                  ? 'Hoàn thành \nđơn hàng'
+                                  : 'Đã huỷ \nđơn hàng',
                       style: h6.copyWith(
                         fontWeight: FontWeight.bold,
                         fontStyle: FontStyle.italic,
                         height: 1.5,
-                        //fontSize: 11,
                       ),
+                      textAlign: TextAlign.center,
                     ),
                   ],
                 ),
