@@ -80,6 +80,8 @@ class OrderService {
 
     if (res.statusCode == 204) {
       return true;
+    } else if (res.statusCode == 500) {
+      return false;
     }
   }
 
