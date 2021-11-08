@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
@@ -20,13 +21,18 @@ import 'package:office_supply_mobile_master/services/company.dart';
 import 'package:office_supply_mobile_master/services/department.dart';
 import 'package:office_supply_mobile_master/services/order.dart';
 import 'package:office_supply_mobile_master/services/order_detail.dart';
+import 'package:office_supply_mobile_master/services/period.dart';
 import 'package:office_supply_mobile_master/services/role.dart';
 import 'package:office_supply_mobile_master/services/user.dart';
 import 'package:office_supply_mobile_master/widgets/loading_ui.dart';
 import 'package:provider/provider.dart';
 
 class DepartmentManager extends StatefulWidget {
-  const DepartmentManager({Key? key}) : super(key: key);
+  const DepartmentManager(
+      {Key? key, this.firstselectedBarIndex = 0, this.firstOrderStatusId = 0})
+      : super(key: key);
+  final int firstselectedBarIndex;
+  final int firstOrderStatusId;
 
   @override
   State<DepartmentManager> createState() => _DepartmentManagerState();
@@ -35,13 +41,33 @@ class DepartmentManager extends StatefulWidget {
 class _DepartmentManagerState extends State<DepartmentManager> {
   late SignInProvider signInProvider;
   bool isWattingGetOrderDetail = false;
-  int selectedOrderStatusId = 0;
-  int selectedBarIndex = 0;
+  late int selectedOrderStatusId;
+  late int selectedBarIndex;
 
   @override
   void initState() {
-    signInProvider = Provider.of<SignInProvider>(context, listen: false);
     super.initState();
+
+    selectedBarIndex = widget.firstselectedBarIndex;
+    selectedOrderStatusId = widget.firstOrderStatusId;
+    signInProvider = Provider.of<SignInProvider>(context, listen: false);
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? remoteNotification = message.notification;
+      AndroidNotification? androidNotification = message.notification?.android;
+      if (remoteNotification != null && androidNotification != null) {
+        reloadPeriod(signInProvider: signInProvider);
+        setState(() {});
+        // showDialog(
+        //     context: context,
+        //     builder: (_) {
+        //       return AlertDialog(
+        //         title: Text(remoteNotification.title!),
+        //         content: Text(remoteNotification.body!),
+        //       );
+        //     });
+      }
+    });
   }
 
   @override
@@ -289,5 +315,11 @@ class _DepartmentManagerState extends State<DepartmentManager> {
     setState(() {
       isWattingGetOrderDetail = false;
     });
+  }
+
+  reloadPeriod({required SignInProvider signInProvider}) async {
+    signInProvider.period = await PeriodService.fetchPeriod(
+        departmentId: signInProvider.department!.id,
+        jwtToken: signInProvider.auth!.jwtToken);
   }
 }

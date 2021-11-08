@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:office_supply_mobile_master/config/paths.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
@@ -8,9 +9,12 @@ import 'package:office_supply_mobile_master/pages/authenticated_users/leader/das
 import 'package:office_supply_mobile_master/pages/authenticated_users/leader/dashboard/widgets/category.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/leader/dashboard/widgets/stationery_grid_item.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/leader/dashboard/widgets/top_navigation_bar.dart';
+import 'package:office_supply_mobile_master/pages/authenticated_users/leader/department_manager/leader_order_history.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/leader/product_detail/product_detail.dart';
 import 'package:office_supply_mobile_master/providers/sign_in.dart';
 import 'package:office_supply_mobile_master/services/category.dart';
+import 'package:office_supply_mobile_master/services/handler_background_message.dart';
+import 'package:office_supply_mobile_master/services/period.dart';
 import 'package:office_supply_mobile_master/services/product.dart';
 import 'package:office_supply_mobile_master/widgets/cart_button.dart';
 import 'package:office_supply_mobile_master/widgets/loading_ui.dart';
@@ -34,6 +38,193 @@ class _LeaderDashBoardState extends State<LeaderDashBoard> {
   void initState() {
     super.initState();
     signInProvider = Provider.of<SignInProvider>(context, listen: false);
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? remoteNotification = message.notification;
+      AndroidNotification? androidNotification = message.notification?.android;
+      if (remoteNotification != null && androidNotification != null) {
+        // flutterLocalNotificationsPlugin.show(
+        //   notification.hashCode,
+        //   notification.title,
+        //   notification.body,
+        //   NotificationDetails(
+        //     android: AndroidNotificationDetails(
+        //       channel.id,
+        //       channel.name,
+        //       color: Colors.blue,
+        //       playSound: true,
+        //       //icon: '@mipmap/ic_launcher',
+        //     ),
+        //   ),
+        // );
+        showDialog(
+            context: context,
+            builder: (_) {
+              return AlertDialog(
+                titlePadding: EdgeInsets.zero,
+                actionsPadding: EdgeInsets.zero,
+                insetPadding: EdgeInsets.zero,
+                buttonPadding: EdgeInsets.zero,
+                contentPadding: EdgeInsets.zero,
+                content: Container(
+                  height: 200,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(5),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.3),
+                        offset: Offset.zero,
+                        blurRadius: 3,
+                      )
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        color: primaryLightColor,
+                        height: 40,
+                        child: Text(
+                          'Thông báo',
+                          style: h5.copyWith(
+                              fontWeight: FontWeight.bold, fontSize: 18),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              remoteNotification.body!,
+                              style: h5.copyWith(
+                                fontStyle: FontStyle.italic,
+                                color: Colors.black54,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Container(
+                                    height: 40,
+                                    width: 115,
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 10),
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFFAD4444),
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(20),
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.3),
+                                          offset: Offset.zero,
+                                          blurRadius: 3,
+                                        )
+                                      ],
+                                    ),
+                                    child: Text(
+                                      'Bỏ qua',
+                                      style: h5.copyWith(
+                                          color: Colors.white,
+                                          fontStyle: FontStyle.italic),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    reloadPeriod(
+                                        signInProvider: signInProvider);
+                                    Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const DepartmentManager(
+                                          firstselectedBarIndex: 1,
+                                          firstOrderStatusId: 1,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    height: 40,
+                                    width: 115,
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 10),
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: primaryColor,
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(20),
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.3),
+                                          offset: Offset.zero,
+                                          blurRadius: 3,
+                                        )
+                                      ],
+                                    ),
+                                    child: Text(
+                                      'Xem chi tiết',
+                                      style: h5.copyWith(
+                                          color: Colors.white,
+                                          fontStyle: FontStyle.italic),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            });
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage remoteMessage) {
+      RemoteNotification? remoteNotification = remoteMessage.notification;
+      AndroidNotification? androidNotification =
+          remoteMessage.notification?.android;
+      if (remoteNotification != null && androidNotification != null) {
+        // showDialog(
+        //     context: context,
+        //     builder: (_) {
+        //       return AlertDialog(
+        //         title: Text(remoteNotification.title!),
+        //         content: SingleChildScrollView(
+        //           child: Column(
+        //             crossAxisAlignment: CrossAxisAlignment.start,
+        //             children: [Text(remoteNotification.body!)],
+        //           ),
+        //         ),
+        //       );
+        //     });
+      }
+    });
+
+    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
   }
 
   @override
@@ -230,5 +421,11 @@ class _LeaderDashBoardState extends State<LeaderDashBoard> {
     }
 
     return categories;
+  }
+
+  reloadPeriod({required SignInProvider signInProvider}) async {
+    signInProvider.period = await PeriodService.fetchPeriod(
+        departmentId: signInProvider.department!.id,
+        jwtToken: signInProvider.auth!.jwtToken);
   }
 }

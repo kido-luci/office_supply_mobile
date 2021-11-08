@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
@@ -19,6 +20,7 @@ class OrderDetail extends StatefulWidget {
   final User userOrder;
   final Company company;
   final Department department;
+  final VoidCallback? onTapBack;
 
   const OrderDetail({
     Key? key,
@@ -28,6 +30,7 @@ class OrderDetail extends StatefulWidget {
     required this.userOrder,
     required this.company,
     required this.department,
+    this.onTapBack,
   }) : super(key: key);
 
   @override
@@ -36,10 +39,123 @@ class OrderDetail extends StatefulWidget {
 
 class _OrderDetailState extends State<OrderDetail> {
   var totalPrice = 0.0;
+  late OrderHistoryItem tmp;
 
   @override
   void initState() {
-    super.initState();
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? remoteNotification = message.notification;
+      AndroidNotification? androidNotification = message.notification?.android;
+      if (remoteNotification != null && androidNotification != null) {
+        setState(() {});
+        showDialog(
+            context: context,
+            builder: (_) {
+              return AlertDialog(
+                titlePadding: EdgeInsets.zero,
+                actionsPadding: EdgeInsets.zero,
+                insetPadding: EdgeInsets.zero,
+                buttonPadding: EdgeInsets.zero,
+                contentPadding: EdgeInsets.zero,
+                content: Container(
+                  height: 200,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(5),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.3),
+                        offset: Offset.zero,
+                        blurRadius: 3,
+                      )
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        color: primaryLightColor,
+                        height: 40,
+                        child: Text(
+                          'Thông báo',
+                          style: h5.copyWith(
+                              fontWeight: FontWeight.bold, fontSize: 18),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              remoteNotification.body!,
+                              style: h5.copyWith(
+                                fontStyle: FontStyle.italic,
+                                color: Colors.black54,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Container(
+                                height: 40,
+                                width: 115,
+                                margin:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: primaryColor,
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(20),
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.3),
+                                      offset: Offset.zero,
+                                      blurRadius: 3,
+                                    )
+                                  ],
+                                ),
+                                child: Text(
+                                  'Ok',
+                                  style: h5.copyWith(
+                                      color: Colors.white,
+                                      fontStyle: FontStyle.italic),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            });
+      }
+    });
+
+    tmp = widget.orderHistoryItem ??
+        OrderHistoryItem(
+          approveTime: widget.orderHistory!.approveTime,
+          createTime:
+              widget.orderHistory!.createTime.add(const Duration(hours: 7)),
+          id: widget.orderHistory!.id,
+          orderStatusID: widget.orderHistory!.orderStatusID,
+          userApprove: widget.orderHistory!.userApprove,
+          userApproveID: widget.orderHistory!.userApproveID,
+          userOrder: widget.orderHistory!.userOrder,
+          userOrderID: widget.orderHistory!.userOrderID,
+        );
     for (var e in widget.orderdetailHistory) {
       totalPrice += e.price * e.quantity;
     }
@@ -59,6 +175,7 @@ class _OrderDetailState extends State<OrderDetail> {
       default:
         widget.userOrder.roleName = 'Khách';
     }
+    super.initState();
   }
 
   @override
@@ -67,11 +184,9 @@ class _OrderDetailState extends State<OrderDetail> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 80,
-              child: TopNavigationBar(onTapBack: () {
-                setState(() {});
-              }),
+              child: TopNavigationBar(),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 10, bottom: 0, left: 15),
@@ -137,21 +252,13 @@ class _OrderDetailState extends State<OrderDetail> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      widget.orderHistory != null
-                          ? Text(
-                              '#' + widget.orderHistory!.id.toString(),
-                              style: h6.copyWith(
-                                color: Colors.black,
-                                height: 1.5,
-                              ),
-                            )
-                          : Text(
-                              '#' + widget.orderHistoryItem!.id.toString(),
-                              style: h6.copyWith(
-                                color: Colors.black,
-                                height: 1.5,
-                              ),
-                            ),
+                      Text(
+                        '#' + tmp.id.toString(),
+                        style: h6.copyWith(
+                          color: Colors.black,
+                          height: 1.5,
+                        ),
+                      ),
                     ],
                   ),
                   Row(
@@ -195,16 +302,17 @@ class _OrderDetailState extends State<OrderDetail> {
                 style: h5.copyWith(fontWeight: FontWeight.bold),
               ),
             ),
-            widget.orderHistory != null
-                ? OrderStatus(
-                    doneStep: widget.orderHistory!.orderStatusID == 3
-                        ? 4
-                        : widget.orderHistory!.orderStatusID,
+            //!orderstatus
+            tmp.orderStatusID == 4
+                ? Center(
+                    child: Text(
+                      'Đã huỷ đơn hàng',
+                      style: h4.copyWith(fontSize: 20),
+                      textAlign: TextAlign.center,
+                    ),
                   )
                 : OrderStatus(
-                    doneStep: widget.orderHistoryItem!.orderStatusID == 3
-                        ? 4
-                        : widget.orderHistoryItem!.orderStatusID,
+                    doneStep: tmp.orderStatusID == 3 ? 4 : tmp.orderStatusID,
                   ),
             Padding(
               padding: const EdgeInsets.only(top: 10, left: 15),
@@ -219,9 +327,12 @@ class _OrderDetailState extends State<OrderDetail> {
                 children: widget.orderdetailHistory
                     .asMap()
                     .entries
-                    .map((e) => OrderItem(
-                          orderDetailHistory: e.value,
-                        ))
+                    .map(
+                      (e) => OrderItem(
+                        orderDetailHistory: e.value,
+                        isCancelCheckOut: tmp.orderStatusID == 4,
+                      ),
+                    )
                     .toList(),
               ),
             ),
@@ -238,14 +349,11 @@ class _OrderDetailState extends State<OrderDetail> {
                   ),
                 ),
                 Text(
-                  DateFormat('kk:mm - dd/MM/yyyy')
-                      .format(widget.orderHistory != null
-                          ? widget.orderHistory!.createTime.add(
-                              const Duration(hours: 7),
-                            )
-                          : widget.orderHistoryItem!.createTime.add(
-                              const Duration(hours: 0),
-                            )),
+                  DateFormat('kk:mm - dd/MM/yyyy').format(
+                    tmp.createTime.add(
+                      const Duration(hours: 0),
+                    ),
+                  ),
                   style: h6.copyWith(
                     color: Colors.black,
                     height: 1.5,
@@ -273,6 +381,9 @@ class _OrderDetailState extends State<OrderDetail> {
                   style: h4.copyWith(
                     height: 1.2,
                     fontWeight: FontWeight.bold,
+                    decoration: tmp.orderStatusID == 4
+                        ? TextDecoration.lineThrough
+                        : TextDecoration.none,
                   ),
                 ),
               ],

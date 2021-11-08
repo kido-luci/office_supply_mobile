@@ -12,7 +12,6 @@ class AuthService {
 
   static Future<Auth> fetchAuth({
     required String idToken,
-    required VoidCallback signOut,
     required String regisToken,
   }) async {
     final response = await http.post(
@@ -29,7 +28,6 @@ class AuthService {
       case 200:
         return compute(parseAuth, response.body);
       default:
-        signOut.call();
         throw Exception('Error ${response.statusCode}, cannot get auth');
     }
   }

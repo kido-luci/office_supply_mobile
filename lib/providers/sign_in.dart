@@ -39,7 +39,6 @@ class SignInProvider with ChangeNotifier {
 
     await AuthService.fetchAuth(
       idToken: await FirebaseAuth.instance.currentUser!.getIdToken(),
-      signOut: signOut,
       regisToken: regisToken,
     ).then((e) => auth = e);
 

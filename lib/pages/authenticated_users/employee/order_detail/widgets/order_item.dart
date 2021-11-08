@@ -4,11 +4,14 @@ import 'package:office_supply_mobile_master/models/order_detail_history/order_de
 import 'package:office_supply_mobile_master/models/product_in_menu/product_in_menu.dart';
 
 class OrderItem extends StatelessWidget {
+  final OrderDetailHistory orderDetailHistory;
+  final bool isCancelCheckOut;
+
   const OrderItem({
     Key? key,
     required this.orderDetailHistory,
+    this.isCancelCheckOut = false,
   }) : super(key: key);
-  final OrderDetailHistory orderDetailHistory;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -83,6 +86,9 @@ class OrderItem extends StatelessWidget {
                     style: h6.copyWith(
                       fontWeight: FontWeight.bold,
                       height: 1.5,
+                      decoration: isCancelCheckOut
+                          ? TextDecoration.lineThrough
+                          : TextDecoration.none,
                     ),
                   ),
                 ],

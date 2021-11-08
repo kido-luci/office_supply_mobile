@@ -32,13 +32,13 @@ class _SignInPageState extends State<SignInPage> {
     super.initState();
     setupMessaging();
     signInProvider = Provider.of<SignInProvider>(context, listen: false);
+
     isSignedIn();
   }
 
   Future<void> setupMessaging() async {
     await _messagingService.initialize();
     userDevice = _messagingService.userDeviceToken;
-    print(_messagingService.userDeviceToken);
   }
 
   @override
@@ -201,10 +201,11 @@ class _SignInPageState extends State<SignInPage> {
 
       switch (signInProvider.user!.roleID) {
         case 1:
-          signInProvider.signOut();
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => const SignInPage()),
           );
+          await signInProvider.signOut();
+
           break;
         case 2:
           Navigator.of(context).pushReplacementNamed(listPeriodRouter);
@@ -216,13 +217,16 @@ class _SignInPageState extends State<SignInPage> {
           Navigator.of(context).pushReplacementNamed(employeeDashboardRouter);
           break;
         case 5:
-          signInProvider.signOut();
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => const SignInPage()),
           );
+          await signInProvider.signOut();
+
           break;
       }
     } catch (e) {
+      await signInProvider.signOut();
+
       setState(() {
         isAwaitingSignedIn = false;
       });
