@@ -198,7 +198,6 @@ class _SignInPageState extends State<SignInPage> {
         isAwaitingSignedIn = true;
       });
       await signInProvider.signIn(userDevice);
-
       switch (signInProvider.user!.roleID) {
         case 1:
           Navigator.of(context).pushReplacement(

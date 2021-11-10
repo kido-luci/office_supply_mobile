@@ -57,7 +57,7 @@ class _OrderDetailState extends State<OrderDetail> {
           orderStatusID: widget.orderHistory!.orderStatusID,
           userApprove: widget.orderHistory!.userApprove,
           userApproveID: widget.orderHistory!.userApproveID,
-          userOrder: widget.orderHistory!.userOrder,
+          userOrder: widget.orderHistory!.userOrder!,
           userOrderID: widget.orderHistory!.userOrderID,
         );
     for (var e in widget.orderdetailHistory) {

@@ -37,12 +37,33 @@ class OrderService {
     }
   }
 
+  static Future<OrderHistory> getOrder({
+    required int orderId,
+    required String jwtToken,
+  }) async {
+    final response = await http.get(
+      Uri.parse(apiPath + url + '/' + orderId.toString()),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        HttpHeaders.authorizationHeader: 'Bearer ' + jwtToken,
+      },
+    );
+    switch (response.statusCode) {
+      case 200:
+        Map<String, dynamic> jsonDecode = json.decode(response.body);
+        return compute(parseOrderHistory,
+            jsonDecode['responseData'] as Map<String, dynamic>);
+      default:
+        throw Exception('Error ${response.statusCode}, cannot get order');
+    }
+  }
+
   static Future<List<OrderDTO>?> getOrders({
     required String jwtToken,
     required int userId,
   }) async {
     final res = await http.get(
-      Uri.parse('$api?userID=$userId'),
+      Uri.parse('$api?userID=$userId&orderBy=id desc'),
       headers: {
         // 'Content-Type': 'application/json; charset=UTF-8',
         HttpHeaders.authorizationHeader: 'Bearer ' + jwtToken,

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:office_supply_mobile_master/models/order/orderDTO.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/manager/managerBottomNav.dart';
+import 'package:office_supply_mobile_master/pages/authenticated_users/manager/orderRequest/order_request_detail.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/manager/provider/orderProvide.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/manager/provider/period_provide.dart';
 import 'package:office_supply_mobile_master/providers/sign_in.dart';
@@ -55,7 +56,13 @@ class ListOrderRequest extends StatelessWidget {
           await context
               .read<OrderProvider>()
               .getOrderDetails(orderId: o.id, jwtToken: jwtToken.jwtToken);
-          Navigator.of(context).pushReplacementNamed('/order_request_detail');
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => OrderRequestDetail(
+                orderDTO: o,
+              ),
+            ),
+          );
         },
         child: Padding(
           padding:

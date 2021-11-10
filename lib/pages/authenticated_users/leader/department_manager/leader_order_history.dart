@@ -13,6 +13,7 @@ import 'package:office_supply_mobile_master/pages/authenticated_users/leader/dep
 import 'package:office_supply_mobile_master/pages/authenticated_users/leader/department_manager/widgets/bottom_navigation_bar.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/leader/department_manager/widgets/order_history_item.dart'
     as order_history_item_ui;
+import 'package:office_supply_mobile_master/pages/authenticated_users/leader/department_manager/widgets/user_in_department.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/leader/order_detail/order_detail.dart'
     as order_detail_page;
 import 'package:office_supply_mobile_master/pages/authenticated_users/leader/department_manager/widgets/top_navigation_bar.dart';
@@ -97,7 +98,7 @@ class _DepartmentManagerState extends State<DepartmentManager> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           const SizedBox(
-                            height: 100,
+                            height: 20,
                           ),
                           Center(
                             child: Text(
@@ -117,6 +118,7 @@ class _DepartmentManagerState extends State<DepartmentManager> {
                                   text: TextSpan(
                                     text: 'Kỳ hiện tại: ',
                                     style: h5.copyWith(
+                                        color: Colors.black87,
                                         fontSize: 18,
                                         fontWeight: FontWeight.w500),
                                     children: [
@@ -135,6 +137,7 @@ class _DepartmentManagerState extends State<DepartmentManager> {
                                   text: TextSpan(
                                     text: 'Giới hạn kỳ: ',
                                     style: h5.copyWith(
+                                        color: Colors.black87,
                                         fontSize: 18,
                                         fontWeight: FontWeight.w500),
                                     children: [
@@ -153,6 +156,7 @@ class _DepartmentManagerState extends State<DepartmentManager> {
                                   text: TextSpan(
                                     text: 'Số tiền còn lại: ',
                                     style: h5.copyWith(
+                                        color: Colors.black87,
                                         fontSize: 18,
                                         fontWeight: FontWeight.w500),
                                     children: [
@@ -171,6 +175,7 @@ class _DepartmentManagerState extends State<DepartmentManager> {
                                   text: TextSpan(
                                     text: 'Thời hạn: ',
                                     style: h5.copyWith(
+                                        color: Colors.black87,
                                         fontSize: 18,
                                         fontWeight: FontWeight.w500),
                                     children: [
@@ -188,16 +193,39 @@ class _DepartmentManagerState extends State<DepartmentManager> {
                                     ],
                                   ),
                                 ),
+                                //!
                               ],
                             ),
                           ),
-                          // Center(
-                          //   child: Text(
-                          //     'Thành viên phòng ban',
-                          //     style: h5.copyWith(
-                          //         fontSize: 20, fontWeight: FontWeight.w500),
-                          //   ),
-                          // ),
+                          Center(
+                            child: Text(
+                              'Thành viên phòng ban',
+                              style: h5.copyWith(
+                                  fontSize: 20, fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: FutureBuilder<List<User>>(
+                              future: DepartmentService.fetchDepartmentUser(
+                                  depathmentId: signInProvider.department!.id,
+                                  jwtToken: signInProvider.auth!.jwtToken),
+                              builder: (context, snapshot) => snapshot.hasData
+                                  ? ListView(
+                                      padding: const EdgeInsets.only(
+                                          top: 10, bottom: 50),
+                                      children: snapshot.data!
+                                          .asMap()
+                                          .entries
+                                          .map((e) => e.value.roleID == 4
+                                              ? UserInDepartment(
+                                                  user: e.value,
+                                                )
+                                              : const SizedBox.shrink())
+                                          .toList())
+                                  : const LoadingUI(),
+                            ),
+                          ),
                         ],
                       ),
                     )

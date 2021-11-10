@@ -6,7 +6,7 @@ import 'package:office_supply_mobile_master/config/router.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/dashboard/employee_dashboard.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/leader/dashboard/leader_dashboard.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/manager/orderRequest/list_orderRequest.dart';
-import 'package:office_supply_mobile_master/pages/authenticated_users/manager/orderRequest/orderRequestDetail.dart';
+import 'package:office_supply_mobile_master/pages/authenticated_users/manager/orderRequest/order_request_detail.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/manager/period/list_period.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/manager/period/period_form.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/manager/provider/commonProvide.dart';
@@ -100,7 +100,7 @@ class MainApp extends StatelessWidget {
           periodForm: (context) => const PeriodForm(),
           profile: (context) => const Profile(),
           listOrderRouter: (context) => const ListOrderRequest(),
-          orderRequestDetail: (context) => const OrderRequestDetail(),
+          //orderRequestDetail: (context) => const OrderRequestDetail(),
         },
         theme: ThemeData(
           //primaryColor: ,

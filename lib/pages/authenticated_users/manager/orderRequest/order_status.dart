@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:office_supply_mobile_master/config/themes.dart';
 
 class OrderStatus extends StatelessWidget {
-  const OrderStatus({Key? key, this.doneStep = 1}) : super(key: key);
   final int doneStep;
+
+  const OrderStatus({Key? key, this.doneStep = 1}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +27,7 @@ class OrderStatus extends StatelessWidget {
                   statusTitle: 'Xác nhận \nđơn hàng',
                   statusValue: doneStep >= 1,
                   size: _size,
+                  sizeIcon: 18,
                 ),
               ),
               Expanded(
@@ -34,6 +36,7 @@ class OrderStatus extends StatelessWidget {
                   statusTitle: 'Trường phòng \nduyệt đơn',
                   statusValue: doneStep >= 2,
                   size: _size,
+                  sizeIcon: 18,
                 ),
               ),
               Expanded(
@@ -42,6 +45,7 @@ class OrderStatus extends StatelessWidget {
                   statusTitle: 'Quản lý \nduyệt đơn',
                   statusValue: doneStep >= 3,
                   size: _size,
+                  sizeIcon: 18,
                 ),
               ),
               Expanded(
@@ -50,6 +54,7 @@ class OrderStatus extends StatelessWidget {
                   statusTitle: 'Hoàn thành \nđơn hàng',
                   statusValue: doneStep >= 4,
                   size: _size,
+                  sizeIcon: 18,
                 ),
               ),
               const SizedBox(
@@ -143,7 +148,7 @@ class OrderStatus extends StatelessWidget {
     required String statusTitle,
     required bool statusValue,
     required Size size,
-    double sizeIcon = 18,
+    required double sizeIcon,
   }) =>
       Container(
         color: Colors.white,

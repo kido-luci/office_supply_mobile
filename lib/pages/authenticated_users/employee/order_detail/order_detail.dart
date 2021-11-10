@@ -12,6 +12,9 @@ import 'package:office_supply_mobile_master/models/user/user.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/order_detail/widgets/order_item.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/order_detail/widgets/order_status.dart';
 import 'package:office_supply_mobile_master/pages/authenticated_users/employee/order_detail/widgets/top_navigation_bar.dart';
+import 'package:office_supply_mobile_master/providers/sign_in.dart';
+import 'package:office_supply_mobile_master/services/order.dart';
+import 'package:provider/provider.dart';
 
 class OrderDetail extends StatefulWidget {
   final OrderHistory? orderHistory;
@@ -39,15 +42,27 @@ class OrderDetail extends StatefulWidget {
 
 class _OrderDetailState extends State<OrderDetail> {
   var totalPrice = 0.0;
-  late OrderHistoryItem tmp;
+  late OrderHistory tmp;
+  late SignInProvider signInProvider;
 
   @override
   void initState() {
+    signInProvider = Provider.of<SignInProvider>(context, listen: false);
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage remoteMessage) {
+      RemoteNotification? remoteNotification = remoteMessage.notification;
+      AndroidNotification? androidNotification =
+          remoteMessage.notification?.android;
+      if (remoteNotification != null && androidNotification != null) {
+        getOrder();
+      }
+    });
+
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification? remoteNotification = message.notification;
       AndroidNotification? androidNotification = message.notification?.android;
       if (remoteNotification != null && androidNotification != null) {
-        setState(() {});
+        getOrder();
         showDialog(
             context: context,
             builder: (_) {
@@ -144,17 +159,17 @@ class _OrderDetailState extends State<OrderDetail> {
       }
     });
 
-    tmp = widget.orderHistoryItem ??
-        OrderHistoryItem(
-          approveTime: widget.orderHistory!.approveTime,
+    tmp = widget.orderHistory ??
+        OrderHistory(
+          approveTime: widget.orderHistoryItem!.approveTime,
           createTime:
-              widget.orderHistory!.createTime.add(const Duration(hours: 7)),
-          id: widget.orderHistory!.id,
-          orderStatusID: widget.orderHistory!.orderStatusID,
-          userApprove: widget.orderHistory!.userApprove,
-          userApproveID: widget.orderHistory!.userApproveID,
-          userOrder: widget.orderHistory!.userOrder,
-          userOrderID: widget.orderHistory!.userOrderID,
+              widget.orderHistoryItem!.createTime.add(const Duration(hours: 7)),
+          id: widget.orderHistoryItem!.id,
+          orderStatusID: widget.orderHistoryItem!.orderStatusID,
+          userApprove: widget.orderHistoryItem!.userApprove,
+          userApproveID: widget.orderHistoryItem!.userApproveID,
+          userOrder: widget.orderHistoryItem!.userOrder,
+          userOrderID: widget.orderHistoryItem!.userOrderID,
         );
     for (var e in widget.orderdetailHistory) {
       totalPrice += e.price * e.quantity;
@@ -394,4 +409,17 @@ class _OrderDetailState extends State<OrderDetail> {
           ],
         ),
       );
+
+  getOrder() async {
+    await OrderService.getOrder(
+            jwtToken: signInProvider.auth!.jwtToken, orderId: tmp.id)
+        .then((e) {
+      setState(() {
+        tmp.orderStatusID = e.orderStatusID;
+        tmp.approveTime = e.approveTime;
+        tmp.userApproveID = e.userApproveID;
+        tmp.userApprove = e.userApprove;
+      });
+    });
+  }
 }

@@ -10,8 +10,8 @@ class OrderHistory {
   final int userOrderID;
   int? userApproveID;
   int orderStatusID;
-  final Map<String, dynamic> userOrder;
-  final Map<String, dynamic>? userApprove;
+  final Map<String, dynamic>? userOrder;
+  Map<String, dynamic>? userApprove;
 
   @JsonKey(ignore: true)
   late User userOrdrerObject;
@@ -29,7 +29,9 @@ class OrderHistory {
     required this.userOrder,
     required this.userApprove,
   }) {
-    userOrdrerObject = User.fromJson(userOrder);
+    if (userApprove != null) {
+      userOrdrerObject = User.fromJson(userApprove!);
+    }
     if (userApprove != null) {
       userApproveObject = User.fromJson(userApprove!);
     }
